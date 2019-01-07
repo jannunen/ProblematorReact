@@ -1,5 +1,6 @@
 import React, { PermissionsAndroid} from 'react'
 import { Buffer } from 'buffer';
+import { authStoreToken} from '../../../store/actions/index';
 import {
   View,
   Text,
@@ -18,8 +19,9 @@ import { API_ENDPOINT,API_PASS} from '../../../../config';
 import backgroundImage from "../../../assets/problematorbg.png";
 import problematorLogo from "../../../assets/problemator_logo_new_small.png";
 import ProblematorButton from '../../../components/ProblematorButton/ProblematorButton';
+import { connect } from 'react-redux';
 
-export default class SignIn extends React.Component {
+class SignIn extends React.Component {
   state = {
     username: '', password: ''
   }
@@ -32,7 +34,8 @@ export default class SignIn extends React.Component {
 
 
   handleLoginClick = async () => {
-            goHome();
+      this.props.onAuthStoreToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE1NDY4MTU3NzYsImp0aSI6Ik16WT0iLCJpc3MiOiJ3d3cucHJvYmxlbWF0b3IuZmkiLCJuYmYiOjE1NDY4MTU3NzYsImV4cCI6MTU0OTQwNzc3NiwiZGF0YSI6eyJ1c2VySWQiOiIyNDYiLCJmaXJzdG5hbWUiOiJKYXJtbyIsImxhc3RuYW1lIjoiQW5udW5lbiIsImVtYWlsIjoiamFubnVuZW5Aa29vZGlvcmphLmNvbSIsImd5bWlkIjoiMSJ9fQ.PB47u4GW7tTS8pKtpdzcgIrkBzoMoL8GBUIBuIm3AhmLHwkb9KKsIQcQof0NoF3bA3662AO_lmwEkPUAZpQ_fQ");
+      goHome();
             /*
 
     try {
@@ -124,3 +127,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }
 })
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAuthStoreToken : token => dispatch(authStoreToken(token))
+  }
+}
+export default connect(null, mapDispatchToProps)(SignIn);

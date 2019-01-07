@@ -1,23 +1,53 @@
-import React from 'react'
+import * as React from 'react';
 import {
   View,
   Text,
   Button,
   StyleSheet,
-  AsyncStorage
+  AsyncStorage,
+  Dimensions
 } from 'react-native'
+import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
+
 import {Navigation} from 'react-native-navigation';
 import { connect } from 'react-redux';
 
 import { goToAuth } from '../../navigation'
 import { USER_KEY } from '../../../../config'
+import { getProblems, selectGym } from '../../../store/actions/index';
 
-export default class Home extends React.Component {
+const FirstRoute = () => (
+  <View style={[styles.scene, { backgroundColor: '#ff4081' }]} >
+
+
+  </View>
+);
+const SecondRoute = () => (
+  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} >
+  <Text>T4est2</Text>
+  </View>
+);
+
+
+class Home extends React.Component {
+  state = {
+    index: 0,
+    routes: [
+      { key: 'first', title: 'List' },
+      { key: 'second', title: 'Map' },
+    ],
+    problemsLoaded : false
+  };
+  componentWillMount = () => {
+    // Go ahead and fetch the problems
+    this.props.onLoadProblems();
+  }
+
   static get options() {
     return {
       topBar: {
         title: {
-          text: 'Home'
+          text: 'Problems'
         },
       }
     };
@@ -35,12 +65,20 @@ export default class Home extends React.Component {
   }
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Hello from Home screen.</Text>
-        <Button
-          onPress={this.logout}
-          title="Sign Out"
-        />
+        <TabView
+        navigationState={this.state}
+        renderScene={SceneMap({
+          first: FirstRoute,
+          second: SecondRoute,
+        })}
+        onIndexChange={index => this.setState({ index })}
+        initialLayout={{ width: Dimensions.get('window').width }}
+      />
+
+    )
+  }
+}
+/*
         <Button
           onPress={() => {
             Navigation.push(this.props.componentId, {
@@ -51,15 +89,31 @@ export default class Home extends React.Component {
           }}
           title="View next screen"
         />
-      </View>
-    )
-  }
-}
+
+        */
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  scene: {
+    flex: 1,
   }
+
 })
+
+const mapStateToProps = (state) => {
+  return {
+    problems : state.problems.problems
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onLoadProblems : () => dispatch(getProblems()),
+    onSelectGym : gymid => dispatch(selectGym(gymid))
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
