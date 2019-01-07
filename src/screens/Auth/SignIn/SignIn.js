@@ -30,12 +30,16 @@ class SignIn extends React.Component {
   }
 
   componentDidMount() {
+      this.props.onAuthStoreToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE1NDY4MTU3NzYsImp0aSI6Ik16WT0iLCJpc3MiOiJ3d3cucHJvYmxlbWF0b3IuZmkiLCJuYmYiOjE1NDY4MTU3NzYsImV4cCI6MTU0OTQwNzc3NiwiZGF0YSI6eyJ1c2VySWQiOiIyNDYiLCJmaXJzdG5hbWUiOiJKYXJtbyIsImxhc3RuYW1lIjoiQW5udW5lbiIsImVtYWlsIjoiamFubnVuZW5Aa29vZGlvcmphLmNvbSIsImd5bWlkIjoiMSJ9fQ.PB47u4GW7tTS8pKtpdzcgIrkBzoMoL8GBUIBuIm3AhmLHwkb9KKsIQcQof0NoF3bA3662AO_lmwEkPUAZpQ_fQ");
+      goHome();
   }
 
 
   handleLoginClick = async () => {
+    /*
       this.props.onAuthStoreToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE1NDY4MTU3NzYsImp0aSI6Ik16WT0iLCJpc3MiOiJ3d3cucHJvYmxlbWF0b3IuZmkiLCJuYmYiOjE1NDY4MTU3NzYsImV4cCI6MTU0OTQwNzc3NiwiZGF0YSI6eyJ1c2VySWQiOiIyNDYiLCJmaXJzdG5hbWUiOiJKYXJtbyIsImxhc3RuYW1lIjoiQW5udW5lbiIsImVtYWlsIjoiamFubnVuZW5Aa29vZGlvcmphLmNvbSIsImd5bWlkIjoiMSJ9fQ.PB47u4GW7tTS8pKtpdzcgIrkBzoMoL8GBUIBuIm3AhmLHwkb9KKsIQcQof0NoF3bA3662AO_lmwEkPUAZpQ_fQ");
       goHome();
+      */
             /*
 
     try {
