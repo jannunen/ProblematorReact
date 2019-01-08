@@ -8,7 +8,6 @@ import {
 } from 'react-native'
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
-import {Navigation} from 'react-native-navigation';
 import { connect } from 'react-redux';
 
 import { goToAuth } from '../../navigation'
@@ -17,10 +16,8 @@ import { selectGym } from '../../../store/actions/index';
 import ProblemList from '../../../components/ProblemList/ProblemList';
 
 
-
-
-class Home extends React.Component {
-  firstRoute = (props) => {
+export class Home extends React.Component {
+  firstRoute = () => {
     return (
       <View style={[styles.scene, { backgroundColor: '#252623' }]} >
         <ProblemList />

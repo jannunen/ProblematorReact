@@ -9,6 +9,7 @@
     "ios": "react-native run-ios"
   },
   "dependencies": {
+    "babel-preset-react-native": "^4.0.1",
     "buffer": "^5.2.1",
     "dotenv": "^6.2.0",
     "enzyme": "^3.8.0",
@@ -16,6 +17,7 @@
     "enzyme-to-json": "^3.3.5",
     "global": "^4.3.2",
     "react": "16.6.3",
+    "react-dom": "^16.7.0",
     "react-native": "^0.57.8",
     "react-native-camera": "^1.6.4",
     "react-native-cli": "^2.0.1",
@@ -30,18 +32,22 @@
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
+    "sinon": "^7.2.2",
     "tls": "^0.0.1"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",
     "jest": "23.6.0",
-    "metro-react-native-babel-preset": "0.51.1",
-    "react-test-renderer": "16.6.3"
+    "jest-enzyme": "^7.0.1",
+    "metro-react-native-babel-preset": "^0.51.1",
+    "mobx-react": "^5.4.3",
+    "react-test-renderer": "^16.7.0",
+    "redux-mock-store": "^1.5.3"
   },
   "jest": {
     "preset": "react-native",
     "setupFiles": [
-      "./src/tests/setup-tests.js"
+      "./src/tests/setupTests.js"
     ],
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
