@@ -27,10 +27,13 @@ export class ProblemList extends React.Component {
     return sections;
   }
 
+  handleItemClicked = () => {
+      this.props.handleItemClicked(item.problemid);
+  }
 
   listItem = (item, index, section) => {
     return  (
-      <TouchableOpacity onPress={() => { this.props.handleItemClicked(item.problemid) }}>
+      <TouchableOpacity onPress={this.handleItemClicked}>
     <View key={"lic" + item.problemid} style={styles.listItemContainer}>
       <Text key={"grade"+item.problemid} style={styles.listItemLeft}>{item.gradename}</Text>
       <Text key={"color"+item.problemid} style={[styles.listItemColor, { backgroundColor : item.htmlcode }]}> </Text>

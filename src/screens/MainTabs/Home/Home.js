@@ -17,10 +17,14 @@ import ProblemList from '../../../components/ProblemList/ProblemList';
 
 
 export class Home extends React.Component {
+  handleItemClicked = (problemid) => {
+    // Do something
+    console.log(problemid);
+  }
   firstRoute = () => {
     return (
       <View style={[styles.scene, { backgroundColor: '#252623' }]} >
-        <ProblemList />
+        <ProblemList handleItemClicked={this.handleItemClicked} />
       </View>
     );
   };
