@@ -72,7 +72,7 @@ export class Home extends React.Component {
           second: this.secondRoute,
         })}
         onIndexChange={index => this.setState({ index })}
-        initialLayout={{ width: Dimensions.get('window').width }}
+        initialLayout={{ width: Dimensions.get('window').width, height : Dimensions.get('window').height }}
       />
     )
   }

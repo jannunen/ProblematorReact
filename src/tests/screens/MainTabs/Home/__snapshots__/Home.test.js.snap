@@ -21,6 +21,7 @@ exports[`should correctly render LoginPage 1`] = `
     jumpTo={[Function]}
     layout={
       Object {
+        "height": 1334,
         "measured": false,
         "width": 750,
       }
@@ -60,6 +61,7 @@ exports[`should correctly render LoginPage 1`] = `
       jumpTo={[Function]}
       layout={
         Object {
+          "height": 1334,
           "measured": false,
           "width": 750,
         }

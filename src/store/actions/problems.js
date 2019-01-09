@@ -49,10 +49,3 @@ export const setProblems = problems => ({
         problems : problems
 });
 
-export const selectGym = (gymid) => {
-    return {
-        type : actions.SELECT_GYM,
-        gymid
-    }
-}
-

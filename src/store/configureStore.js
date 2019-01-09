@@ -1,11 +1,9 @@
 import { createStore , combineReducers, compose, applyMiddleware } from 'redux';
-import placesReducer from './reducers/places'
 import problemsReducer from './reducers/problems'
 import authReducer from './reducers/auth'
 import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
-    places : placesReducer,
     problems : problemsReducer,
     auth : authReducer
 });

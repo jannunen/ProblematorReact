@@ -1,8 +1,7 @@
 import { SET_PROBLEMS, PROBLEMS_LOAD_ERROR, PROBLEMS_START_LOADING, SELECT_GYM } from '../actions/actionTypes'
 
-const initialState = {
+export const initialState = {
     problems: [],
-    selectedGym: null,
     loading : false,
     error : null
 }
@@ -32,15 +31,6 @@ const reducer = (state = initialState, action) => {
                 error : null
             }
             break;
-
-        case SELECT_GYM:
-            return {
-                ...state,
-                selectedGym: action.selectedGym
-
-            }
-            break;
-
 
         default:
             return state;
