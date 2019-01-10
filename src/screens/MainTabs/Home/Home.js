@@ -21,6 +21,7 @@ export class Home extends React.Component {
     // Do something
     console.log(problemid);
     // Find correct problem
+    /*
     const selProblem = this.props.problems.find(walls => {
       return walls.find(problem => {
         return  problem.problemid === problemid;
@@ -35,6 +36,7 @@ export class Home extends React.Component {
         selectedPlace: selPlace
       }
     });
+    */
 
   }
   firstRoute = () => {

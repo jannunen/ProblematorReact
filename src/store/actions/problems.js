@@ -1,7 +1,6 @@
 import { SET_PROBLEMS , PROBLEMS_LOAD_ERROR, PROBLEMS_START_LOADING, SELECT_GYM}  from './actionTypes';
 import { API_ENDPOINT} from '../../../config';
 import { authGetToken } from './index';
-import axios from 'axios';
 
 
 export const problemsLoadBegin = () => ({
@@ -24,22 +23,22 @@ export const getProblems = (gymid) => {
         gymid = 1;
     }
     return (dispatch,getState) => {
-        dispatch(problemsLoadBegin());
+        //dispatch(problemsLoadBegin());
         //const token = getState().auth.token;
-        //jjdispatch(authGetToken())
-
-        const token = "";
-        //.then(token => {
-            console.log("Using token",token);
+        dispatch(authGetToken()).then((token) => {
+            return token;
+        })
+        .then(token => {
+            //console.log("Using token",token);
             const url = API_ENDPOINT+"problems/?api-auth-token="+token+"&loc="+gymid;
             console.log("call",url);
             return fetch(url)
-        //})
+        })
         .then(res => res.text()) // This is because of JSONP
         .then(textResponse => {
             // Remove first and last, because of JSONP
             console.log("Fixing JSONP");
-            if (textResponse.substr(1) == "(") {
+            if (textResponse.substr(0,1) == "(") {
                 console.log("... but only if needed...");
                 return JSON.parse(textResponse.substr(1).slice(0, -1));
             } else {
@@ -48,6 +47,7 @@ export const getProblems = (gymid) => {
         })
         .then(parsedResp => {
             dispatch(setProblems(parsedResp));
+            return parsedResp;
         })
         .catch(err => {
             console.log("Error loading problems",err);
