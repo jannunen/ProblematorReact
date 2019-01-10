@@ -36,9 +36,11 @@
     "tls": "^0.0.1"
   },
   "devDependencies": {
+    "axios-mock-adapter": "^1.16.0",
     "babel-jest": "23.6.0",
     "jest": "23.6.0",
     "jest-enzyme": "^7.0.1",
+    "jest-fetch-mock": "^2.1.0",
     "metro-react-native-babel-preset": "^0.51.1",
     "mobx-react": "^5.4.3",
     "react-test-renderer": "^16.7.0",

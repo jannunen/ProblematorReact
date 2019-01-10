@@ -25,11 +25,16 @@ export const getProblems = (gymid) => {
             console.log("call",url);
             return fetch(url);
         })
-        .then(res => res.text())
-        //.then(res => res.json())
+        .then(res => res.text()) // This is because of JSONP
         .then(textResponse => {
-            // Remove first and last
-            return JSON.parse(textResponse.substr(1).slice(0,-1));
+            // Remove first and last, because of JSONP
+            console.log("Fixing JSONP");
+            if (textResponse.substr(1) == "(") {
+                console.log("... but only if needed...");
+                return JSON.parse(textResponse.substr(1).slice(0, -1));
+            } else {
+                return JSON.parse(textResponse);
+            }
         })
         .then(parsedResp => {
             console.log("Here we have the parsed response",parsedResp);
@@ -40,12 +45,15 @@ export const getProblems = (gymid) => {
             alert("Error loading problems");
             console.log("Error loading problems",err);
             dispatch(problemsLoadFailure(err));
+            return "Error loading problems";
         });
     }
 }
 
-export const setProblems = problems => ({
+export const setProblems = problems => {
+    return {
         type : SET_PROBLEMS,
         problems : problems
-});
+    };
+};
 

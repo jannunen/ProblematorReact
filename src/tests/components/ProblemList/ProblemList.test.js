@@ -2,14 +2,14 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import  ProblemList  from '../../../components/ProblemList/ProblemList';
 import problems from '../../fixtures/problems';
-import mockStore from 'redux-mock-store';
+import configureStore from 'redux-mock-store';
 import { getProblems } from '../../../store/actions/problems';
 import thunk from 'redux-thunk';
 
 const middlewares = [thunk]; // you can mock any middlewares here if necessary
-const store = mockStore(middlewares);
+const mockStore = configureStore(middlewares);
 
-let  onLoadProblems, history, wrapper;
+let  store,onLoadProblems, history, wrapper;
 
 const initialState = {
     problems : problems,
@@ -18,10 +18,10 @@ const initialState = {
 }
 
 beforeEach(() => {
-    mockStore.clearActions();
   });
 
-describe('Testing ProblemList CameraSettings', () => {
+describe('Testing ProblemList component', () => {
+
     it('renders as expected', () => {
     wrapper = shallow(
         <ProblemList />,
@@ -31,8 +31,9 @@ describe('Testing ProblemList CameraSettings', () => {
     })
 
     it('Fetches problems',async () => {
-        await mockStore.dispatch(getProblems());
-        expect(mockStore.getActions()).toMatchSnapshot();
+        const store = mockStore({});
+        await store.dispatch(getProblems());
+        expect(store.getActions()).toMatchSnapshot();
     })
 });
 

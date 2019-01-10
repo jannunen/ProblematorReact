@@ -1,6 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Testing ProblemList CameraSettings renders as expected 1`] = `
+exports[`Testing ProblemList component Fetches problems 1`] = `Array []`;
+
+exports[`Testing ProblemList component renders as expected 1`] = `
 <ContextConsumer>
   <Component />
 </ContextConsumer>

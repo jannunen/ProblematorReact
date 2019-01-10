@@ -1,6 +1,7 @@
 import problemsReducer, {initialState } from '../../../store/reducers/problems';
 import { problemsLoadBegin, problemsLoadFailure, setProblems } from '../../../store/actions/problems';
 import problems from '../../fixtures/problems';
+import mockStore from 'redux-mock-store';
 
 describe('problems reducers', () => {
     it('should set default state', () => {

@@ -41,7 +41,7 @@ export const authGetToken = () => {
       return promise
         .then(token => {
           if (!token) {
-            throw new Error();
+            throw new Error("No token found");
           } else {
             return token;
           }
