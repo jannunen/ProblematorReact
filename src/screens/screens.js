@@ -6,15 +6,17 @@ import SignInScreen from './Auth/SignIn/SignIn';
 import SignUpScreen from './Auth/SignUp/SignUp';
 import HomeScreen from './MainTabs/Home/Home';
 import OtherScreen from './MainTabs/Other/Other';
+import ProblemDetailScreen from './MainTabs/Problems/ProblemDetailScreen/ProblemDetailScreen';
 
 import configureStore from '../store/configureStore';
 
 const store = configureStore();
 
 export default registerScreens = () => {
-    Navigation.registerComponentWithRedux('com.padadise.HomeScreen', () => HomeScreen, Provider, store);
-    Navigation.registerComponentWithRedux('com.padadise.InitializingScreen', (sc) => InitializingScreen, Provider, store);
-    Navigation.registerComponentWithRedux('com.padadise.SignInScreen', () =>  SignInScreen, Provider, store);
-    Navigation.registerComponentWithRedux('com.padadise.SignUpScreen', () =>  SignUpScreen, Provider, store);
-    Navigation.registerComponentWithRedux('com.padadise.OtherScreen', () => OtherScreen, Provider, store);
+    Navigation.registerComponentWithRedux('com.problemator.HomeScreen', () => HomeScreen, Provider, store);
+    Navigation.registerComponentWithRedux('com.problemator.InitializingScreen', (sc) => InitializingScreen, Provider, store);
+    Navigation.registerComponentWithRedux('com.problemator.SignInScreen', () =>  SignInScreen, Provider, store);
+    Navigation.registerComponentWithRedux('com.problemator.SignUpScreen', () =>  SignUpScreen, Provider, store);
+    Navigation.registerComponentWithRedux('com.problemator.OtherScreen', () => OtherScreen, Provider, store);
+    Navigation.registerComponentWithRedux('com.problemator.ProblemDetailScreen', () => ProblemDetailScreen, Provider, store);
 } 

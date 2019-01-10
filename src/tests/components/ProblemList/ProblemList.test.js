@@ -37,6 +37,15 @@ describe('Testing ProblemList component', () => {
         await store.dispatch(getProblems());
         expect(store.getActions()).toMatchSnapshot();
     })
+
+    if('calls the handleProblemClicked event',() => {
+        wrapper = shallow(
+            <ProblemList handleItemClicked={handleItemClickedSpy} />,
+            { context: { store: mockStore(initialState) } },
+        );
+        const handleItemClickedSpy = sinon.spy(wrapper, 'handleItemClicked');
+        expect(handleItemClickedSpy.calledOnce).toBe(true);
+    });
 });
 
 

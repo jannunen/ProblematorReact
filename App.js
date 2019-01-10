@@ -9,7 +9,7 @@ Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({
     root: {
       component: {
-        name: 'com.padadise.InitializingScreen'
+        name: 'com.problemator.InitializingScreen'
       }
     },
   });

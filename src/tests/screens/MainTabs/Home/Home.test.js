@@ -19,6 +19,15 @@ test('should correctly render LoginPage', () => {
   expect(tree).toMatchSnapshot();
 });
 
+it('should correctly load problem details page',() => {
+
+            Navigation.push(this.props.componentId, {
+              component: {
+                name: 'com.problemator.OtherScreen',
+              }
+            });
+
+});
 /*
 test('should call onProblemLoad in componentDidMount', () => {
   wrapper = shallow(<Home  {...props}/>)

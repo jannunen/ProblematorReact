@@ -7,8 +7,8 @@ import {
   Dimensions,
 } from 'react-native'
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
-
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import { goToAuth } from '../../navigation'
 import { USER_KEY } from '../../../../config'
@@ -20,6 +20,22 @@ export class Home extends React.Component {
   handleItemClicked = (problemid) => {
     // Do something
     console.log(problemid);
+    // Find correct problem
+    const selProblem = this.props.problems.find(walls => {
+      return walls.find(problem => {
+        return  problem.problemid === problemid;
+      });
+    });
+    console.log(selProblem);
+    // PUsh navigation
+    this.props.navigator.push({
+      screen: "com.problemator.ProblemDetailScreen",
+      title: selPlace.name,
+      passProps: {
+        selectedPlace: selPlace
+      }
+    });
+
   }
   firstRoute = () => {
     return (
@@ -78,8 +94,7 @@ export class Home extends React.Component {
   }
 }
 /*
-        <Button
-          onPress={() => {
+        <Button onPress={() => {
             Navigation.push(this.props.componentId, {
               component: {
                 name: 'com.padadise.OtherScreen',

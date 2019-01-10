@@ -13,7 +13,7 @@ export const goToAuth = () => {
           children: [
             {
               component: {
-                name: 'com.padadise.SignInScreen',
+                name: 'com.problemator.SignInScreen',
                 options: {
                   bottomTab: {
                     text: 'Sign In',
@@ -24,7 +24,7 @@ export const goToAuth = () => {
             },
             {
               component: {
-                name: 'com.padadise.SignUpScreen',
+                name: 'com.problemator.SignUpScreen',
                 options: {
                   bottomTab: {
                     text: 'Sign Up',
@@ -49,7 +49,7 @@ export const goHome = () => Navigation.setRoot({
       children: [
         {
           component: {
-            name: 'com.padadise.HomeScreen',
+            name: 'com.problemator.HomeScreen',
           }
         }
     ],
