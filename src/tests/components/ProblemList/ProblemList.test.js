@@ -31,7 +31,9 @@ describe('Testing ProblemList component', () => {
     })
 
     it('Fetches problems',async () => {
-        const store = mockStore({});
+        fetch.mockResponseOnce(JSON.stringify(problems));
+        // Be sure to set the auth to initialstate
+        const store = mockStore({auth : { token : 'test_token'}});
         await store.dispatch(getProblems());
         expect(store.getActions()).toMatchSnapshot();
     })

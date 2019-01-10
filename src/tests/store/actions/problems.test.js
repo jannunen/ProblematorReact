@@ -28,7 +28,7 @@ it('creates setproblems action',() => {
     expect(setProblems(problems)).toEqual({ type : SET_PROBLEMS, problems : problems})
 })
 
-it('should handle getProblems success',async () => {
+it('should handle getProblems success',() => {
 
     // Mock the api call with fixture data
     fetch.mockResponseOnce(JSON.stringify(problems));
@@ -36,12 +36,16 @@ it('should handle getProblems success',async () => {
     // Be sure to set the auth to initialstate
     const store = mockStore({auth : { token : 'test_token'}});
 
-    const expectedAction = { type: 'SET_PROBLEMS', problems  };
+    const expectedActions = [
+        { type: 'PROBLEMS_START_LOADING' },
+        { type: 'SET_PROBLEMS', problems  }
+    ];
 
-    await store.dispatch(getProblems());
-    const actions = store.getActions();
-    console.log("actions",actions);
-    expect(actions[0]).toEqual(expectedAction);
+    return store.dispatch(getProblems())
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+
 
 
 })
