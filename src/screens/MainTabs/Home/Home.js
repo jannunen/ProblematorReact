@@ -17,26 +17,24 @@ import ProblemList from '../../../components/ProblemList/ProblemList';
 
 
 export class Home extends React.Component {
-  handleItemClicked = (problemid) => {
+  handleItemClicked = (problem) => {
     // Do something
-    console.log(problemid);
-    // Find correct problem
-    /*
-    const selProblem = this.props.problems.find(walls => {
-      return walls.find(problem => {
-        return  problem.problemid === problemid;
-      });
-    });
-    console.log(selProblem);
-    // PUsh navigation
-    this.props.navigator.push({
-      screen: "com.problemator.ProblemDetailScreen",
-      title: selPlace.name,
-      passProps: {
-        selectedPlace: selPlace
+    console.log(problem);
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: 'com.problemator.ProblemDetailScreen',
+        passProps: {
+          problem
+        }
+      },
+      options: {
+        topBar: {
+          title: {
+            text: 'Problem' + " " + problem.problemid
+          }
+        }
       }
     });
-    */
 
   }
   firstRoute = () => {

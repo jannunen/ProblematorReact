@@ -23,7 +23,7 @@ export default class ProblemDetailScreen extends Component {
     render() {
         return (
             <View>
-            {this.props.problem.problemid}
+            <ProblemDetails {...this.props} />
             </View>
         );
     }
