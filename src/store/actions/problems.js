@@ -1,6 +1,7 @@
 import { SET_PROBLEMS , PROBLEMS_LOAD_ERROR, PROBLEMS_START_LOADING, SELECT_GYM}  from './actionTypes';
 import { API_ENDPOINT} from '../../../config';
 import { authGetToken } from './index';
+import problems from '../../tests/fixtures/problems';
 
 
 export const problemsLoadBegin = () => ({
@@ -23,17 +24,14 @@ export const getProblems = (gymid) => {
         gymid = 1;
     }
     return (dispatch,getState) => {
-        //dispatch(problemsLoadBegin());
-        //const token = getState().auth.token;
-        dispatch(authGetToken()).then((token) => {
-            return token;
-        })
-        .then(token => {
-            //console.log("Using token",token);
-            const url = API_ENDPOINT+"problems/?api-auth-token="+token+"&loc="+gymid;
-            console.log("call",url);
-            return fetch(url)
-        })
+        const token = getState().auth.token;
+        const url = API_ENDPOINT+"problems/?api-auth-token="+token+"&loc="+gymid;
+        console.log("call",url);
+        // If developing, just take the problems from a fixture
+        dispatch(setProblems(problems));
+        return problems;
+
+        return fetch(url)
         .then(res => res.text()) // This is because of JSONP
         .then(textResponse => {
             // Remove first and last, because of JSONP

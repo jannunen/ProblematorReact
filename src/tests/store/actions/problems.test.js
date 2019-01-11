@@ -37,7 +37,7 @@ it('should handle getProblems success',() => {
     const store = mockStore({auth : { token : 'test_token'}});
 
     const expectedActions = [
-        { type: 'PROBLEMS_START_LOADING' },
+        //{ type: 'PROBLEMS_START_LOADING' },
         { type: 'SET_PROBLEMS', problems  }
     ];
 

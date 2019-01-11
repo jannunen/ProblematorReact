@@ -3,9 +3,6 @@
 exports[`Testing ProblemList component Fetches problems 1`] = `
 Array [
   Object {
-    "type": "PROBLEMS_START_LOADING",
-  },
-  Object {
     "problems": Object {
       "A Släbi": Object {
         "problems": Array [

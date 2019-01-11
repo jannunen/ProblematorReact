@@ -4,6 +4,7 @@ import sinon from 'sinon'
 import configureMockStore from 'redux-mock-store'
 import { shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
+import { Navigation} from 'react-native-navigation';
 import thunk from 'redux-thunk'
 import  Home  from '../../../../screens/MainTabs/Home/Home';
 
@@ -21,11 +22,11 @@ test('should correctly render LoginPage', () => {
 
 it('should correctly load problem details page',() => {
 
-            Navigation.push(this.props.componentId, {
-              component: {
-                name: 'com.problemator.OtherScreen',
-              }
-            });
+            // Navigation.push(this.props.componentId, {
+            //   component: {
+            //     name: 'com.problemator.ProblemDetailScreen',
+            //   }
+            // });
 
 });
 /*
