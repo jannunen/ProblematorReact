@@ -36,54 +36,42 @@ export class ProblemDetails extends React.Component {
             return <Picker.Item label={item.name} value={item.id} />
         });
     }
-    leftRows = (p) => {
 
+    gradeCell = (p) => {
         return (
-            <View style={{ flex : 1}}>
-            <Row >
+            <View style={styles.childCell}>
                 <Text style={styles.bigGrade}> {p.gradename} </Text>
-            </Row>
-            <Row style={[styles.defaultCellStyle , styles.defaultRowStyle , {flexDirection : 'column'}]}>
+            </View>
+        );
+    }
+
+    likeCell =(p) => {
+        return (
+            <View style={styles.childCell}>
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+                    <Icon style={styles.likeIcon} name="ios-thumbs-up" size={20} color="#decc00" /><Text style={styles.likes}>{p.c_like}</Text><Text style={styles.tildeSeparator}>|</Text>
+                    <Icon style={styles.likeIcon} name="ios-heart" size={20} color="red" /><Text style={styles.likes}>{p.c_love}</Text><Text style={styles.tildeSeparator}>|</Text>
+                    <Icon style={styles.likeIcon} name="ios-thumbs-down" size={20} color="white" /><Text style={styles.likes}>{p.c_dislike}</Text>
+                </View>
+                <Text style={[styles.textCenter, styles.basicTextColor]}>by {p.author}</Text>
+                <Text style={[styles.textCenter, styles.basicTextColor]}>{p.addedrelative}</Text>
+            </View>
+        );
+    }
+
+    infoCell = (p) => {
+        return (
+            <View style={styles.childCell}>
                 <Text style={styles.fieldName}>Start</Text><Text style={styles.fieldValue}>{p.startdefinition}</Text>
                 <Text style={styles.fieldName}>End</Text><Text style={styles.fieldValue}>{p.enddefinition}</Text>
                 <Text style={styles.fieldName}>Info</Text><Text style={styles.fieldValue}>{p.info}</Text>
-            </Row>
-            <Row style={[styles.defaultCellStyle , styles.defaultRowStyle , {flexDirection : 'row'}]}>
-                <Text style={styles.fieldHeader}>Tries</Text>
-            </Row>
-            <Row style={[styles.defaultCellStyle , styles.defaultRowStyle , {flexDirection : 'row'}]}>
-                <Text style={styles.fieldHeader}>Ascents total</Text>
-            </Row>
-            <Row style={[styles.defaultCellStyle , styles.defaultRowStyle , {flexDirection : 'row'}]}>
-                <ProblematorIconButton name="thumbs-up" onPress={this.handleAction('like',p.problemid)} />
-                <ProblematorIconButton name="heart" onPress={this.handleAction('love',p.problemid)} />
-                <ProblematorIconButton name="thumbs-down" onPress={this.handleAction('dislike',p.problemid)} />
-            </Row>
             </View>
-        );
-     }
+        )
+    }
 
-    rightRows = (p) => {
+    ascentCell = (p) => {
         return (
-            <View style={{ flex : 1}}>
-            <Row style={[styles.defaultCellStyle , styles.defaultRowStyle ]}>
-                <Grid>
-                    <Row>
-                    <View style={{ flex : 1, flexDirection : 'row',justifyContent : 'center'}}>
-                        <Icon style={styles.likeIcon} name="ios-thumbs-up" size={20} color="#decc00" /><Text style={styles.likes}>{p.c_like}</Text><Text style={styles.tildeSeparator}>|</Text>
-                        <Icon style={styles.likeIcon} name="ios-heart" size={20} color="red" /><Text style={styles.likes}>{p.c_love}</Text><Text style={styles.tildeSeparator}>|</Text>
-                        <Icon style={styles.likeIcon} name="ios-thumbs-down" size={20} color="white" /><Text style={styles.likes}>{p.c_dislike}</Text>
-                    </View>
-                    </Row>
-                    <Row>
-                        <Text style={[styles.textCenter, styles.basicTextColor]}>by {p.author}</Text>
-                    </Row>
-                    <Row>
-                        <Text style={[styles.textCenter, styles.basicTextColor]}>{p.addedrelative}</Text>
-                    </Row>
-                </Grid>
-            </Row>
-            <Row style={[styles.defaultCellStyle , styles.defaultRowStyle ]}>
+            <View style={styles.childCell}>
                 <DatePicker 
                             date={this.state.date}
                             customStyles={{ dateText : { color : 'white'}}}
@@ -95,39 +83,115 @@ export class ProblemDetails extends React.Component {
                             onDateChange={(date) => {this.setState({date: date})}}
                 />
                 <ProblematorButton title="Save tick" />
-            </Row>
-            <Row style={[styles.defaultCellStyle , styles.defaultRowStyle ]}>
+            </View>
+        )
+    }
+
+    triesCell = (p) => {
+        return (
+            <View style={styles.childCell}>
+                <Text style={styles.fieldHeader}>Tries</Text>
+            </View> 
+            );
+    }
+
+    gradeOpinionCell = (p) => {
+        return (
+            <View style={styles.childCell}>
                 <Text style={styles.fieldHeader}>Grade opinion</Text>
                 <Picker
                     selectedValue={this.state.gradeOpinion}
                     style={{ height: 50, width: 100 }}
-                    onValueChange={(itemValue, itemIndex) => this.setState({gradeOpinion: itemValue})}>
+                    onValueChange={(itemValue, itemIndex) => this.setState({ gradeOpinion: itemValue })}>
                     {this.getPickerGrades}
                 </Picker>
-            </Row>
-            <Row style={[styles.defaultCellStyle , styles.defaultRowStyle ]}>
-                <Text style={styles.fieldHeader}>Grade opinions</Text>
-            </Row>
-            <Row style={[styles.defaultCellStyle , styles.defaultRowStyle , {flexDirection : 'row'}]}>
-                <ProblematorIconButton name="broom" onPress={this.handleAction('dirty',p.problemid)} />
-                <ProblematorIconButton name="exclamation-triangle" onPress={this.handleAction('danger',p.problemid)} />
-                <ProblematorIconButton name="comment-dots" onPress={this.handleAction('feedback',p.problemid)} />
-            </Row>
-           
-</View>
+            </View>
         );
     }
-    render() {
+
+    ascentsTotalCell = (p) => {
         return (
-            <View style={styles.problemContainer}>
-                <Grid>
-                    <Col style={styles.leftColumn}>
-                        {this.leftRows(this.props.problem)}
-                    </Col>
-                    <Col style={styles.rightColumn}>
-                        {this.rightRows(this.props.problem)}
-                    </Col>
-                </Grid>
+            <View style={styles.childCell}>
+                <Text style={styles.fieldHeader}>Ascents total</Text>
+            </View>
+        );
+    }
+
+    gradeOpinionsCell = (p) => {
+        return (
+            <View style={styles.childCell}>
+                <Text style={styles.fieldHeader}>Grade opinions</Text>
+            </View>
+        );
+    }
+
+    likeLoveDislikeCell = (p) => {
+        return (
+            <View style={styles.childCell}>
+                <View style={{ flexDirection : 'row'}}>
+                    <ProblematorIconButton name="thumbs-up" onPress={this.handleAction('like',p.problemid)} />
+                    <ProblematorIconButton name="heart" onPress={this.handleAction('love',p.problemid)} />
+                    <ProblematorIconButton name="thumbs-down" onPress={this.handleAction('dislike',p.problemid)} />
+                </View>
+            </View>
+        );
+    }
+
+    actionsCell = (p) => {
+        return (
+            <View style={styles.childCell}>
+                <View style={{ flexDirection : 'row'}}>
+                    <ProblematorIconButton name="broom" onPress={this.handleAction('dirty', p.problemid)} />
+                    <ProblematorIconButton name="exclamation-triangle" onPress={this.handleAction('danger', p.problemid)} />
+                    <ProblematorIconButton name="comment-dots" onPress={this.handleAction('feedback', p.problemid)} />
+                </View>
+            </View>
+        );
+    }
+    
+    totalAscentsCell = (p) => {
+        return (
+            <View style={styles.childCell}>
+                <Text style={styles.fieldHeader}>Total ascents</Text>
+            </View>
+        );
+    }
+
+    betaVideosCellLeft = (p) => {
+        return (
+            <View style={styles.childCell}>
+                <Text style={styles.fieldHeader}>Beta videos</Text>
+            </View>
+        );
+
+    }
+
+    betaVideosCellRight = (p) => {
+        return (
+            <View style={styles.childCell}>
+                <Text style={styles.fieldHeader}>Submit betavideo</Text>
+            </View>
+        );
+    }
+
+    render() {
+        const p = this.props.problem;
+        return (
+            <View style={styles.parent}>
+                {this.gradeCell(p)}
+                {this.likeCell(p)}
+                {this.infoCell(p)}
+                {this.ascentCell(p)}
+                {this.triesCell(p)}
+                {this.gradeOpinionCell(p)}
+                {this.totalAscentsCell(p)}
+                {this.gradeOpinionsCell(p)}
+                {this.likeLoveDislikeCell(p)}
+                {this.actionsCell(p)}
+                {this.betaVideosCellLeft(p)}
+                {this.betaVideosCellRight(p)}
+
+
             </View>
         )
     }
@@ -150,6 +214,22 @@ const styles = StyleSheet.create({
     },
     rightColumn :  {
         padding : 8,
+    },
+    parent : {
+        flex: 1,
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        backgroundColor : '#252623',
+    },
+    childCell: {
+        flexBasis : '50%',
+        height : '16%',
+        padding : 16,
+        borderRightColor : '#2f302d',
+        borderRightWidth : 1,
+        borderBottomColor : '#2f302d',
+        borderBottomWidth : 1,
+
     },
     fieldHeader: {
         textTransform: 'uppercase',
