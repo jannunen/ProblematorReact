@@ -41,10 +41,8 @@ it('should handle getProblems success',() => {
         { type: 'SET_PROBLEMS', problems  }
     ];
 
-    return store.dispatch(getProblems())
-      .then(() => {
-        expect(store.getActions()).toEqual(expectedActions);
-      });
+    store.dispatch(getProblems());
+    expect(store.getActions()).toEqual(expectedActions);
 
 
 

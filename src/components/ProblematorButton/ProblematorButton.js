@@ -8,25 +8,31 @@ import {
 } from 'react-native';
 
 
-ProblematorButton = (props) => {
-    if (!props.color )  {
-        props.color = "white";
-    }
-    return (
-        <View style={styles.buttonContainer}>
-        <TouchableOpacity>
-            <Text
-                style={[
-                    styles.button,
-                    { backgroundColor: props.color != null ? props.color : "#decc00" },
-                    props.disabled ? styles.disabled : null
-                ]}
-                {...props}
-            >{props.title}</Text>
-            </TouchableOpacity>
-        </View>
-    )
+export class ProblematorButton extends React.Component  {
+    constructor(props) {
+        super(props);
+        if (!props.color )  {
+            props.color = "white";
         }
+    }
+
+    render() {
+        return (
+            <View style={styles.buttonContainer}>
+            <TouchableOpacity>
+                <Text
+                    style={[
+                        styles.button,
+                        { backgroundColor: this.props.color != null ? this.props.color : "#decc00" },
+                        this.props.disabled ? styles.disabled : null
+                    ]}
+                    {...this.props}
+                >{this.props.title}</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+}
 
 const styles = StyleSheet.create({
     buttonContainer: {
@@ -35,6 +41,7 @@ const styles = StyleSheet.create({
         padding : 6,
         margin: 2,
         backgroundColor : "#decc00",
+        flexDirection : 'column',
         alignItems : 'center'
     },
     button: {

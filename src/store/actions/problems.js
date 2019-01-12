@@ -20,16 +20,17 @@ export const setProblems = problems => ({
 
 
 export const getProblems = (gymid) => {
-    if (isNaN(gymid)) {
-        gymid = 1;
-    }
     return (dispatch,getState) => {
+        if (isNaN(gymid)) {
+            gymid = 1;
+        }
         const token = getState().auth.token;
         const url = API_ENDPOINT+"problems/?api-auth-token="+token+"&loc="+gymid;
         console.log("call",url);
         // If developing, just take the problems from a fixture
-        dispatch(setProblems(problems));
-        return problems;
+            dispatch(setProblems(problems));
+        //return problems;
+        /*
 
         return fetch(url)
         .then(res => res.text()) // This is because of JSONP
@@ -52,5 +53,6 @@ export const getProblems = (gymid) => {
             dispatch(problemsLoadFailure(err));
             return "Error loading problems";
         });
+        */
     }
 }

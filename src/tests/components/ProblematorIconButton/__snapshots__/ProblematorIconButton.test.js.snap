@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProblematorIconButton component tests should correctly render ProblematorIconButton component 1`] = `
+<ContextConsumer>
+  <Component />
+</ContextConsumer>
+`;

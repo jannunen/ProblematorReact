@@ -6,8 +6,8 @@ import { shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 import { Navigation} from 'react-native-navigation';
 import thunk from 'redux-thunk'
-import problem from '../../../../fixtures/problem';
-import ProblemDetails from '../../../../../Components/ProblemDetails/ProblemDetails';
+import problem from '../../fixtures/problem';
+import ProblemDetails from '../../../components/ProblemDetails/ProblemDetails';
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
