@@ -37,7 +37,7 @@ export class ProblematorButton extends React.Component  {
 const styles = StyleSheet.create({
     buttonContainer: {
         width : "90%",
-        height : 55,    
+        height :45,    
         padding : 6,
         margin: 2,
         backgroundColor : "#decc00",

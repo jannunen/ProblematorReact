@@ -24,6 +24,9 @@ export class ProblemList extends React.Component {
         sections.push({ title: idx, data: item.problems.map((item) => { return ({ ...item }) }) });
       };
     }
+    if (sections == null) {
+      sections = [({ title : 'Loading...', data : ['Loading']})];
+    }
     return sections;
   }
 
@@ -34,26 +37,26 @@ export class ProblemList extends React.Component {
   listItem = (item, index, section) => {
     return  (
       <TouchableOpacity onPress={() => this.handleItemClicked(item)}>
-    <View key={"lic" + item.problemid} style={styles.listItemContainer}>
-      <Text key={"grade"+item.problemid} style={styles.listItemLeft}>{item.gradename}</Text>
-      <Text key={"color"+item.problemid} style={[styles.listItemColor, { backgroundColor : item.htmlcode }]}> </Text>
-      <Text key={"tag"+item.problemid} style={[styles.listItemTag]}>{item.tagshort}</Text>
-        <View key={"ric " +item.problemid} style={styles.routeInfoContainer}>
-          <Text key={"text"+item.problemid}  style={styles.listItemText} key={index}>
-          {item.startdefinition} | {item.enddefinition}
+        <View key={"lic" + item.problemid} style={styles.listItemContainer}>
+          <Text key={"grade" + item.problemid} style={styles.listItemLeft}>{item.gradename}</Text>
+          <Text key={"color" + item.problemid} style={[styles.listItemColor, { backgroundColor: item.htmlcode }]}> </Text>
+          <Text key={"tag" + item.problemid} style={[styles.listItemTag]}>{item.tagshort}</Text>
+          <View key={"ric " + item.problemid} style={styles.routeInfoContainer}>
+            <Text key={"text" + item.problemid} style={styles.listItemText} key={index}>
+              {item.startdefinition} | {item.enddefinition}
+            </Text>
+            <Text key={"author" + item.problemid} style={[styles.listItemText, styles.listItemRoutesetter]} >
+              by {item.author} {item.addedrelative}
+            </Text>
+          </View>
+          <Text key={"stars" + item.problemid} style={styles.listItemStars}>
+            <Icon style={styles.likeIcon} name="ios-thumbs-up" size={20} color="#decc00" /><Text style={styles.likes}>{item.c_like}</Text>
+            <Icon style={styles.likeIcon} name="ios-heart" size={20} color="red" /> <Text style={styles.likes}>{item.c_love}</Text>
           </Text>
-          <Text key={"author"+item.problemid}  style={[styles.listItemText, styles.listItemRoutesetter]} >
-            by {item.author} {item.addedrelative}
-        </Text>
-      </View>
-      <Text key={"stars"+item.problemid}  style={styles.listItemStars}>
-        <Icon style={styles.likeIcon} name="ios-thumbs-up" size={20} color="#decc00" /><Text style={styles.likes}>{item.c_like}</Text> 
-        <Icon style={styles.likeIcon} name="ios-heart" size={20} color="red" /> <Text style={styles.likes}>{item.c_love}</Text>
-      </Text>
-      <Text key={"arrowright"+item.problemid} style={styles.listItemRight}>
-        <Icon name="ios-arrow-forward" size={30} color="#decc00" />
-      </Text>
-      </View>
+          <Text key={"arrowright" + item.problemid} style={styles.listItemRight}>
+            <Icon name="ios-arrow-forward" size={30} color="#decc00" />
+          </Text>
+        </View>
       </TouchableOpacity>
       );
   }
@@ -62,6 +65,8 @@ export class ProblemList extends React.Component {
         return (
             <SectionList 
             style={styles.problemList}
+            updateCellsBatchingPeriod={50}   
+            maxToRenderPerBatch={100}
             renderItem={({item, index, section}) => 
                 this.listItem (item, index, section)
             } 

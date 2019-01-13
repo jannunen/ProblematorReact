@@ -8,13 +8,13 @@ import {
   TouchableOpacity
 } from 'react-native'
 
-import { Col, Row, Grid } from "react-native-easy-grid";
 import  Icon  from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import ProblematorButton from '../ProblematorButton/ProblematorButton';
 import ProblematorIconButton from '../ProblematorIconButton/ProblematorIconButton';
+import Spinner from '../RNSpinner/RNSpinner';
 import grades from '../../../config';
 
 export class ProblemDetails extends React.Component {
@@ -24,6 +24,7 @@ export class ProblemDetails extends React.Component {
         this.state = {
             date:moment(),
             gradeOpinion  : null,
+            tries : 0,
         }
       }
 
@@ -89,8 +90,21 @@ export class ProblemDetails extends React.Component {
 
     triesCell = (p) => {
         return (
-            <View style={styles.childCell}>
+            <View style={[styles.childCell, { paddingTop : 10}]}>
                 <Text style={styles.fieldHeader}>Tries</Text>
+                <Spinner max={10}
+                    min={1}
+                    color="#252623"
+                    showBorder={false}
+                    numColor="#fff"
+                    btnFontSize={30}
+                    plusMinusStyle={styles.spinnerButtonPlusMinus}
+                    buttonTextColor="white"
+                    numBgColor="#30312e"
+                    onNumChange={(num)=>{this.setState({ tries : num})}}
+                    value={this.state.tries}
+                    />
+                    <ProblematorButton title="Add as todo" />
             </View> 
             );
     }
@@ -129,9 +143,9 @@ export class ProblemDetails extends React.Component {
         return (
             <View style={styles.childCell}>
                 <View style={{ flexDirection : 'row'}}>
-                    <ProblematorIconButton name="thumbs-up" onPress={this.handleAction('like',p.problemid)} />
-                    <ProblematorIconButton name="heart" onPress={this.handleAction('love',p.problemid)} />
-                    <ProblematorIconButton name="thumbs-down" onPress={this.handleAction('dislike',p.problemid)} />
+                    <ProblematorIconButton text="like" name="thumbs-up" onPress={this.handleAction('like',p.problemid)} />
+                    <ProblematorIconButton text="love" name="heart" onPress={this.handleAction('love',p.problemid)} />
+                    <ProblematorIconButton text="dislike" name="thumbs-down" onPress={this.handleAction('dislike',p.problemid)} />
                 </View>
             </View>
         );
@@ -141,9 +155,9 @@ export class ProblemDetails extends React.Component {
         return (
             <View style={styles.childCell}>
                 <View style={{ flexDirection : 'row'}}>
-                    <ProblematorIconButton name="broom" onPress={this.handleAction('dirty', p.problemid)} />
-                    <ProblematorIconButton name="exclamation-triangle" onPress={this.handleAction('danger', p.problemid)} />
-                    <ProblematorIconButton name="comment-dots" onPress={this.handleAction('feedback', p.problemid)} />
+                    <ProblematorIconButton text="dirty" name="broom" onPress={this.handleAction('dirty', p.problemid)} />
+                    <ProblematorIconButton text="dangerous" name="exclamation-triangle" onPress={this.handleAction('danger', p.problemid)} />
+                    <ProblematorIconButton test="feedback" name="comment-dots" onPress={this.handleAction('feedback', p.problemid)} />
                 </View>
             </View>
         );
@@ -229,6 +243,7 @@ const styles = StyleSheet.create({
         borderRightWidth : 1,
         borderBottomColor : '#2f302d',
         borderBottomWidth : 1,
+        alignItems : 'center',
 
     },
     fieldHeader: {
@@ -275,6 +290,17 @@ const styles = StyleSheet.create({
     },
     tildeSeparator: {
         color : '#2f302d',
+    },
+    spinnerButton: {
+        
+
+    },
+    spinnerButtonPlusMinus: {
+        fontWeight : 'bold',
+        fontSize : 35,
+        color : 'white',
+        paddingTop : 0,
+        marginTop : -10,
     }
 });
 

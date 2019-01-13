@@ -25,8 +25,9 @@ export class ProblematorIconButton extends React.Component {
 
     render() {
         return (
-            <TouchableOpacity onPress={this.onPressHandler}>
+            <TouchableOpacity style={styles.container} onPress={this.onPressHandler}>
                 <FontAwesome style={[styles.iconStyle, this.props.style ]} {...this.props} />
+                {this.props.text ? <Text style={styles.iconText}>{this.props.text}</Text> : null }
             </TouchableOpacity>
         )
     }
@@ -35,11 +36,18 @@ export class ProblematorIconButton extends React.Component {
 
 
 const styles = StyleSheet.create({
+    container: {
+        alignItems : 'center',
+    },
     iconStyle : {
         fontSize : 30,
         color : 'white',
         padding : 8,
 
+    },
+    iconText: {
+        fontSize : 14,
+        color : '#636169',
     }
 });
 

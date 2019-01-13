@@ -1,6 +1,8 @@
 import { PermissionsAndroid } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import registerScreens from './src/screens/screens';
+console.disableYellowBox = true;
+  console.warn('YellowBox is disabled.');
 
 registerScreens();
 
