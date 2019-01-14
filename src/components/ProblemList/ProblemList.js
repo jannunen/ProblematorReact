@@ -9,6 +9,7 @@ import {
 import  Icon  from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { getProblems } from '../../store/actions/index';
+import { red } from 'ansi-colors';
 
 export class ProblemList extends React.Component {
 
@@ -63,6 +64,8 @@ export class ProblemList extends React.Component {
 
     render() {
         return (
+          <View style={{flex : 1}}>
+          {this.props.error != null ? <Text style={styles.errorMessage}>Error: {this.props.error}</Text> : null}
             <SectionList 
             style={styles.problemList}
             updateCellsBatchingPeriod={50}   
@@ -79,6 +82,7 @@ export class ProblemList extends React.Component {
             }}
             sections={this.transformProblemsToSections()}
             />
+          </View>
         )
     }
 
@@ -165,6 +169,11 @@ const styles= StyleSheet.create({
     alignItems : 'stretch',
     height : 40,
   },
+  errorMessage: {
+    color : 'red',
+    fontSize : 18,
+    padding : 4,
+  }
 });
 
 

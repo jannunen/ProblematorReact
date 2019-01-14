@@ -25,11 +25,12 @@ const reducer = (state = initialState, action) => {
         }
         break;
         case PROBLEMS_LOAD_ERROR:
+            console.log("reducer",action);
         return {
             ...state,
             loading : false,
             problems : [],
-            error : action.error
+            error : action.payload.message
         }
         break;
         case SET_PROBLEMS:

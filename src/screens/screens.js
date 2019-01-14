@@ -13,12 +13,10 @@ import { createStore , combineReducers, compose, applyMiddleware } from 'redux';
 
 import problemsReducer from '../store/reducers/problems'
 import authReducer from '../store/reducers/auth'
-import thunk from 'redux-thunk';
 
 import createSagaMiddleware from 'redux-saga'
 import  watcherSaga   from '../sagas/index';
 
-import { getProblem} from '../store/actions/problems';
 
 const rootReducer = combineReducers({
     problems : problemsReducer,
