@@ -16,6 +16,7 @@ import ProblematorButton from '../ProblematorButton/ProblematorButton';
 import ProblematorIconButton from '../ProblematorIconButton/ProblematorIconButton';
 import Spinner from '../RNSpinner/RNSpinner';
 import grades from '../../../config';
+import { getProblem } from '../../store/actions/problems';
 
 export class ProblemDetails extends React.Component {
 
@@ -27,6 +28,16 @@ export class ProblemDetails extends React.Component {
             tries : 0,
         }
       }
+
+    componentDidMount = () => {
+        // Start loading total ascents
+        // grade opinions
+        // My tick info
+        console.log("Dispatching saga request");
+
+        console.log(this.props);
+        this.props.onGetProblem(this.props.problem.problemid);
+    }
 
     handleAction = (actionType, problemid) => {
 
@@ -112,7 +123,7 @@ export class ProblemDetails extends React.Component {
     gradeOpinionCell = (p) => {
         return (
             <View style={styles.childCell}>
-                <Text style={styles.fieldHeader}>Grade opinion</Text>
+                <Text style={styles.fieldHeader}>Grade opdjsaljdslkjinion</Text>
                 <Picker
                     selectedValue={this.state.gradeOpinion}
                     style={{ height: 50, width: 100 }}
@@ -190,6 +201,7 @@ export class ProblemDetails extends React.Component {
 
     render() {
         const p = this.props.problem;
+        console.log("probleminfo",this.props.probleminfo)
         return (
             <View style={styles.parent}>
                 {this.gradeCell(p)}
@@ -307,11 +319,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
+        probleminfo : state.problem
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        onGetProblem : (pid) => dispatch({type : 'GET_PROBLEM_SAGA'})
     }
 }
 

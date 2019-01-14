@@ -19,6 +19,11 @@ export const setProblems = problems => ({
 });
 
 
+export const getProblem = (pid) => ({
+        type: 'GET_PROBLEM_SAGA',
+});
+
+
 export const getProblems = (gymid) => {
     return (dispatch,getState) => {
         if (isNaN(gymid)) {

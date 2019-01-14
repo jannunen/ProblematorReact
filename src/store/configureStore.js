@@ -1,7 +1,11 @@
 import { createStore , combineReducers, compose, applyMiddleware } from 'redux';
+
 import problemsReducer from './reducers/problems'
 import authReducer from './reducers/auth'
 import thunk from 'redux-thunk';
+
+import createSagaMiddleware from 'redux-saga'
+import rootSaga from '../sagas/index';
 
 const rootReducer = combineReducers({
     problems : problemsReducer,
@@ -16,7 +20,13 @@ if (__DEV__) {
 
 
 const configureStore = () => {
-    return createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
+    const sagaMiddleware = createSagaMiddleware();
+    //return createStore(rootReducer, composeEnhancers(applyMiddleware(sagaMiddleware)));
+    const middleWares = [thunk, sagaMiddleware];
+    store  = createStore(rootReducer, composeEnhancers(applyMiddleware(...middleWares)));
+    sagaMiddleware.run(rootSaga);
+    const action = type => store.dispatch({type})
+    return store;
 }
 
 export default configureStore;

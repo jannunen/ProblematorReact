@@ -11,19 +11,23 @@ import { goToAuth, goHome } from '../navigation'
 import { USER_KEY } from '../../../config'
 
 export default class Initialising extends React.Component {
-  async componentDidMount() {
+  componentDidMount() {
+          goHome()
+    /*
     try {
-      const user = await AsyncStorage.getItem(USER_KEY)
-      console.log('user: ', user)
-      if (user) {
-        goHome()
-      } else {
-        goToAuth()
-      }
+      AsyncStorage.getItem(USER_KEY).then((user) => {
+        console.log('user: ', user)
+        if (user) {
+          goHome()
+        } else {
+          goToAuth()
+        }
+      })
     } catch (err) {
       console.log('error: ', err)
       goToAuth()
     }
+    */
   }
 
   render() {
