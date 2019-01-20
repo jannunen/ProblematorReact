@@ -12,8 +12,7 @@ import { USER_KEY } from '../../../config'
 
 export default class Initialising extends React.Component {
   componentDidMount() {
-          goHome()
-    /*
+          //goHome()
     try {
       AsyncStorage.getItem(USER_KEY).then((user) => {
         console.log('user: ', user)
@@ -27,7 +26,6 @@ export default class Initialising extends React.Component {
       console.log('error: ', err)
       goToAuth()
     }
-    */
   }
 
   render() {

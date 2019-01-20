@@ -1,21 +1,22 @@
-import { AsyncStorage } from 'react-native';
 import { TRY_AUTH, AUTH_SET_TOKEN, AUTH_REMOVE_TOKEN } from "./actionTypes";
 
 
 
-export const authStoreToken = (token) => {
+export const authStoreToken = (token) => ({
+  type : 'GET_AUTH_SAGA',
+  payload : token
+  /*
     return dispatch => {
       dispatch(authSetToken(token));
       AsyncStorage.setItem("problemator:auth:token", token);
     };
-  };
+    */
+  });
 
-export const authSetToken = (token) => {
-    return {
-        type: AUTH_SET_TOKEN,
-        token: token
-    };
-};
+export const authSetToken = (token) => ({
+        type: 'GET_AUTH_SAGA',
+        payload : token,
+});
 
 
 export const authGetToken = () => {
