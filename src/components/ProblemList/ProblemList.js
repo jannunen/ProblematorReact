@@ -170,9 +170,12 @@ const styles= StyleSheet.create({
     height : 40,
   },
   errorMessage: {
-    color : 'red',
+    color : 'white',
+    borderWidth : 1,
+    borderColor : 'white',
     fontSize : 18,
     padding : 4,
+    backgroundColor : 'red'
   }
 });
 
