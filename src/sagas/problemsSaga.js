@@ -16,6 +16,7 @@ export function* getProblemsSaga(action) {
   console.log("getProblemsSaga");
   const token = yield(select(authToken));
   console.log("token: ",token);
+  action.payload = {token : token};
   const response = yield call(ProblematorAPI.getProblems, action.payload)
   let payload = response ? response.data : {}
   payload = fixJSONP(payload);

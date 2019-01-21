@@ -34,9 +34,10 @@ const reducer = (state = initialState, action) => {
         }
         break;
         case SET_PROBLEMS:
+        console.log("Reducer",action.payload);
             return {
                 ...state,
-                problems: action.problems,
+                problems: action.payload,
                 loading : false,
                 error : null
             }
