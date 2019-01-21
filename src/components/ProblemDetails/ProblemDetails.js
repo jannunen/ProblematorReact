@@ -325,7 +325,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onGetProblem : (pid) => dispatch({type : 'GET_PROBLEM_SAGA'})
+        onGetProblem : (pid) => dispatch(getProblem(pid))
     }
 }
 

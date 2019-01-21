@@ -1,7 +1,8 @@
 import  axios  from 'axios';
 
 const root = "https://www.problemator.fi/t/problematorapi/v02";
-// Find the token
+export const authToken = (state) => state.auth.token;
+import problems from '../tests/fixtures/problems';
 
 export default class ProblematorAPI {
     /*
@@ -12,8 +13,13 @@ export default class ProblematorAPI {
     return axios.get(`${root}/problem/{payload.id}`); 
   }
   static getProblems(payload) {
-    console.log("payload to api",payload);
-    return axios.get(`${root}/problems/?api-auth-token=${payload.token}`); 
+    //return axios.get(`${root}/problems/?api-auth-token=${payload.token}`); 
+    return new Promise((resolve, reject) => {
+      let ret = JSON.stringify(problems);
+      console.log("eot",ret);
+      
+      resolve({data : ret});
+    });
   }
 //   static add(payload) {
 //     return axios.post(root, payload); }

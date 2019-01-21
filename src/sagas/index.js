@@ -7,12 +7,12 @@ export function* testSaga() {
     yield 'WIRED UP!'
   }
 
-export function *watchGetProblem() {
-    yield takeLatest("GET_PROBLEM_SAGA", getProblemSaga);
-}
-export function *watchGetProblems() {
-    yield takeLatest("GET_PROBLEMS_SAGA", getProblemsSaga);
-}
+// export function *watchGetProblem() {
+//     yield takeLatest("GET_PROBLEM_SAGA", getProblemSaga);
+// }
+// export function *watchGetProblems() {
+//     yield takeLatest("GET_PROBLEMS_SAGA", getProblemsSaga);
+// }
 
 export default function *rootSaga() {
   yield [
