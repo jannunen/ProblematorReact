@@ -7,7 +7,8 @@ export function* getProblemSaga(action) {
   const token = yield(select(authToken));
   action.payload = {...action.payload, token : token};
   const response = yield call(ProblematorAPI.getProblem, action.payload)
-  const payload = response ? response.data : {}
+  let payload = response ? response.data : {}
+  payload = fixJSONP(payload);
   yield put({ type: 'GET_PROBLEM_PUT', payload });
 }
 

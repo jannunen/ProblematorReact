@@ -10,10 +10,13 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
 
         case GET_PROBLEM_PUT:
-        console.log("GET_PROBLEM_PUT");
+        // Use 'hashtable' approach to make the searches faster for a certain problem
          return {
              ...state,
-             probleminfos : [ ...state.probleminfos, action.payload]
+             probleminfos : {
+                 ...state.probleminfos,
+                 [action.payload.problem.problemid]: action.payload.problem
+             }
          }
         break; 
 

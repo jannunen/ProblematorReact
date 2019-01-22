@@ -61,6 +61,7 @@ export class ProblemDetails extends React.Component {
     likeCell =(p) => {
         return (
             <View style={styles.childCell}>
+                <Text style={styles.tagShort}>{p.tagshort}</Text>
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
                     <Icon style={styles.likeIcon} name="ios-thumbs-up" size={20} color="#decc00" /><Text style={styles.likes}>{p.c_like}</Text><Text style={styles.tildeSeparator}>|</Text>
                     <Icon style={styles.likeIcon} name="ios-heart" size={20} color="red" /><Text style={styles.likes}>{p.c_love}</Text><Text style={styles.tildeSeparator}>|</Text>
@@ -83,6 +84,13 @@ export class ProblemDetails extends React.Component {
     }
 
     ascentCell = (p) => {
+        let manageTicks = <Text style={styles.myTicks}>Loading ticks...</Text>
+        const probInfo = this.props.probleminfos[this.props.problem.problemid];
+        if (probInfo!=null) {
+            const ticks = probInfo.myticklist;
+            let amt = Object.keys(ticks).length;
+            manageTicks = <Text style={styles.myTicks}>Manage {amt} tick(s)...</Text>
+        }
         return (
             <View style={styles.childCell}>
                 <DatePicker 
@@ -96,6 +104,7 @@ export class ProblemDetails extends React.Component {
                             onDateChange={(date) => {this.setState({date: date})}}
                 />
                 <ProblematorButton title="Save tick" />
+                {manageTicks}
             </View>
         )
     }
@@ -202,7 +211,6 @@ export class ProblemDetails extends React.Component {
 
     render() {
         const p = this.props.problem;
-        console.log("probleminfo",this.props.probleminfo)
         return (
             <View style={styles.parent}>
                 {this.gradeCell(p)}
@@ -251,7 +259,7 @@ const styles = StyleSheet.create({
     childCell: {
         flexBasis : '50%',
         height : '16%',
-        padding : 16,
+        padding : 12,
         borderRightColor : '#2f302d',
         borderRightWidth : 1,
         borderBottomColor : '#2f302d',
@@ -314,14 +322,23 @@ const styles = StyleSheet.create({
         color : 'white',
         paddingTop : 0,
         marginTop : -10,
+    },
+    tagShort: {
+        fontSize : 28,
+        color : '#e0e0e0',
+    },
+    myTicks: {
+        color : "#decc00",
+        fontSize : 14,
+        textTransform: 'uppercase',
     }
 });
 
 
 const mapStateToProps = (state) => {
     return {
-        probleminfo : state.problem
-    }
+        probleminfos : state.problems.probleminfos 
+       }
 }
 
 const mapDispatchToProps = (dispatch) => {
