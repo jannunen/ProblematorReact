@@ -21,6 +21,7 @@ export const setProblems = problems => ({
 
 export const getProblem = (pid) => ({
         type: 'GET_PROBLEM_SAGA',
+        payload : pid
 });
 
 

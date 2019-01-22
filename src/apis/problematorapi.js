@@ -14,10 +14,10 @@ export default class ProblematorAPI {
   }
   static getProblems(payload) {
     //return axios.get(`${root}/problems/?api-auth-token=${payload.token}`); 
+    // Mock the response...
     return new Promise((resolve, reject) => {
       let ret = JSON.stringify(problems);
       console.log("eot",ret);
-      
       resolve({data : ret});
     });
   }

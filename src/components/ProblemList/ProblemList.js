@@ -9,7 +9,6 @@ import {
 import  Icon  from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { getProblems } from '../../store/actions/index';
-import { red } from 'ansi-colors';
 
 export class ProblemList extends React.Component {
 

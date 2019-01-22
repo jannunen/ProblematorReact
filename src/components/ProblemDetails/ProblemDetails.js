@@ -35,7 +35,7 @@ export class ProblemDetails extends React.Component {
         // My tick info
         console.log("Dispatching saga request");
 
-        console.log(this.props);
+        console.log("props",this.props);
         this.props.onGetProblem(this.props.problem.problemid);
     }
 
@@ -166,8 +166,8 @@ export class ProblemDetails extends React.Component {
         return (
             <View style={styles.childCell}>
                 <View style={{ flexDirection : 'row'}}>
-                    <ProblematorIconButton text="dirty" name="broom" onPress={this.handleAction('dirty', p.problemid)} />
-                    <ProblematorIconButton text="dangerous" name="exclamation-triangle" onPress={this.handleAction('danger', p.problemid)} />
+                    <ProblematorIconButton text="dirty" name="wrench" onPress={this.handleAction('dirty', p.problemid)} />
+                    <ProblematorIconButton text="dangerous" name="exclamation" onPress={this.handleAction('danger', p.problemid)} />
                     <ProblematorIconButton test="feedback" name="comment-dots" onPress={this.handleAction('feedback', p.problemid)} />
                 </View>
             </View>
@@ -325,7 +325,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onGetProblem : (pid) => dispatch(getProblem(pid))
+        onGetProblem: (pid) => dispatch(getProblem(pid)),
     }
 }
 
