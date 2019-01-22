@@ -4,11 +4,11 @@ import fixJSONP from '../helpers/fixJSONP';
 export const authToken = (state) => state.auth.token;
 
 export function* getProblemSaga(action) {
-  console.log("getProblemSaga");
+  const token = yield(select(authToken));
+  action.payload = {...action.payload, token : token};
   const response = yield call(ProblematorAPI.getProblem, action.payload)
   const payload = response ? response.data : {}
   yield put({ type: 'GET_PROBLEM_PUT', payload });
-  //action.callbackSuccess();
 }
 
 
@@ -18,7 +18,6 @@ export function* getProblemsSaga(action) {
   const response = yield call(ProblematorAPI.getProblems, action.payload)
   let payload = response ? response.data : {}
   payload = fixJSONP(payload);
-  console.log("payload",payload);
   if (payload && !payload.error) {
     yield put({ type: 'SET_PROBLEMS', payload });
   } else {

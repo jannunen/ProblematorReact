@@ -35,8 +35,9 @@ export class ProblemDetails extends React.Component {
         // My tick info
         console.log("Dispatching saga request");
 
-        console.log("props",this.props);
-        this.props.onGetProblem(this.props.problem.problemid);
+        let payload = {id : this.props.problem.problemid};
+        console.log("sent",payload);
+        this.props.onGetProblem(payload);
     }
 
     handleAction = (actionType, problemid) => {
@@ -325,7 +326,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onGetProblem: (pid) => dispatch(getProblem(pid)),
+        onGetProblem: (payload) => dispatch({ type : 'GET_PROBLEM_SAGA', payload}),
     }
 }
 

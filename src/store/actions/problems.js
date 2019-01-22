@@ -19,10 +19,12 @@ export const setProblems = problems => ({
 });
 
 
-export const getProblem = (pid) => ({
+export const getProblem = (payload) => {
+    return {
         type: 'GET_PROBLEM_SAGA',
-        payload : pid
-});
+        payload 
+    }
+};
 
 
 export const getProblems = () => ({

@@ -1,6 +1,9 @@
 import  axios  from 'axios';
 
 const root = "https://www.problemator.fi/t/problematorapi/v02";
+const getAPI = (url, payload) => {
+  return `${root}${url}?api-auth-token=${payload.token}`; 
+}
 export const authToken = (state) => state.auth.token;
 import problems from '../tests/fixtures/problems';
 
@@ -10,7 +13,8 @@ export default class ProblematorAPI {
     return axios.get(root); }
     */
   static getProblem(payload) {
-    return axios.get(`${root}/problem/{payload.id}`); 
+
+    return axios.get(getAPI(`/problem/${payload.id}`,payload));
   }
   static getProblems(payload) {
     //return axios.get(`${root}/problems/?api-auth-token=${payload.token}`); 
