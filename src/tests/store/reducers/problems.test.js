@@ -1,6 +1,7 @@
 import problemsReducer, {initialState } from '../../../store/reducers/problems';
 import { problemsLoadBegin, problemsLoadFailure, setProblems } from '../../../store/actions/problems';
 import problems from '../../fixtures/problems';
+import problemInfos, { problemInfosAfterRemoveTick } from '../../fixtures/probleminfos';
 import mockStore from 'redux-mock-store';
 
 describe('problems reducers', () => {
@@ -16,6 +17,19 @@ describe('problems reducers', () => {
         }
         const state = problemsReducer(undefined, action);
         expect(state).toEqual({...initialState, loading : true});
+    })
+
+    it('should remove tick successfully',() => {
+        const action = {
+            type : 'DELETE_TICK_PUT',
+            payload: {
+                tickid : 530853,
+                problemid: 47428,
+            }
+        }
+
+        const state = problemsReducer(problemInfos,action);
+        expect(state).toEqual(problemInfosAfterRemoveTick);
     })
 
     it('should return error message',()=> {

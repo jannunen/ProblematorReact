@@ -1,4 +1,4 @@
-import { GET_PROBLEM_PUT, SET_PROBLEMS, PROBLEMS_LOAD_ERROR, PROBLEMS_START_LOADING, SELECT_GYM } from '../actions/actionTypes'
+import { DELETE_TICK_PUT,  GET_PROBLEM_PUT, SET_PROBLEMS, PROBLEMS_LOAD_ERROR, PROBLEMS_START_LOADING, SELECT_GYM } from '../actions/actionTypes'
 
 export const initialState = {
     problems: [],
@@ -9,15 +9,42 @@ export const initialState = {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
 
+        case DELETE_TICK_PUT:
+        // That stuff below... I'm not proud of that, but it basically goes 
+        // to state.probleminfos[problemid].myticklist and removes the tickid
+        // which is being deleted. Thank god for unit tests for these kind of
+        // reducers!!!
+        const payload = action.payload;
+         return {
+             ...state,
+             probleminfos : {
+                 ...state.probleminfos,
+                 [payload.problemid] : {
+                     ...state.probleminfos[payload.problemid],
+                    myticklist :  Object.keys(state.probleminfos[payload.problemid]['myticklist'])
+                    .filter((key) => key !== payload.tickid )
+                    .reduce((result,current) => {
+                        result[current] =state.probleminfos[payload.problemid]['myticklist'][current];
+                        return result;
+                    },{})
+                 }
+             }
+         }
+
+        console.log("reducer delete tick",action);
+        break;
+
         case GET_PROBLEM_PUT:
         // Use 'hashtable' approach to make the searches faster for a certain problem
-         return {
+         let newState= {
              ...state,
              probleminfos : {
                  ...state.probleminfos,
                  [action.payload.problem.problemid]: action.payload.problem
              }
          }
+         console.log("newState",newState);
+         return newState;
         break; 
 
         case PROBLEMS_START_LOADING:

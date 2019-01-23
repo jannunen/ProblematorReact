@@ -2,7 +2,11 @@ import  axios  from 'axios';
 
 const root = "https://www.problemator.fi/t/problematorapi/v02";
 const getAPI = (url, payload) => {
-  return `${root}${url}?api-auth-token=${payload.token}`; 
+  if (!url.match(/\&/)) {
+    return `${root}${url}?api-auth-token=${payload.token}&test=true`; 
+  } else {
+    return `${root}${url}&api-auth-token=${payload.token}&test=true`; 
+  }
 }
 export const authToken = (state) => state.auth.token;
 import problems from '../tests/fixtures/problems';
@@ -13,15 +17,17 @@ export default class ProblematorAPI {
     return axios.get(root); }
     */
   static getProblem(payload) {
-
     return axios.get(getAPI(`/problem/${payload.id}`,payload));
+  }
+  static deleteTick(payload) {
+    return axios.get(getAPI(`/untick/?tickid=${payload.tickid}&pid=${payload.problemid}`,payload));
   }
   static getProblems(payload) {
     //return axios.get(`${root}/problems/?api-auth-token=${payload.token}`); 
     // Mock the response...
     return new Promise((resolve, reject) => {
       let ret = JSON.stringify(problems);
-      console.log("eot",ret);
+      console.log("Static response");
       resolve({data : ret});
     });
   }

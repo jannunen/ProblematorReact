@@ -16,7 +16,7 @@ import ProblematorButton from '../ProblematorButton/ProblematorButton';
 import ProblematorIconButton from '../ProblematorIconButton/ProblematorIconButton';
 import Spinner from '../RNSpinner/RNSpinner';
 import grades from '../../../config';
-import { getProblem } from '../../store/actions/problems';
+import ActionSheet from 'react-native-actionsheet'
 
 export class ProblemDetails extends React.Component {
 
@@ -38,6 +38,34 @@ export class ProblemDetails extends React.Component {
         let payload = {id : this.props.problem.problemid};
         console.log("sent",payload);
         this.props.onGetProblem(payload);
+    }
+    openManageTicksActionSheet = () => {
+        this.ActionSheet.show();
+    }
+    handleMyTickDelete = (selectedIndex) => {
+        if (selectedIndex == 0) {
+        // Do nothing if cancel
+            return;
+        }
+        selectedIndex--; // Because 0 is cancel.
+        // Find tick to delete
+        const probInfo = this.props.probleminfos[this.props.problem.problemid];
+        const ticks = probInfo.myticklist;
+        // This is an object, so we have to loop.
+        counter = 0;
+        let tickToDelete = null;
+        for (var idx in ticks) {
+            console.log("counter",counter,"idx",idx,"selectedIndex",selectedIndex);
+            if (counter == selectedIndex) {
+                tickToDelete = idx;
+                break;
+            }
+            counter++;
+        }
+        console.log("del",tickToDelete);
+
+        this.props.onTickDelete({tickid : tickToDelete, problemid :this.props.problem.problemid});
+
     }
 
     handleAction = (actionType, problemid) => {
@@ -84,12 +112,27 @@ export class ProblemDetails extends React.Component {
     }
 
     ascentCell = (p) => {
+      let options = [ 'Cancel'];
+
+
+
         let manageTicks = <Text style={styles.myTicks}>Loading ticks...</Text>
         const probInfo = this.props.probleminfos[this.props.problem.problemid];
         if (probInfo!=null) {
             const ticks = probInfo.myticklist;
             let amt = Object.keys(ticks).length;
-            manageTicks = <Text style={styles.myTicks}>Manage {amt} tick(s)...</Text>
+            if (ticks != null) {
+                for (var idx in ticks) {
+                    let tick = ticks[idx];
+                    let time = moment(tick.tstamp).format("DD.MM.YYYY");
+                    let tickStr = time + ": Tries: " + tick.tries;
+                    if (tick.tries_bonus) {
+                        tickStr += ", to bonus: " + tick.tries_bonus;
+                    }
+                    options.push(tickStr)
+                }
+            }
+            manageTicks = <TouchableOpacity onPress={this.openManageTicksActionSheet}><Text style={styles.myTicks}>Manage {amt} tick(s)...</Text></TouchableOpacity>
         }
         return (
             <View style={styles.childCell}>
@@ -105,6 +148,13 @@ export class ProblemDetails extends React.Component {
                 />
                 <ProblematorButton title="Save tick" />
                 {manageTicks}
+                <ActionSheet
+                ref={o => this.ActionSheet = o}
+                title="Delete a tick by clicking on it (or cancel)"
+                options={options}
+                cancelButtonIndex={0}
+                onPress={(index) => {this.handleMyTickDelete(index) }}
+              />
             </View>
         )
     }
@@ -344,6 +394,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onGetProblem: (payload) => dispatch({ type : 'GET_PROBLEM_SAGA', payload}),
+        onTickDelete: (payload) => dispatch({ type : 'DELETE_TICK_SAGA', payload}),
     }
 }
 
