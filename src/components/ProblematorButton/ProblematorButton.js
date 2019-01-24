@@ -46,8 +46,11 @@ const styles = StyleSheet.create({
     },
     button: {
         color : "white",
-        padding : 6,
-        fontSize : 20 
+        padding : 4,
+        fontSize : 17 ,
+        textTransform: 'uppercase',
+
+
     },
     disabled: {
         backgroundColor: "#eee",

@@ -4,7 +4,7 @@ import {
   Text,
   StyleSheet,
   Picker,
-  SectionList,
+  Linking,
   TouchableOpacity
 } from 'react-native'
 
@@ -17,6 +17,7 @@ import ProblematorIconButton from '../ProblematorIconButton/ProblematorIconButto
 import Spinner from '../RNSpinner/RNSpinner';
 import grades from '../../../config';
 import ActionSheet from 'react-native-actionsheet'
+import getIndexFromObj from '../../helpers/getIndexFromObj';
 
 export class ProblemDetails extends React.Component {
 
@@ -41,6 +42,25 @@ export class ProblemDetails extends React.Component {
     }
     openManageTicksActionSheet = () => {
         this.ActionSheet.show();
+    }
+    handleSelectBetavideo = (selectedIndex) => {
+        if (selectedIndex == 0) {
+            return;
+        }
+        const videos = this.props.probleminfos[this.props.problem.problemid].betavideos;
+        const url = videos[selectedIndex-1].video_url;
+
+        Linking.canOpenURL(url).then(supported => {
+            if (supported) {
+              Linking.openURL(url);
+            } else {
+              console.log("Don't know how to open URI: " + url);
+            }
+          });
+
+    }
+    handleOpenBetaVideos = () => {
+        this.BetaVideosActionSheet.show();
     }
     handleMyTickDelete = (selectedIndex) => {
         if (selectedIndex == 0) {
@@ -228,7 +248,7 @@ export class ProblemDetails extends React.Component {
                 <View style={{ flexDirection : 'row'}}>
                     <ProblematorIconButton text="dirty" name="wrench" onPress={this.handleAction('dirty', p.problemid)} />
                     <ProblematorIconButton text="dangerous" name="exclamation" onPress={this.handleAction('danger', p.problemid)} />
-                    <ProblematorIconButton test="feedback" name="comment-dots" onPress={this.handleAction('feedback', p.problemid)} />
+                    <ProblematorIconButton text="feedback" name="comment-dots" onPress={this.handleAction('feedback', p.problemid)} />
                 </View>
             </View>
         );
@@ -243,9 +263,27 @@ export class ProblemDetails extends React.Component {
     }
 
     betaVideosCellLeft = (p) => {
+        const probInfo = this.props.probleminfos[this.props.problem.problemid];
+        let betaVideoCount = 0;
+        let betaVideosText = "0 betavideos";
+        let optionsBetaVideos = ['Cancel'];
+        if (probInfo != null) {
+            console.log(probInfo);
+            betaVideoCount = probInfo.betavideos == null ? 0 : probInfo.betavideos.length;
+            betaVideosText = betaVideoCount + " betavideo(s)";
+            let videos = probInfo.betavideos.map((val, idx) => "by "+val.sender.etunimi+" "+moment(val.added).fromNow());
+            optionsBetaVideos = optionsBetaVideos.concat(videos);
+        }
         return (
             <View style={styles.childCell}>
-                <Text style={styles.fieldHeader}>Beta videos</Text>
+                <ProblematorButton  title={betaVideosText} onPress={this.handleOpenBetaVideos} />
+                <ActionSheet
+                ref={o => this.BetaVideosActionSheet = o}
+                title="Choose a betavideo"
+                options={optionsBetaVideos}
+                cancelButtonIndex={0}
+                onPress={(index) => {this.handleSelectBetavideo(index) }}
+              />
             </View>
         );
 
