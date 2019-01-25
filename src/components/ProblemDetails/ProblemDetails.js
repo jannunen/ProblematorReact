@@ -5,8 +5,16 @@ import {
   StyleSheet,
   Picker,
   Linking,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions,
+  ART
 } from 'react-native'
+const {
+    Surface,
+    Shape,
+    Rectangle,
+    Group
+} = ART;
 
 import  Icon  from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-datepicker';
@@ -18,6 +26,7 @@ import Spinner from '../RNSpinner/RNSpinner';
 import grades from '../../../config';
 import ActionSheet from 'react-native-actionsheet'
 import getIndexFromObj from '../../helpers/getIndexFromObj';
+import BarChart from '../BarChart/BarChart';
 
 export class ProblemDetails extends React.Component {
 
@@ -31,13 +40,7 @@ export class ProblemDetails extends React.Component {
       }
 
     componentDidMount = () => {
-        // Start loading total ascents
-        // grade opinions
-        // My tick info
-        console.log("Dispatching saga request");
-
         let payload = {id : this.props.problem.problemid};
-        console.log("sent",payload);
         this.props.onGetProblem(payload);
     }
     openManageTicksActionSheet = () => {
@@ -201,6 +204,7 @@ export class ProblemDetails extends React.Component {
     }
 
     gradeOpinionCell = (p) => {
+
         return (
             <View style={styles.childCell}>
                 <Text style={styles.fieldHeader}>Grade opdjsaljdslkjinion</Text>
@@ -223,9 +227,29 @@ export class ProblemDetails extends React.Component {
     }
 
     gradeOpinionsCell = (p) => {
+        const probInfo = this.props.probleminfos[this.props.problem.problemid];
+        let barChart = null;
+        if (probInfo != null) {
+            // create data
+            const opinions = probInfo.gradedist;
+ 
+            const data = opinions.map((data,idx) => { return {label : data.gradename, value: data.gradeamount }})
+
+                barChart = <BarChart data={data} />;
+
+        }
+        const cellWidth = Math.round((Dimensions.get('window').width / 2)/10)*10;
+          
         return (
             <View style={styles.childCell}>
-                <Text style={styles.fieldHeader}>Grade opinions</Text>
+                <Surface width={cellWidth} height={200}>
+                    <Group x={0} y={0}>
+                    <Shape
+                    d="M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80"
+                    stroke="#000"
+                    strokeWidth={1} />
+                    </Group>
+                </Surface>
             </View>
         );
     }
@@ -419,6 +443,9 @@ const styles = StyleSheet.create({
         color : "#decc00",
         fontSize : 14,
         textTransform: 'uppercase',
+    },
+    gradeOpinionBarChartStyle : {
+
     }
 });
 
