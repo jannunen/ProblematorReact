@@ -207,7 +207,7 @@ export class ProblemDetails extends React.Component {
 
         return (
             <View style={styles.childCell}>
-                <Text style={styles.fieldHeader}>Grade opdjsaljdslkjinion</Text>
+                <Text style={styles.fieldHeader}>Grade opinion</Text>
                 <Picker
                     selectedValue={this.state.gradeOpinion}
                     style={{ height: 50, width: 100 }}
@@ -242,14 +242,8 @@ export class ProblemDetails extends React.Component {
           
         return (
             <View style={styles.childCell}>
-                <Surface width={cellWidth} height={200}>
-                    <Group x={0} y={0}>
-                    <Shape
-                    d="M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80"
-                    stroke="#000"
-                    strokeWidth={1} />
-                    </Group>
-                </Surface>
+                <Text style={styles.fieldHeader}>Grade opinions</Text>
+            {barChart}
             </View>
         );
     }
