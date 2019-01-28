@@ -353,7 +353,7 @@ export class ProblemDetails extends React.Component {
             <View style={styles.childCell}>
                 <View style={{ flexDirection : 'row'}}>
                     <ProblematorIconButton text="dirty" name="wrench" onPress={this.handleAction('dirty', p.problemid)} />
-                    <ProblematorIconButton text="dangerous" name="exclamation" onPress={this.handleAction('danger', p.problemid)} />
+                    <ProblematorIconButton text="dangerous" name="exclamation-triangle" onPress={this.handleAction('danger', p.problemid)} />
                     <ProblematorIconButton text="feedback" name="comment-dots" onPress={this.handleAction('feedback', p.problemid)} />
                 </View>
             </View>
@@ -408,7 +408,7 @@ export class ProblemDetails extends React.Component {
             <View style={styles.childCell}>
                 <DialogInput isDialogVisible={this.state.showAddBetaVideoDialog}
                 title={"Add new betavideo"}
-                message={"Paste the video URL below"}
+                message={"Paste the video URL below\n\nYou can delete your own videos by opening it from the button on the left."}
                 hintInput ={"Video URL"}
                 submitInput={ (inputText) => {this.doAddbetaVideo(inputText)} }
                 closeDialog={ () => {this.setShowAddBetaVideoDialog(false)}}>
