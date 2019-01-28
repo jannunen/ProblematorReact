@@ -40,7 +40,7 @@ describe('problems reducers', () => {
             type : 'DEL_BETAVIDEO_PUT',
             payload: {
                 problemid : 47428,
-                videoid : 43
+                source : { videoid : 43}
             }
         }
 
@@ -48,11 +48,9 @@ describe('problems reducers', () => {
         let stateAfter = JSON.parse(JSON.stringify(basicState));
         const state = problemsReducer(basicState,action);
         // Add betavideo to state and expect them to match
-        // console.log(stateAfter);
         stateAfter.probleminfos[action.payload.problemid]['betavideos'].filter( (item, idx) => {
             return item.id !== 43;
         });
-
         expect(state.probleminfos).toEqual(stateAfter.probleminfos);
     })
 
@@ -70,9 +68,7 @@ describe('problems reducers', () => {
         let stateAfter = JSON.parse(JSON.stringify(basicState));
         const state = problemsReducer(basicState,action);
         // Add betavideo to state and expect them to match
-        // console.log(stateAfter);
         stateAfter.probleminfos[action.payload.problemid]['betavideos'].push( newVideo )
-        console.log("after", state.probleminfos[action.payload.problemid]['betavideos']);
         expect(state).toEqual(stateAfter);
     })
 

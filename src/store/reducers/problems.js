@@ -13,21 +13,20 @@ const reducer = (state = initialState, action) => {
     let newState = null;
     switch (action.type) {
         case DEL_BETAVIDEO_PUT:
-        console.log("src",payload);
-        return  { 
+        newState =  { 
             ...state,
             probleminfos : {
                 ...state.probleminfos,
                 [payload.problemid] : {
                     ...state.probleminfos[payload.problemid],
                     "betavideos" : 
-                        state.probleminfos[payload.problemid].betavideos.filter( (item,idx) => {
-                            return payload.videoid !== item.id;
-                        }),
+                        state.probleminfos[payload.problemid].betavideos.filter( item => payload.source.videoid !== item.id),
                     
                 }
             }
         } 
+        console.log("new state",newState);
+        return newState;
         break;
         case ADD_BETAVIDEO_PUT:
         return  { 
