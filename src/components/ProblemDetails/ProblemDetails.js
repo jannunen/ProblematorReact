@@ -30,6 +30,7 @@ import { GRADES } from '../../../config';
 import ActionSheet from 'react-native-actionsheet'
 import getIndexFromObj from '../../helpers/getIndexFromObj';
 import BarChart from '../BarChart/BarChart';
+import PublicAscentListModal from '../modals/PublicAscentListModal/PublicAscentListModal';
 
 export class ProblemDetails extends React.Component {
 
@@ -51,15 +52,8 @@ export class ProblemDetails extends React.Component {
         this.ActionSheet.show();
     }
     setModalVisible(visible) {
-        console.log("setting modal visibility");
-        if (visible) {
-        console.log("dispatching global ascents");
-            this.props.onGlobalAscents({ problemid: this.props.problem.problemid });
-        }
+        console.log("setting modal visibility",visible);
         this.setState({showGlobalAscentListModal: visible});
-    }
-    calcRoughGrade = (points) => {
-        return "7C";
     }
     handleSelectBetavideo = (selectedIndex) => {
         if (selectedIndex == 0) {
@@ -391,51 +385,9 @@ export class ProblemDetails extends React.Component {
 
     render() {
         const p = this.props.problem;
-        let globalAscentsList = <ActivityIndicator color="#fff" />;
-        const globalAscents = this.props.globalAscents;
-        console.log("gA",globalAscents);
-        let globalAscentCount = 0;
-        if (globalAscents[p.problemid] != null) {
-            globalAscentsList = globalAscents[p.problemid].map((item,idx) => {
-                const roughGrade = this.calcRoughGrade(item.problemator_top10_1y);
-                const back = moment(item.tstamp).format("DD.MM.YYYY");
-                return <Text key={item.tstamp + idx} style={styles.globalAscentListRow}>{item.etunimi} {item.sukunimi}
-                 <Text style={{color : "#decc00", paddingLeft : 5, paddingRight : 5}}> {roughGrade} </Text>
-                  @{back}, tries: {item.tries} {item.tries_bonus != 0? "to bonus: " + item.tries_bonus : null}</Text>;
-            })
-            globalAscentCount = globalAscents[p.problemid].length;
-        } 
         return (
             <View style={styles.parent}>
-            <Modal
-            animationType="slide"
-            transparent={false}
-            style={{ flex : 1}}
-            visible={this.state.showGlobalAscentListModal}
-            onRequestClose={() => {
-
-              Alert.alert('Modal has been closed.');
-            }}>
-            <View style={styles.modalAscentsContainer}>
-                <View style={{ flex : 1 , flexGrow : 1, marginTop : 40, marginRight : 0, padding : 16}}>
-                    <Text style={styles.modalTitle}>Public ascent list</Text>
-                    <Text style={styles.modalSubTitle}>{globalAscentCount} ascent(s)</Text>
-                    <ScrollView>
-                        {globalAscentsList}
-                    </ScrollView>
-                </View> 
-                <View style={{alignContent : 'center'}}>
-                    <ProblematorButton
-                    title="close"
-                    containerStyle={{ width : "100%"}}
-                    onPress={() => {
-                        this.setModalVisible(!this.state.showGlobalAscentListModal);
-                    }}>
-                    </ProblematorButton>
-                </View>
-            </View>
-          </Modal>
-
+                <PublicAscentListModal onClose={() => { this.setModalVisible(false); }} visible={this.state.showGlobalAscentListModal} problemid={p.problemid} />
                 {this.gradeCell(p)}
                 {this.likeCell(p)}
                 {this.infoCell(p)}
@@ -564,29 +516,6 @@ const styles = StyleSheet.create({
         color : '#decc00',
         textTransform: 'uppercase',
     },
-    modalAscentsContainer: { 
-        backgroundColor : '#252623',
-        flex: 1, 
-        margin :0,
-        justifyContent: 'space-between', 
-        flexDirection: 'column', 
-        marginTop: 22 
-    },
-    modalTitle: {
-        color : 'white',
-        textTransform: 'uppercase',
-        fontSize : 28
-    },
-    modalSubTitle: {
-        color : '#decc00',
-        marginBottom : 8,
-        textTransform: 'uppercase',
-        fontSize : 20
-    },
-    globalAscentListRow: {
-        color : 'white',
-
-    }
 });
 
 
@@ -601,8 +530,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onGetProblem: (payload) => dispatch({ type : 'GET_PROBLEM_SAGA', payload}),
         onTickDelete: (payload) => dispatch({ type : 'DELETE_TICK_SAGA', payload}),
-        onGlobalAscents: (payload) => dispatch({ type : 'GET_GLOBAL_ASCENTS', payload}),
-
     }
 }
 
