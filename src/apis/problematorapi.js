@@ -13,7 +13,8 @@ import problems from '../tests/fixtures/problems';
 
 export default class ProblematorAPI {
    static addBetaVideo(payload) {
-    return axios.post(getAPI(`/savebetavideo/?pid=${payload.problemid}&video_url=${payload.video_url}`,payload));
+     const url =getAPI(`/savebetavideo/?pid=${payload.problemid}&url=${payload.video_url}`,payload);
+    return axios.post(url);
    }
    static getGlobalAscents(payload) {
      const url = getAPI(`/global_ascents/?pid=${payload.problemid}`,payload);

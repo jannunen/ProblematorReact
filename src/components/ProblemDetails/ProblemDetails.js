@@ -58,9 +58,8 @@ export class ProblemDetails extends React.Component {
         this.setState({showGlobalAscentListModal: visible});
     }
     doAddbetaVideo = (url) => {
-
         this.props.onAddBetaVideo({problemid : this.props.problem.problemid, video_url : url});
-
+        this.setShowAddBetaVideoDialog(false);
     }
     handleSelectBetavideo = (selectedIndex) => {
         if (selectedIndex == 0) {
