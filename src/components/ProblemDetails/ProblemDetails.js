@@ -5,18 +5,11 @@ import {
   StyleSheet,
   ActivityIndicator,
   Linking,
-  ScrollView,
+  Alert,
   TouchableOpacity,
-  Modal,
   Dimensions,
   ART
 } from 'react-native'
-const {
-    Surface,
-    Shape,
-    Rectangle,
-    Group
-} = ART;
 
 import  Icon  from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-datepicker';
@@ -28,7 +21,6 @@ import Spinner from '../RNSpinner/RNSpinner';
 import RNPickerSelect from 'react-native-picker-select';
 import { GRADES } from '../../../config';
 import ActionSheet from 'react-native-actionsheet'
-import getIndexFromObj from '../../helpers/getIndexFromObj';
 import BarChart from '../BarChart/BarChart';
 import DialogInput from 'react-native-dialog-input';
 import PublicAscentListModal from '../modals/PublicAscentListModal/PublicAscentListModal';
@@ -61,13 +53,38 @@ export class ProblemDetails extends React.Component {
         this.props.onAddBetaVideo({problemid : this.props.problem.problemid, video_url : url});
         this.setShowAddBetaVideoDialog(false);
     }
+
+
     handleSelectBetavideo = (selectedIndex) => {
         if (selectedIndex == 0) {
             return;
         }
         const videos = this.props.probleminfos[this.props.problem.problemid].betavideos;
+        const video = videos[selectedIndex-1];
         const url = videos[selectedIndex-1].video_url;
+        const { uid } = this.props.auth;
 
+        if (uid == video.sender.id ) {
+            // ASk if user wants to delete or open the video.
+            Alert.alert(
+                'Choose action',
+                'This is a video added by you, you have option to delete or show this video',
+                [
+                  {text: 'Open video', onPress: () => this.openBetaVideo(url)},
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {text: 'Delete video', onPress: () => this.props.onDeleteBetaVideo({ problemid : this.props.problem.problemid, videoid : video.id}) },
+                ],
+                {cancelable: false},
+              );
+        } else {
+            this.openBetaVideo(url);
+        }
+    }
+    openBetaVideo = (url) => {
         Linking.canOpenURL(url).then(supported => {
             if (supported) {
               Linking.openURL(url);
@@ -379,6 +396,7 @@ export class ProblemDetails extends React.Component {
                 options={optionsBetaVideos}
                 cancelButtonIndex={0}
                 onPress={(index) => {this.handleSelectBetavideo(index) }}
+                onLongPress={(index) => {this.handleDeleteBetavideo(index) }}
               />
             </View>
         );
@@ -539,7 +557,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {
         probleminfos : state.problems.probleminfos,
-        globalAscents : state.problems.globalAscents 
+        globalAscents : state.problems.globalAscents,
+        auth : state.auth
        }
 }
 
@@ -548,6 +567,7 @@ const mapDispatchToProps = (dispatch) => {
         onGetProblem: (payload) => dispatch({ type : 'GET_PROBLEM_SAGA', payload}),
         onTickDelete: (payload) => dispatch({ type : 'DELETE_TICK_SAGA', payload}),
         onAddBetaVideo: (payload) => dispatch({ type : 'ADD_BETAVIDEO_SAGA', payload}),
+        onDeleteBetaVideo: (payload) => dispatch({ type : 'DEL_BETAVIDEO_SAGA', payload}),
     }
 }
 

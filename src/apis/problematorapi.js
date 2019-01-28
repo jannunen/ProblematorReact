@@ -12,6 +12,11 @@ export const authToken = (state) => state.auth.token;
 import problems from '../tests/fixtures/problems';
 
 export default class ProblematorAPI {
+  
+   static delBetaVideo(payload) {
+     console.log("api call del");
+    return axios.post(getAPI(`/delbetavideo/?vid=${payload.videoid}`,payload));
+   }
    static addBetaVideo(payload) {
      const url =getAPI(`/savebetavideo/?pid=${payload.problemid}&url=${payload.video_url}`,payload);
     return axios.post(url);

@@ -24,6 +24,39 @@ export function* deleteTickSaga(action) {
   yield put({ type: 'DELETE_TICK_PUT', payload });
 }
 
+function* doSaga(action, apiCall, successReducer, failReducer)  {
+  if (failReducer == null) {
+    failReducer = 'PROBLEMS_LOAD_ERROR';
+  }
+  const token = yield(select(authToken));
+  action.payload = {...action.payload, token : token};
+  const response = yield call(apiCall, action.payload)
+  let payload = response ? response.data : {}
+  payload = fixJSONP(payload);
+  // If the return value is only a string, make it an object with
+  // a message property.
+  if ("string"===typeof(payload)) {
+    payload = {message : payload};
+  }
+  if (payload.message && payload.message.match(/error/i)) {
+    payload.error = true;
+  }
+  if (payload && !payload.error) {
+    payload.problemid = action.payload.problemid;
+    // pass the original action payload to reducer.
+    // The parameters might contain some handy data reducer can use
+    payload.source = action.payload;
+    yield put({ type: successReducer, payload });
+  } else {
+    yield put({ type: failReducer, payload });
+  }
+}
+
+export function* delBetaVideoSaga(action) {
+  yield(doSaga(action, ProblematorAPI.delBetaVideo,'DEL_BETAVIDEO_PUT'));
+}
+
+
 export function* addBetaVideo(action) {
   const token = yield(select(authToken));
   action.payload = {...action.payload, token : token};

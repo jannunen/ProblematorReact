@@ -7,10 +7,12 @@ import {JWT_TOKEN } from '../../config';
 export function* getAuthSaga(action) {
   console.log("in getAuthSaga");
   console.log("payload",action.payload);
-  const token = action.payload;
+  const { token,uid } = action.payload;
+  const payload = action.payload;
   //const response = yield call(ProblematorAPI.aut, action.payload)
   //const payload = response ? response.data : {}
   AsyncStorage.setItem("problemator:auth:token", token);
-  yield put({ type: 'AUTH_SET_TOKEN', token });
+  AsyncStorage.setItem("problemator:auth:uid", uid+"");
+  yield put({ type: 'AUTH_SET_TOKEN', payload });
   //action.callbackSuccess();
 }

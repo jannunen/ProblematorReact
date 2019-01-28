@@ -1,4 +1,4 @@
-import { ADD_BETAVIDEO_PUT, GLOBAL_ASCENTS_PUT, DELETE_TICK_PUT,  GET_PROBLEM_PUT, SET_PROBLEMS, PROBLEMS_LOAD_ERROR, PROBLEMS_START_LOADING, SELECT_GYM } from '../actions/actionTypes'
+import { DEL_BETAVIDEO_PUT, ADD_BETAVIDEO_PUT, GLOBAL_ASCENTS_PUT, DELETE_TICK_PUT,  GET_PROBLEM_PUT, SET_PROBLEMS, PROBLEMS_LOAD_ERROR, PROBLEMS_START_LOADING, SELECT_GYM } from '../actions/actionTypes'
 
 export const initialState = {
     problems: [],
@@ -12,8 +12,25 @@ const reducer = (state = initialState, action) => {
     console.log(action.type,"payload to reducer",payload);
     let newState = null;
     switch (action.type) {
+        case DEL_BETAVIDEO_PUT:
+        console.log("src",payload);
+        return  { 
+            ...state,
+            probleminfos : {
+                ...state.probleminfos,
+                [payload.problemid] : {
+                    ...state.probleminfos[payload.problemid],
+                    "betavideos" : 
+                        state.probleminfos[payload.problemid].betavideos.filter( (item,idx) => {
+                            return payload.videoid !== item.id;
+                        }),
+                    
+                }
+            }
+        } 
+        break;
         case ADD_BETAVIDEO_PUT:
-        newState = { 
+        return  { 
             ...state,
             probleminfos : {
                 ...state.probleminfos,
@@ -21,13 +38,11 @@ const reducer = (state = initialState, action) => {
                     ...state.probleminfos[payload.problemid],
                     "betavideos" : [
                         ...state.probleminfos[payload.problemid].betavideos,
-                        action.payload
+                        action.payload.video
                     ]
                 }
             }
         } 
-        console.log("new",newState.betavideos);
-        return newState;
         break;
         case GLOBAL_ASCENTS_PUT :
             const pid = payload.problemid;
@@ -61,7 +76,6 @@ const reducer = (state = initialState, action) => {
              }
          }
 
-        console.log("reducer delete tick",action);
         break;
 
         case GET_PROBLEM_PUT:
@@ -103,6 +117,7 @@ const reducer = (state = initialState, action) => {
             break;
 
         default:
+            console.log("Did not catch the action type!");
             return state;
             break;
     }

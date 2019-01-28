@@ -32,7 +32,7 @@ class SignIn extends React.Component {
 
   componentDidMount() {
     console.log("Faking AUTH TOKEN");
-      this.props.onAuthStoreToken(JWT_TOKEN);
+      this.props.onAuthStoreToken({ token: JWT_TOKEN, uid: 246});
       goHome();
   }
 
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuthStoreToken : (token) => dispatch(authStoreToken(token))
+    onAuthStoreToken : (payload) => dispatch(authStoreToken(payload))
   }
 }
 export default connect(null, mapDispatchToProps)(SignIn);

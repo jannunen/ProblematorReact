@@ -1,7 +1,7 @@
 import problemsReducer, {initialState } from '../../../store/reducers/problems';
 import { problemsLoadBegin, problemsLoadFailure, setProblems } from '../../../store/actions/problems';
 import problems from '../../fixtures/problems';
-import problemInfos, { problemInfosAfterRemoveTick } from '../../fixtures/probleminfos';
+import basicState, { problemInfosAfterRemoveTick } from '../../fixtures/probleminfos';
 import mockStore from 'redux-mock-store';
 
 describe('problems reducers', () => {
@@ -31,8 +31,29 @@ describe('problems reducers', () => {
             }
         }
 
-        const state = problemsReducer(problemInfos,action);
+        const state = problemsReducer(basicState,action);
         expect(state).toEqual(problemInfosAfterRemoveTick);
+    })
+    it('should remove betavideo correctly',() => {
+        const betaVideo = { id: "43", "video_url": 'foourl', "added": "2017-04-15 11:45:43", "sender": { "id": "62003", "etunimi": "Matti", "added": null } };
+        const action = {
+            type : 'DEL_BETAVIDEO_PUT',
+            payload: {
+                problemid : 47428,
+                videoid : 43
+            }
+        }
+
+        basicState.probleminfos[action.payload.problemid]['betavideos'] = [betaVideo];
+        let stateAfter = JSON.parse(JSON.stringify(basicState));
+        const state = problemsReducer(basicState,action);
+        // Add betavideo to state and expect them to match
+        // console.log(stateAfter);
+        stateAfter.probleminfos[action.payload.problemid]['betavideos'].filter( (item, idx) => {
+            return item.id !== 43;
+        });
+
+        expect(state.probleminfos).toEqual(stateAfter.probleminfos);
     })
 
     it('should add betavideo correctly',() => {
@@ -46,13 +67,12 @@ describe('problems reducers', () => {
             }
         }
 
-        const state = problemsReducer(problemInfos,action);
-        let stateAfter = JSON.parse(JSON.stringify(state));
+        let stateAfter = JSON.parse(JSON.stringify(basicState));
+        const state = problemsReducer(basicState,action);
         // Add betavideo to state and expect them to match
         // console.log(stateAfter);
-        stateAfter.probleminfos[action.payload.problemid]['betavideos'].push({
-            newVideo
-        })
+        stateAfter.probleminfos[action.payload.problemid]['betavideos'].push( newVideo )
+        console.log("after", state.probleminfos[action.payload.problemid]['betavideos']);
         expect(state).toEqual(stateAfter);
     })
 
