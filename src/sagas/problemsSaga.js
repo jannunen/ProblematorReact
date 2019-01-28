@@ -24,6 +24,26 @@ export function* deleteTickSaga(action) {
   yield put({ type: 'DELETE_TICK_PUT', payload });
 }
 
+export function* addBetaVideo(action) {
+  const token = yield(select(authToken));
+  action.payload = {...action.payload, token : token};
+  const response = yield call(ProblematorAPI.addBetaVideo, action.payload)
+  let payload = response ? response.data : {}
+  payload = fixJSONP(payload);
+  console.log("addbetavideo",payload);
+  if (payload.message && payload.message.match(/error/i)) {
+    payload.error = true;
+  }
+  if (payload && !payload.error) {
+    payload.problemid = action.payload.problemid;
+    yield put({ type: 'ADD_BETAVIDEO_PUT', payload });
+  } else {
+    console.log("Error loading ascents",response);
+    yield put({ type: 'PROBLEMS_LOAD_ERROR', payload });
+  }
+}
+
+
 export function* getGlobalAscents(action) {
   console.log("got",action);
   const token = yield(select(authToken));

@@ -1,4 +1,4 @@
-import { GLOBAL_ASCENTS_PUT, DELETE_TICK_PUT,  GET_PROBLEM_PUT, SET_PROBLEMS, PROBLEMS_LOAD_ERROR, PROBLEMS_START_LOADING, SELECT_GYM } from '../actions/actionTypes'
+import { ADD_BETAVIDEO_PUT, GLOBAL_ASCENTS_PUT, DELETE_TICK_PUT,  GET_PROBLEM_PUT, SET_PROBLEMS, PROBLEMS_LOAD_ERROR, PROBLEMS_START_LOADING, SELECT_GYM } from '../actions/actionTypes'
 
 export const initialState = {
     problems: [],
@@ -9,7 +9,26 @@ export const initialState = {
 }
 const reducer = (state = initialState, action) => {
     const payload = action.payload;
+    console.log(action.type,"payload to reducer",payload);
+    let newState = null;
     switch (action.type) {
+        case ADD_BETAVIDEO_PUT:
+        newState = { 
+            ...state,
+            probleminfos : {
+                ...state.probleminfos,
+                [payload.problemid] : {
+                    ...state.probleminfos[payload.problemid],
+                    "betavideos" : [
+                        ...state.probleminfos[payload.problemid].betavideos,
+                        action.payload
+                    ]
+                }
+            }
+        } 
+        console.log("new",newState.betavideos);
+        return newState;
+        break;
         case GLOBAL_ASCENTS_PUT :
             const pid = payload.problemid;
             return {
@@ -47,7 +66,7 @@ const reducer = (state = initialState, action) => {
 
         case GET_PROBLEM_PUT:
         // Use 'hashtable' approach to make the searches faster for a certain problem
-         let newState= {
+         newState= {
              ...state,
              probleminfos : {
                  ...state.probleminfos,

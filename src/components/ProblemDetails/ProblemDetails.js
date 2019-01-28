@@ -30,6 +30,7 @@ import { GRADES } from '../../../config';
 import ActionSheet from 'react-native-actionsheet'
 import getIndexFromObj from '../../helpers/getIndexFromObj';
 import BarChart from '../BarChart/BarChart';
+import DialogInput from 'react-native-dialog-input';
 import PublicAscentListModal from '../modals/PublicAscentListModal/PublicAscentListModal';
 
 export class ProblemDetails extends React.Component {
@@ -40,7 +41,8 @@ export class ProblemDetails extends React.Component {
             date:moment(),
             gradeOpinion  : null,
             tries : 0,
-            showGlobalAscentListModal: false
+            showGlobalAscentListModal: false,
+            showAddBetaVideoDialog: false
         }
       }
 
@@ -54,6 +56,11 @@ export class ProblemDetails extends React.Component {
     setModalVisible(visible) {
         console.log("setting modal visibility",visible);
         this.setState({showGlobalAscentListModal: visible});
+    }
+    doAddbetaVideo = (url) => {
+
+        this.props.onAddBetaVideo({problemid : this.props.problem.problemid, video_url : url});
+
     }
     handleSelectBetavideo = (selectedIndex) => {
         if (selectedIndex == 0) {
@@ -71,6 +78,10 @@ export class ProblemDetails extends React.Component {
           });
 
     }
+    setShowAddBetaVideoDialog = (visible) => {
+        this.setState({showAddBetaVideoDialog: visible});
+    }
+
     handleOpenBetaVideos = () => {
         this.BetaVideosActionSheet.show();
     }
@@ -378,7 +389,14 @@ export class ProblemDetails extends React.Component {
     betaVideosCellRight = (p) => {
         return (
             <View style={styles.childCell}>
-                <Text style={styles.fieldHeader}>Submit betavideo</Text>
+                <DialogInput isDialogVisible={this.state.showAddBetaVideoDialog}
+                title={"Add new betavideo"}
+                message={"Paste the video URL below"}
+                hintInput ={"Video URL"}
+                submitInput={ (inputText) => {this.doAddbetaVideo(inputText)} }
+                closeDialog={ () => {this.setShowAddBetaVideoDialog(false)}}>
+                </DialogInput>
+                <ProblematorButton title="Add video..." onPress={() => { this.setShowAddBetaVideoDialog(true) }} />
             </View>
         );
     }
@@ -530,6 +548,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onGetProblem: (payload) => dispatch({ type : 'GET_PROBLEM_SAGA', payload}),
         onTickDelete: (payload) => dispatch({ type : 'DELETE_TICK_SAGA', payload}),
+        onAddBetaVideo: (payload) => dispatch({ type : 'ADD_BETAVIDEO_SAGA', payload}),
     }
 }
 

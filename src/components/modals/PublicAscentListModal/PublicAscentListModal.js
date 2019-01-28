@@ -34,11 +34,9 @@ export class PublicAscentListModal extends React.Component {
     }
 
     componentDidMount = () => {
-        console.log("dispatching global ascents");
         this.props.onGlobalAscents({ problemid: this.props.problemid });
     }
     calcRoughGrade = (points) => {
-        console.log(GRADES);
         points = parseInt(points);
         let grade = "N/A";
         if (points == null) {
@@ -49,7 +47,6 @@ export class PublicAscentListModal extends React.Component {
             const scoreItem = GRADES[idx];
             if (scoreItem != undefined) {
                 let top10 = parseInt(scoreItem['score']) * 10;
-                console.log("top10",top10,"points",points);
                 // TODO: Grade customization. Vermin, Australian, YDS
                 if (points < top10) {
                     grade = scoreItem.font;
@@ -71,7 +68,6 @@ export class PublicAscentListModal extends React.Component {
         let globalAscentsList = <ActivityIndicator color="#fff" />;
         if (ascents != null) {
             globalAscentsList = ascents.map((item,idx) => {
-                console.log(item);
                 const roughGrade = this.calcRoughGrade(item.problemator_top10_1y);
                 const back = moment(item.tstamp).format("DD.MM.YYYY");
                 return <Text key={item.tstamp + idx} style={styles.globalAscentListRow}>{item.etunimi} {item.sukunimi}

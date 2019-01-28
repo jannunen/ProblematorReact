@@ -35,6 +35,28 @@ describe('problems reducers', () => {
         expect(state).toEqual(problemInfosAfterRemoveTick);
     })
 
+    it('should add betavideo correctly',() => {
+        const video_url = 'video_test';
+        const newVideo = { id: "43", "video_url": video_url, "added": "2017-04-15 11:45:43", "sender": { "id": "62003", "etunimi": "Matti", "added": null } };
+        const action = {
+            type : 'ADD_BETAVIDEO_PUT',
+            payload: {
+                problemid : 47428,
+                video : newVideo
+            }
+        }
+
+        const state = problemsReducer(problemInfos,action);
+        let stateAfter = JSON.parse(JSON.stringify(state));
+        // Add betavideo to state and expect them to match
+        // console.log(stateAfter);
+        stateAfter.probleminfos[action.payload.problemid]['betavideos'].push({
+            newVideo
+        })
+        expect(state).toEqual(stateAfter);
+    })
+
+
     it('should return error message',()=> {
         const action = {
            type : 'PROBLEMS_LOAD_ERROR' ,

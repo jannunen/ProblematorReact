@@ -1,6 +1,7 @@
 import { takeLatest, fork, call, put, takeEvery, all } from 'redux-saga/effects';
-import { getGlobalAscents, getProblemSaga, getProblemsSaga , deleteTickSaga} from './problemsSaga'
-import { getAuthSaga } from './authSaga'
+import { addBetaVideo, getGlobalAscents, getProblemSaga, getProblemsSaga , deleteTickSaga} from './problemsSaga'
+import { getAuthSaga } from './authSaga';
+import  * as uiSagas from './uiSaga'
 
 export function* testSaga() {
     console.log('Wired up!');
@@ -21,6 +22,8 @@ export default function *rootSaga() {
     fork( takeLatest, 'GET_AUTH_SAGA',getAuthSaga ),
     fork( takeLatest, 'DELETE_TICK_SAGA',deleteTickSaga ),
     fork( takeLatest, 'GET_GLOBAL_ASCENTS',getGlobalAscents ),
+    fork( takeLatest, 'ADD_BETAVIDEO_SAGA',addBetaVideo ),
+    takeEvery('PROBLEMS_LOAD_ERROR', uiSagas.showErrorAlert)
   ]
 };
 

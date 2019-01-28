@@ -3,19 +3,18 @@ import  axios  from 'axios';
 const root = "https://www.problemator.fi/t/problematorapi/v02";
 const getAPI = (url, payload) => {
   if (!url.match(/\?/)) {
-    return `${root}${url}?api-auth-token=${payload.token}&test=true`; 
+    return `${root}${url}?api-auth-token=${payload.token}&react=true`; 
   } else {
-    return `${root}${url}&api-auth-token=${payload.token}&test=true`; 
+    return `${root}${url}&api-auth-token=${payload.token}&react=true`; 
   }
 }
 export const authToken = (state) => state.auth.token;
 import problems from '../tests/fixtures/problems';
 
 export default class ProblematorAPI {
-    /*
-  static get() {
-    return axios.get(root); }
-    */
+   static addBetaVideo(payload) {
+    return axios.post(getAPI(`/savebetavideo/?pid=${payload.problemid}&video_url=${payload.video_url}`,payload));
+   }
    static getGlobalAscents(payload) {
      const url = getAPI(`/global_ascents/?pid=${payload.problemid}`,payload);
     return axios.get(url);

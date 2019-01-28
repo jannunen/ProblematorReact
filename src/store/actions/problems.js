@@ -1,6 +1,5 @@
 import { SET_PROBLEMS , PROBLEMS_LOAD_ERROR, PROBLEMS_START_LOADING, SELECT_GYM}  from './actionTypes';
 import { API_ENDPOINT} from '../../../config';
-import { authGetToken } from './index';
 import problems from '../../tests/fixtures/problems';
 
 
