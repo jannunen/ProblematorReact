@@ -24,6 +24,24 @@ export function* deleteTickSaga(action) {
   yield put({ type: 'DELETE_TICK_PUT', payload });
 }
 
+export function* getGlobalAscents(action) {
+  console.log("got",action);
+  const token = yield(select(authToken));
+  action.payload = {...action.payload, token : token};
+  const response = yield call(ProblematorAPI.getGlobalAscents, action.payload)
+  let payload = response ? response.data : {}
+  payload = fixJSONP(payload);
+  console.log("saga return");
+  if (payload && !payload.error) {
+    payload.problemid = action.payload.problemid;
+    console.log("before reducer",payload);
+    yield put({ type: 'GLOBAL_ASCENTS_PUT', payload });
+  } else {
+    console.log("Error loading ascents",response);
+    yield put({ type: 'PROBLEMS_LOAD_ERROR', payload });
+  }
+}
+
 
 export function* getProblemsSaga(action) {
   const token = yield(select(authToken));

@@ -18,7 +18,7 @@ export class ProblematorButton extends React.Component  {
 
     render() {
         return (
-            <View style={styles.buttonContainer}>
+            <View style={[styles.buttonContainer,this.props.containerStyle]}>
             <TouchableOpacity>
                 <Text
                     style={[

@@ -3,9 +3,11 @@ import {
   View,
   Text,
   StyleSheet,
-  Picker,
+  ActivityIndicator,
   Linking,
+  ScrollView,
   TouchableOpacity,
+  Modal,
   Dimensions,
   ART
 } from 'react-native'
@@ -23,7 +25,8 @@ import { connect } from 'react-redux';
 import ProblematorButton from '../ProblematorButton/ProblematorButton';
 import ProblematorIconButton from '../ProblematorIconButton/ProblematorIconButton';
 import Spinner from '../RNSpinner/RNSpinner';
-import grades from '../../../config';
+import RNPickerSelect from 'react-native-picker-select';
+import { GRADES } from '../../../config';
 import ActionSheet from 'react-native-actionsheet'
 import getIndexFromObj from '../../helpers/getIndexFromObj';
 import BarChart from '../BarChart/BarChart';
@@ -36,6 +39,7 @@ export class ProblemDetails extends React.Component {
             date:moment(),
             gradeOpinion  : null,
             tries : 0,
+            showGlobalAscentListModal: false
         }
       }
 
@@ -45,6 +49,17 @@ export class ProblemDetails extends React.Component {
     }
     openManageTicksActionSheet = () => {
         this.ActionSheet.show();
+    }
+    setModalVisible(visible) {
+        console.log("setting modal visibility");
+        if (visible) {
+        console.log("dispatching global ascents");
+            this.props.onGlobalAscents({ problemid: this.props.problem.problemid });
+        }
+        this.setState({showGlobalAscentListModal: visible});
+    }
+    calcRoughGrade = (points) => {
+        return "7C";
     }
     handleSelectBetavideo = (selectedIndex) => {
         if (selectedIndex == 0) {
@@ -95,10 +110,19 @@ export class ProblemDetails extends React.Component {
 
     }
 
+    /** Returns the picker grades. Note: Makes grades uppercase,
+     * if the problem type is boulder
+     */
     getPickerGrades = () => {
-        return grades.map((item) => {
-            return <Picker.Item label={item.name} value={item.id} />
+        
+        const pickerGrades =  Object.keys(GRADES).map((key, index) => {
+            let g = GRADES[key].name;
+            if ("boulder" === this.props.problem.routetype) {
+                g = g.toUpperCase(); 
+            }
+            return {label : g, value: GRADES[key].id};
         });
+        return pickerGrades;
     }
 
     gradeCell = (p) => {
@@ -137,14 +161,12 @@ export class ProblemDetails extends React.Component {
     ascentCell = (p) => {
       let options = [ 'Cancel'];
 
-
-
         let manageTicks = <Text style={styles.myTicks}>Loading ticks...</Text>
         const probInfo = this.props.probleminfos[this.props.problem.problemid];
         if (probInfo!=null) {
             const ticks = probInfo.myticklist;
             let amt = Object.keys(ticks).length;
-            if (ticks != null) {
+            if (ticks != null && Object.keys(ticks).length > 0) {
                 for (var idx in ticks) {
                     let tick = ticks[idx];
                     let time = moment(tick.tstamp).format("DD.MM.YYYY");
@@ -154,8 +176,10 @@ export class ProblemDetails extends React.Component {
                     }
                     options.push(tickStr)
                 }
+                manageTicks = <TouchableOpacity onPress={this.openManageTicksActionSheet}><Text style={styles.myTicks}>Manage {amt} tick(s)...</Text></TouchableOpacity>
+            } else {
+                manageTicks = null;
             }
-            manageTicks = <TouchableOpacity onPress={this.openManageTicksActionSheet}><Text style={styles.myTicks}>Manage {amt} tick(s)...</Text></TouchableOpacity>
         }
         return (
             <View style={styles.childCell}>
@@ -205,26 +229,65 @@ export class ProblemDetails extends React.Component {
 
     gradeOpinionCell = (p) => {
 
+        const pickerSelectStyles = StyleSheet.create({
+            inputIOS: {
+                paddingTop : 8,
+                fontSize: 18,
+                paddingTop: 10,
+                textAlign : 'center',
+                paddingHorizontal: 10,
+                paddingBottom: 10,
+                borderWidth: 1,
+                borderColor: 'white',
+                backgroundColor: '#252623',
+                color: '#decc00',
+            },
+            inputAndroid: {
+                paddingTop : 8,
+                fontSize: 18,
+                paddingTop: 10,
+                paddingHorizontal: 10,
+                paddingBottom: 10,
+                textAlign : 'center',
+                borderWidth: 1,
+                borderColor: 'white',
+                backgroundColor: '#252623',
+                color: '#decc00',
+            },
+        });
+        const items = [
+            {
+                label: 'Red',
+                value: 'red',
+            },
+            {
+                label: 'Orange',
+                value: 'orange',
+            }
+        ];
         return (
             <View style={styles.childCell}>
                 <Text style={styles.fieldHeader}>Grade opinion</Text>
-                <Picker
-                    selectedValue={this.state.gradeOpinion}
-                    style={{ height: 50, width: 100 }}
-                    onValueChange={(itemValue, itemIndex) => this.setState({ gradeOpinion: itemValue })}>
-                    {this.getPickerGrades}
-                </Picker>
+            <RNPickerSelect
+                    placeholder={{
+                        label: 'Grade opinion...',
+                        value: null,
+                        color: '#decc00',
+                    }}
+                    items={this.getPickerGrades()}
+                    onValueChange={(value) => {
+                        this.setState({
+                            gradeOpinion: value,
+                        });
+                    }}
+                    style={{ ...pickerSelectStyles }}
+                    value={this.state.gradeOpinion == null ? this.props.problem.gradeid : this.state.gradeOpinion}
+                />
+
             </View>
         );
     }
 
-    ascentsTotalCell = (p) => {
-        return (
-            <View style={styles.childCell}>
-                <Text style={styles.fieldHeader}>Ascents total</Text>
-            </View>
-        );
-    }
 
     gradeOpinionsCell = (p) => {
         const probInfo = this.props.probleminfos[this.props.problem.problemid];
@@ -232,10 +295,14 @@ export class ProblemDetails extends React.Component {
         if (probInfo != null) {
             // create data
             const opinions = probInfo.gradedist;
- 
-            const data = opinions.map((data,idx) => { return {label : data.gradename, value: data.gradeamount }})
-
+            let data = null;
+            if (opinions != null && opinions.length != undefined) {
+                data = opinions.map((data,idx) => { return {label : data.gradename, value: data.gradeamount }})
                 barChart = <BarChart data={data} />;
+            } else {
+                barChart = <Text>No differing opinions.</Text>;
+            
+            }
 
         }
         const cellWidth = Math.round((Dimensions.get('window').width / 2)/10)*10;
@@ -273,9 +340,16 @@ export class ProblemDetails extends React.Component {
     }
     
     totalAscentsCell = (p) => {
+        const probInfo = this.props.probleminfos[this.props.problem.problemid];
+        let ascentcount = <ActivityIndicator size="small" color="#fff" />;
+        if (probInfo != null) {
+            ascentcount = <Text style={styles.ascentCount}>{probInfo.ascentcount}</Text>;
+        }
         return (
             <View style={styles.childCell}>
-                <Text style={styles.fieldHeader}>Total ascents</Text>
+                <Text style={styles.fieldHeader}>Ascents total</Text>
+                {ascentcount}
+                <TouchableOpacity><Text style={styles.linkText} onPress={() => { this.setModalVisible(true)} }>Show ascents...</Text></TouchableOpacity>
             </View>
         );
     }
@@ -317,8 +391,51 @@ export class ProblemDetails extends React.Component {
 
     render() {
         const p = this.props.problem;
+        let globalAscentsList = <ActivityIndicator color="#fff" />;
+        const globalAscents = this.props.globalAscents;
+        console.log("gA",globalAscents);
+        let globalAscentCount = 0;
+        if (globalAscents[p.problemid] != null) {
+            globalAscentsList = globalAscents[p.problemid].map((item,idx) => {
+                const roughGrade = this.calcRoughGrade(item.problemator_top10_1y);
+                const back = moment(item.tstamp).format("DD.MM.YYYY");
+                return <Text key={item.tstamp + idx} style={styles.globalAscentListRow}>{item.etunimi} {item.sukunimi}
+                 <Text style={{color : "#decc00", paddingLeft : 5, paddingRight : 5}}> {roughGrade} </Text>
+                  @{back}, tries: {item.tries} {item.tries_bonus != 0? "to bonus: " + item.tries_bonus : null}</Text>;
+            })
+            globalAscentCount = globalAscents[p.problemid].length;
+        } 
         return (
             <View style={styles.parent}>
+            <Modal
+            animationType="slide"
+            transparent={false}
+            style={{ flex : 1}}
+            visible={this.state.showGlobalAscentListModal}
+            onRequestClose={() => {
+
+              Alert.alert('Modal has been closed.');
+            }}>
+            <View style={styles.modalAscentsContainer}>
+                <View style={{ flex : 1 , flexGrow : 1, marginTop : 40, marginRight : 0, padding : 16}}>
+                    <Text style={styles.modalTitle}>Public ascent list</Text>
+                    <Text style={styles.modalSubTitle}>{globalAscentCount} ascent(s)</Text>
+                    <ScrollView>
+                        {globalAscentsList}
+                    </ScrollView>
+                </View> 
+                <View style={{alignContent : 'center'}}>
+                    <ProblematorButton
+                    title="close"
+                    containerStyle={{ width : "100%"}}
+                    onPress={() => {
+                        this.setModalVisible(!this.state.showGlobalAscentListModal);
+                    }}>
+                    </ProblematorButton>
+                </View>
+            </View>
+          </Modal>
+
                 {this.gradeCell(p)}
                 {this.likeCell(p)}
                 {this.infoCell(p)}
@@ -438,7 +555,36 @@ const styles = StyleSheet.create({
         fontSize : 14,
         textTransform: 'uppercase',
     },
-    gradeOpinionBarChartStyle : {
+    ascentCount: {
+        fontSize : 30,
+        fontWeight : 'bold',
+        color : 'white',
+    },
+    linkText : {
+        color : '#decc00',
+        textTransform: 'uppercase',
+    },
+    modalAscentsContainer: { 
+        backgroundColor : '#252623',
+        flex: 1, 
+        margin :0,
+        justifyContent: 'space-between', 
+        flexDirection: 'column', 
+        marginTop: 22 
+    },
+    modalTitle: {
+        color : 'white',
+        textTransform: 'uppercase',
+        fontSize : 28
+    },
+    modalSubTitle: {
+        color : '#decc00',
+        marginBottom : 8,
+        textTransform: 'uppercase',
+        fontSize : 20
+    },
+    globalAscentListRow: {
+        color : 'white',
 
     }
 });
@@ -446,7 +592,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        probleminfos : state.problems.probleminfos 
+        probleminfos : state.problems.probleminfos,
+        globalAscents : state.problems.globalAscents 
        }
 }
 
@@ -454,6 +601,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onGetProblem: (payload) => dispatch({ type : 'GET_PROBLEM_SAGA', payload}),
         onTickDelete: (payload) => dispatch({ type : 'DELETE_TICK_SAGA', payload}),
+        onGlobalAscents: (payload) => dispatch({ type : 'GET_GLOBAL_ASCENTS', payload}),
+
     }
 }
 

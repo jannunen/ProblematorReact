@@ -19,6 +19,9 @@ describe('problems reducers', () => {
         expect(state).toEqual({...initialState, loading : true});
     })
 
+    it ('should fetch global ascent list successfully',() => {
+
+    });
     it('should remove tick successfully',() => {
         const action = {
             type : 'DELETE_TICK_PUT',

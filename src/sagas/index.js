@@ -1,5 +1,5 @@
 import { takeLatest, fork, call, put, takeEvery, all } from 'redux-saga/effects';
-import { getProblemSaga, getProblemsSaga , deleteTickSaga} from './problemsSaga'
+import { getGlobalAscents, getProblemSaga, getProblemsSaga , deleteTickSaga} from './problemsSaga'
 import { getAuthSaga } from './authSaga'
 
 export function* testSaga() {
@@ -20,6 +20,7 @@ export default function *rootSaga() {
     fork( takeLatest, 'GET_PROBLEMS_SAGA',getProblemsSaga ),
     fork( takeLatest, 'GET_AUTH_SAGA',getAuthSaga ),
     fork( takeLatest, 'DELETE_TICK_SAGA',deleteTickSaga ),
+    fork( takeLatest, 'GET_GLOBAL_ASCENTS',getGlobalAscents ),
   ]
 };
 

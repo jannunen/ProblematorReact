@@ -1,20 +1,31 @@
-import { DELETE_TICK_PUT,  GET_PROBLEM_PUT, SET_PROBLEMS, PROBLEMS_LOAD_ERROR, PROBLEMS_START_LOADING, SELECT_GYM } from '../actions/actionTypes'
+import { GLOBAL_ASCENTS_PUT, DELETE_TICK_PUT,  GET_PROBLEM_PUT, SET_PROBLEMS, PROBLEMS_LOAD_ERROR, PROBLEMS_START_LOADING, SELECT_GYM } from '../actions/actionTypes'
 
 export const initialState = {
     problems: [],
     probleminfos: [],
+    globalAscents : [],
     loading : false,
-    error : null
+    error : null,
 }
 const reducer = (state = initialState, action) => {
+    const payload = action.payload;
     switch (action.type) {
+        case GLOBAL_ASCENTS_PUT :
+            const pid = payload.problemid;
+            return {
+                ...state,
+                globalAscents : {
+                    ...state.globalAscents,
+                    [pid] : payload.ascents
+                }
+            }
+        break;
 
         case DELETE_TICK_PUT:
         // That stuff below... I'm not proud of that, but it basically goes 
         // to state.probleminfos[problemid].myticklist and removes the tickid
         // which is being deleted. Thank god for unit tests for these kind of
         // reducers!!!
-        const payload = action.payload;
          return {
              ...state,
              probleminfos : {
@@ -43,7 +54,6 @@ const reducer = (state = initialState, action) => {
                  [action.payload.problem.problemid]: action.payload.problem
              }
          }
-         console.log("newState",newState);
          return newState;
         break; 
 

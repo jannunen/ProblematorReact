@@ -2,7 +2,7 @@ import  axios  from 'axios';
 
 const root = "https://www.problemator.fi/t/problematorapi/v02";
 const getAPI = (url, payload) => {
-  if (!url.match(/\&/)) {
+  if (!url.match(/\?/)) {
     return `${root}${url}?api-auth-token=${payload.token}&test=true`; 
   } else {
     return `${root}${url}&api-auth-token=${payload.token}&test=true`; 
@@ -16,6 +16,10 @@ export default class ProblematorAPI {
   static get() {
     return axios.get(root); }
     */
+   static getGlobalAscents(payload) {
+     const url = getAPI(`/global_ascents/?pid=${payload.problemid}`,payload);
+    return axios.get(url);
+   }
   static getProblem(payload) {
     return axios.get(getAPI(`/problem/${payload.id}`,payload));
   }
