@@ -13,7 +13,7 @@ export function* getProblemSaga(action) {
 }
 
 export function* deleteTickSaga(action) {
-  yield put({ type : 'UI_LOADING',  payload : { loading : true }});
+  yield put({ type : 'UI_LOADING',  payload : { uiState : 'loading' }});
   const token = yield(select(authToken));
   action.payload = {...action.payload, token : token};
   const response = yield call(ProblematorAPI.deleteTick, action.payload)

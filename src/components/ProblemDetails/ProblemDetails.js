@@ -567,11 +567,11 @@ const styles = StyleSheet.create({
     },
     childCell: {
         flexBasis : '50%',
-        height : '16%',
-        padding : 12,
-        borderRightColor : '#2f302d',
+        height : '18%',
+        padding : 8,
+        borderRightColor : '#454545',
         borderRightWidth : 1,
-        borderBottomColor : '#2f302d',
+        borderBottomColor : '#454545',
         borderBottomWidth : 1,
         alignItems : 'center',
 
@@ -634,7 +634,7 @@ const styles = StyleSheet.create({
         marginTop : -10,
     },
     tagShort: {
-        fontSize : 28,
+        fontSize : 25,
         color : '#e0e0e0',
     },
     myTicks: {
@@ -658,7 +658,7 @@ const mapStateToProps = (state) => {
     return {
         probleminfos : state.problems.probleminfos,
         globalAscents : state.problems.globalAscents,
-        state : state.problems.state,
+        uiState : state.problems.uiState,
         auth : state.auth
        }
 }
