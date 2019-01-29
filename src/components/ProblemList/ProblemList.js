@@ -8,13 +8,15 @@ import {
 } from 'react-native'
 import  Icon  from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
-import { getProblems } from '../../store/actions/index';
+
+
+import { getProblems } from '../../actions/index';
 
 export class ProblemList extends React.Component {
 
-    componentDidMount = () => {
-        this.props.onLoadProblems();
-    }
+  componentDidMount = () => {
+    this.props.onLoadProblems();
+  }
 
   transformProblemsToSections = () => {
     let sections = [];

@@ -1,5 +1,5 @@
-import problemsReducer, {initialState } from '../../../store/reducers/problems';
-import { problemsLoadBegin, problemsLoadFailure, setProblems } from '../../../store/actions/problems';
+import problemsReducer, {initialState } from '../../../reducers/problems';
+import { problemsLoadBegin, problemsLoadFailure, setProblems } from '../../../actions/problems';
 import problems from '../../fixtures/problems';
 import basicState, { problemInfosAfterRemoveTick } from '../../fixtures/probleminfos';
 import mockStore from 'redux-mock-store';

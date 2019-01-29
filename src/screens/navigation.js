@@ -1,11 +1,11 @@
 import { Navigation } from 'react-native-navigation';
-import  Icon  from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export const goToAuth = () => {
   Promise.all([
-    Icon.getImageSource("ios-log-in",30),
-    Icon.getImageSource("ios-home",30)
-  ]).then( sources => {
+    Icon.getImageSource("ios-log-in", 30),
+    Icon.getImageSource("ios-home", 30)
+  ]).then(sources => {
     Navigation.setRoot({
       root: {
         bottomTabs: {
@@ -17,7 +17,7 @@ export const goToAuth = () => {
                 options: {
                   bottomTab: {
                     text: 'Sign In',
-                    icon: sources[0] 
+                    icon: sources[0]
                   }
                 }
               },
@@ -38,21 +38,36 @@ export const goToAuth = () => {
       }
     });
 
-})
+  })
 }
 
 
-export const goHome = () => Navigation.setRoot({
-  root: {
-    stack: {
-      id: 'App',
-      children: [
-        {
-          component: {
-            name: 'com.problemator.HomeScreen',
-          }
+export const goHome = () => {
+  Promise.all([
+    Icon.getImageSource("tachometer-alt", 30),
+    Icon.getImageSource("list", 30),
+  ]).then(sources => {
+
+    Navigation.setRoot({
+      root: {
+        bottomTabs: {
+          id: 'MainBottomTabsId',
+          children: [
+            {
+              component: {
+                name: 'com.problemator.HomeScreen',
+                options: {
+                  bottomTab: {
+                    text: 'Problems',
+                    icon: sources[1]
+                  }
+                }
+              }
+            }
+          ]
         }
-    ],
-    }
-  }
-})
+      }
+    })
+
+  });
+}

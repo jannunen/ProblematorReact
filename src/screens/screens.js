@@ -30,13 +30,11 @@ if (__DEV__) {
 }
 
 const sagaMiddleware = createSagaMiddleware();
-//const middleWares = [thunk, sagaMiddleware];
 const middleWares = [ sagaMiddleware];
 store  = createStore(rootReducer, composeEnhancers(applyMiddleware(...middleWares)));
 sagaMiddleware.run(watcherSaga);
 const action = type => store.dispatch({type})
 
-//store.dispatch(getProblem());
 
 export default registerScreens = () => {
     Navigation.registerComponentWithRedux('com.problemator.HomeScreen', () => HomeScreen, Provider, store);
