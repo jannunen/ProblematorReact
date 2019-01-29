@@ -19,6 +19,22 @@ const reducer = (state = initialState, action) => {
             
         }
         break;
+        case 'SAVE_OPINION_PUT':
+         return {
+             ...state,
+             probleminfos : {
+                 ...state.probleminfos,
+                 [payload.source.problemid] : {
+                     ...state.probleminfos[payload.source.problemid],
+                     c_like :  payload.opinions.likes,
+                     c_love :   payload.opinions.loves,
+                     c_dislike :  payload.opinions.dislikes,
+                 }
+             },
+             uiState : 'ready'
+         }
+        break;
+
         case 'SAVE_FEEDBACK_PUT':
          return {
              ...state,

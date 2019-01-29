@@ -74,6 +74,31 @@ export class ProblemDetails extends React.Component {
         this.props.onSaveTick(payload);
   }
 
+  sendOpinion = (likeType) => {
+      const likeTypes = {
+          'like' : 1,
+          'love' : 2,
+          'dislike' : 0
+      }
+    this.props.onSendOpinion({ problemid : this.props.problem.problemid, opinion : likeTypes[likeType]});
+  }
+
+  handleLikeButtons = (likeType) => {
+      Alert.alert(
+          'Submit your opinion',
+          'Are you sure you want to ' + likeType + '?',
+          [
+              { text: 'OK', onPress: () => this.sendOpinion(likeType) },
+              {
+                  text: 'Cancel',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+              },
+          ],
+          { cancelable: false },
+      );
+
+  }
     handleSelectBetavideo = (selectedIndex) => {
         if (selectedIndex == 0) {
             return;
@@ -190,13 +215,23 @@ export class ProblemDetails extends React.Component {
     }
 
     likeCell =(p) => {
+        const probInfo = this.props.probleminfos[this.props.problem.problemid];
+        let likes = 0;
+        let loves = 0;
+        let dislikes = 0;
+
+        if (probInfo != null) {
+            likes = probInfo.c_like;
+            loves = probInfo.c_love;
+            dislikes = probInfo.c_dislike;
+        }
         return (
             <View style={styles.childCell}>
                 <Text style={styles.tagShort}>{p.tagshort}</Text>
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-                    <Icon style={styles.likeIcon} name="ios-thumbs-up" size={20} color="#decc00" /><Text style={styles.likes}>{p.c_like}</Text><Text style={styles.tildeSeparator}>|</Text>
-                    <Icon style={styles.likeIcon} name="ios-heart" size={20} color="red" /><Text style={styles.likes}>{p.c_love}</Text><Text style={styles.tildeSeparator}>|</Text>
-                    <Icon style={styles.likeIcon} name="ios-thumbs-down" size={20} color="white" /><Text style={styles.likes}>{p.c_dislike}</Text>
+                    <Icon style={styles.likeIcon} name="ios-thumbs-up" size={20} color="#decc00" /><Text style={styles.likes}>{likes}</Text><Text style={styles.tildeSeparator}>|</Text>
+                    <Icon style={styles.likeIcon} name="ios-heart" size={20} color="red" /><Text style={styles.likes}>{loves}</Text><Text style={styles.tildeSeparator}>|</Text>
+                    <Icon style={styles.likeIcon} name="ios-thumbs-down" size={20} color="white" /><Text style={styles.likes}>{dislikes}</Text>
                 </View>
                 <Text style={[styles.textCenter, styles.basicTextColor]}>by {p.author}</Text>
                 <Text style={[styles.textCenter, styles.basicTextColor]}>{p.addedrelative}</Text>
@@ -375,9 +410,9 @@ export class ProblemDetails extends React.Component {
         return (
             <View style={styles.childCell}>
                 <View style={{ flexDirection : 'row'}}>
-                    <ProblematorIconButton text="like" name="thumbs-up" onPress={this.handleAction('like',p.problemid)} />
-                    <ProblematorIconButton text="love" name="heart" onPress={this.handleAction('love',p.problemid)} />
-                    <ProblematorIconButton text="dislike" name="thumbs-down" onPress={this.handleAction('dislike',p.problemid)} />
+                    <ProblematorIconButton text="like" name="thumbs-up" onPress={() => { this.handleLikeButtons('like')}} />
+                    <ProblematorIconButton text="love" name="heart" onPress={() => { this.handleLikeButtons('love')}}/>
+                    <ProblematorIconButton text="dislike" name="thumbs-down" onPress={() => { this.handleLikeButtons('dislike')}} />
                 </View>
             </View>
         );
@@ -469,6 +504,8 @@ export class ProblemDetails extends React.Component {
                 submitInput={ (inputText) => {this.doAddFeedback(inputText,'dangerous')} }
                 closeDialog={ () => {this.setShowFeedbackDialog(false,'dangerous')}}>
                 </DialogInput>
+
+
                 <ProblematorButton title="Add video..." onPress={() => { this.setShowAddBetaVideoDialog(true) }} />
             </View>
         );
@@ -634,6 +671,7 @@ const mapDispatchToProps = (dispatch) => {
         onDeleteBetaVideo: (payload) => dispatch({ type : 'DEL_BETAVIDEO_SAGA', payload}),
         onSaveTick: (payload) => dispatch({ type : 'SAVE_TICK_SAGA', payload}),
         onAddFeedback: (payload) => dispatch({ type : 'SEND_FEEDBACK_SAGA', payload}),
+        onSendOpinion: (payload) => dispatch({ type : 'SEND_OPINION_SAGA', payload}),
  
     }
 }

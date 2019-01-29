@@ -59,6 +59,10 @@ function* doSaga(action, apiCall, successReducer, failReducer, alertSuccess)  {
   }
   return ret;
 }
+
+export function* sendOpinionSaga(action) {
+  yield (doSaga(action, ProblematorAPI.saveOpinion, 'SAVE_OPINION_PUT',null, true ));
+}
 export function* sendFeedbackSaga(action) {
   yield (doSaga(action, ProblematorAPI.saveFeedback, 'SAVE_FEEDBACK_PUT',null, true ));
 }

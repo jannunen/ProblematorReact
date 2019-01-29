@@ -53,6 +53,26 @@ describe('problems reducers', () => {
         });
         expect(state.probleminfos).toEqual(stateAfter.probleminfos);
     })
+    it('should save opinion love correctly', () => {
+
+        const action = {
+            type : 'SAVE_OPINION_PUT',
+            payload: {
+                opinions : {
+                likes : 14,
+                loves : 3,
+                dislikes : 2,
+                },
+                source : { opinion : 2, problemid : 47428 }
+            }
+        }
+
+        let stateAfter = JSON.parse(JSON.stringify(basicState));
+        const state = problemsReducer(basicState,action);
+        expect(state.probleminfos['47428'].c_love).toEqual(3);
+        expect(state.probleminfos['47428'].c_like).toEqual(14);
+        expect(state.probleminfos['47428'].c_dislike).toEqual(2);
+    })
 
     it('should add tick correctly', () => {
         const tickid = "630853";
