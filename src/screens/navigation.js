@@ -1,5 +1,6 @@
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
+import  FontAwesome  from 'react-native-vector-icons/FontAwesome5';
 
 export const goToAuth = () => {
   Promise.all([
@@ -44,8 +45,8 @@ export const goToAuth = () => {
 
 export const goHome = () => {
   Promise.all([
-    Icon.getImageSource("tachometer-alt", 30),
-    Icon.getImageSource("list", 30),
+    FontAwesome.getImageSource("list-alt", 30),
+    FontAwesome.getImageSource("users", 30),
   ]).then(sources => {
 
     Navigation.setRoot({
@@ -54,17 +55,44 @@ export const goHome = () => {
           id: 'MainBottomTabsId',
           children: [
             {
-              component: {
-                name: 'com.problemator.HomeScreen',
+              stack: {
+                id: 'App',
+                children: [
+                  {
+                    component: {
+                      name: 'com.problemator.HomeScreen',
+                    }
+                  }
+              ],
                 options: {
                   bottomTab: {
                     text: 'Problems',
-                    icon: sources[1]
+                    selectedIconColor : 'white',
+                    icon: sources[0]
+                  }
+                }
+
+              }
+
+            },
+            {
+              component: {
+                name: 'com.problemator.GroupsScreen',
+                options: {
+                  bottomTab: {
+                    text: 'Groups',
+                    selectedIconColor : 'white',
+                    icon: sources[1],
                   }
                 }
               }
             }
-          ]
+          ],
+          options : {
+            bottomTabs: {
+              backgroundColor : "#decc00",
+            }
+          }
         }
       }
     })

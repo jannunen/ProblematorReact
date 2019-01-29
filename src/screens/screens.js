@@ -7,6 +7,7 @@ import SignInScreen from './Auth/SignIn/SignIn';
 import SignUpScreen from './Auth/SignUp/SignUp';
 import HomeScreen from './MainTabs/Home/Home';
 import OtherScreen from './MainTabs/Other/Other';
+import GroupsScreen from './MainTabs/Other/Other';
 import ProblemDetailScreen from './MainTabs/Problems/ProblemDetailScreen/ProblemDetailScreen';
 
 import { createStore , combineReducers, compose, applyMiddleware } from 'redux';
@@ -42,5 +43,6 @@ export default registerScreens = () => {
     Navigation.registerComponentWithRedux('com.problemator.SignInScreen', () =>  SignInScreen, Provider, store);
     Navigation.registerComponentWithRedux('com.problemator.SignUpScreen', () =>  SignUpScreen, Provider, store);
     Navigation.registerComponentWithRedux('com.problemator.OtherScreen', () => OtherScreen, Provider, store);
+    Navigation.registerComponentWithRedux('com.problemator.GroupsScreen', () => GroupsScreen, Provider, store);
     Navigation.registerComponentWithRedux('com.problemator.ProblemDetailScreen', () => ProblemDetailScreen, Provider, store);
 } 
