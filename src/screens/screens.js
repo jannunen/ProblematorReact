@@ -11,8 +11,8 @@ import ProblemDetailScreen from './MainTabs/Problems/ProblemDetailScreen/Problem
 
 import { createStore , combineReducers, compose, applyMiddleware } from 'redux';
 
-import problemsReducer from '../store/reducers/problems'
-import authReducer from '../store/reducers/auth'
+import problemsReducer from '../reducers/problems'
+import authReducer from '../reducers/auth'
 
 import createSagaMiddleware from 'redux-saga'
 import  watcherSaga   from '../sagas/index';

@@ -12,7 +12,7 @@ import { Navigation } from 'react-native-navigation';
 
 import { goToAuth } from '../../navigation'
 import { USER_KEY } from '../../../../config'
-import { selectGym } from '../../../store/actions/index';
+import { selectGym } from '../../../actions/index';
 import ProblemList from '../../../components/ProblemList/ProblemList';
 
 

@@ -1,6 +1,6 @@
 import React, { PermissionsAndroid} from 'react'
 import { Buffer } from 'buffer';
-import { authStoreToken} from '../../../store/actions/index';
+import { authStoreToken} from '../../../actions/index';
 import { JWT_TOKEN } from '../../../../config';
 import {
   View,
