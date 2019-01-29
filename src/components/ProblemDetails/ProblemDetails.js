@@ -435,13 +435,12 @@ export class ProblemDetails extends React.Component {
         const p = this.props.problem;
         return (
             <View style={styles.parent}>
-      <ActivitySpinner
-        visible={this.props.loading}
-        textContent={'Loading...'}
-        textStyle={{ color : 'white'}}
-        overlayColor="rgba(0,0,0,0.7)"
-      />
-                {this.props.loading ? <Text style={{ color : 'red'}}>Jeejee </Text> : <Text style={{ color : 'red'}}>eiie </Text>}
+                <ActivitySpinner
+                    visible={this.props.state == 'loading'}
+                    textContent={'Loading...'}
+                    textStyle={{ color : 'white'}}
+                    overlayColor="rgba(0,0,0,0.7)"
+                />
                 <PublicAscentListModal onClose={() => { this.setModalVisible(false); }} visible={this.state.showGlobalAscentListModal} problemid={p.problemid} />
                 {this.gradeCell(p)}
                 {this.likeCell(p)}
@@ -579,9 +578,8 @@ const mapStateToProps = (state) => {
     return {
         probleminfos : state.problems.probleminfos,
         globalAscents : state.problems.globalAscents,
-        loading : state.problems.loading,
-        auth : state.auth,
-        ui : state.ui
+        state : state.problems.state,
+        auth : state.auth
        }
 }
 

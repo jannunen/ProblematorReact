@@ -1,5 +1,6 @@
 import { DEL_BETAVIDEO_PUT, ADD_BETAVIDEO_PUT, GLOBAL_ASCENTS_PUT, DELETE_TICK_PUT,  GET_PROBLEM_PUT, SET_PROBLEMS, PROBLEMS_LOAD_ERROR, PROBLEMS_START_LOADING, SELECT_GYM } from '../actions/actionTypes'
 
+import moment from 'moment';
 export const initialState = {
     problems: [],
     probleminfos: [],
@@ -13,9 +14,9 @@ const reducer = (state = initialState, action) => {
     let newState = null;
     switch (action.type) {
         case 'UI_LOADING':
-         return {
+         return  {
              ...state,
-             loading : payload.loading
+             state : 'loading',
          }
         break;
         case 'SAVE_TICK_PUT':
@@ -32,7 +33,8 @@ const reducer = (state = initialState, action) => {
                     mytickcount : parseInt(state.probleminfos[payload.source.problemid].mytickcount)+1,
                     ascentcount : parseInt(state.probleminfos[payload.source.problemid].ascentcount)+1,
                 }
-             }
+             },
+             state : 'ready'
          }
         break;
         case DEL_BETAVIDEO_PUT:
@@ -46,7 +48,8 @@ const reducer = (state = initialState, action) => {
                         state.probleminfos[payload.problemid].betavideos.filter( item => payload.source.videoid !== item.id),
                     
                 }
-            }
+            },
+             state : 'ready'
         } 
         break;
         case ADD_BETAVIDEO_PUT:
@@ -61,7 +64,8 @@ const reducer = (state = initialState, action) => {
                         action.payload.video
                     ]
                 }
-            }
+            },
+             state : 'ready'
         } 
         break;
         case GLOBAL_ASCENTS_PUT :
@@ -71,7 +75,8 @@ const reducer = (state = initialState, action) => {
                 globalAscents : {
                     ...state.globalAscents,
                     [pid] : payload.ascents
-                }
+                },
+                state: 'ready'
             }
         break;
 
@@ -94,7 +99,7 @@ const reducer = (state = initialState, action) => {
                     },{})
                  }
              },
-             loading : false
+             state : 'ready'
 
          }
 
@@ -102,39 +107,29 @@ const reducer = (state = initialState, action) => {
 
         case GET_PROBLEM_PUT:
         // Use 'hashtable' approach to make the searches faster for a certain problem
-         newState= {
+         return  {
              ...state,
              probleminfos : {
                  ...state.probleminfos,
                  [action.payload.problem.problemid]: action.payload.problem
              },
-             loading : false
+             state : 'ready'
          }
-         return newState;
         break; 
 
-        case PROBLEMS_START_LOADING:
-        return {
-            ...state,
-            loading : true,
-            error : null
-        }
-        break;
         case PROBLEMS_LOAD_ERROR:
-            console.log("reducer",action);
-        return {
-            ...state,
-            loading : false,
-            problems : [],
-            error : action.payload.message
-        }
+            return {
+                ...state,
+                state: 'ready',
+                problems : [],
+                error : action.payload.message
+            }
         break;
         case SET_PROBLEMS:
-        console.log("Reducer",action.payload);
             return {
                 ...state,
                 problems: action.payload,
-                loading : false,
+                state: 'ready',
                 error : null
             }
             break;

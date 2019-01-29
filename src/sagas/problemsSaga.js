@@ -23,7 +23,7 @@ export function* deleteTickSaga(action) {
   payload.tickid = action.payload.tickid;
   payload.problemid = action.payload.problemid;
   yield put({ type: 'DELETE_TICK_PUT', payload });
-  yield put({ type : 'UI_LOADING',  payload : { loading : false }});
+  // yield put({ type : 'UI_LOADING',  payload : { loading : false }});
 }
 
 function* doSaga(action, apiCall, successReducer, failReducer)  {
@@ -53,7 +53,7 @@ function* doSaga(action, apiCall, successReducer, failReducer)  {
   } else {
     yield put({ type: failReducer, payload });
   }
-  yield put({ type : 'UI_LOADING',  payload : { loading : false }});
+  // yield put({ type : 'UI_LOADING',  payload : { loading : false }});
 }
 
 export function* delBetaVideoSaga(action) {
