@@ -12,8 +12,31 @@ const reducer = (state = initialState, action) => {
     console.log(action.type,"payload to reducer",payload);
     let newState = null;
     switch (action.type) {
+        case 'UI_LOADING':
+         return {
+             ...state,
+             loading : payload.loading
+         }
+        break;
+        case 'SAVE_TICK_PUT':
+         return {
+             ...state,
+             probleminfos : {
+                 ...state.probleminfos,
+                 [payload.source.problemid] : {
+                     ...state.probleminfos[payload.source.problemid],
+                    myticklist :  {
+                        ...state.probleminfos[payload.source.problemid].myticklist,
+                        [payload.tick.id] : payload.tick 
+                    },
+                    mytickcount : parseInt(state.probleminfos[payload.source.problemid].mytickcount)+1,
+                    ascentcount : parseInt(state.probleminfos[payload.source.problemid].ascentcount)+1,
+                }
+             }
+         }
+        break;
         case DEL_BETAVIDEO_PUT:
-        newState =  { 
+        return  { 
             ...state,
             probleminfos : {
                 ...state.probleminfos,
@@ -25,8 +48,6 @@ const reducer = (state = initialState, action) => {
                 }
             }
         } 
-        console.log("new state",newState);
-        return newState;
         break;
         case ADD_BETAVIDEO_PUT:
         return  { 
@@ -72,7 +93,9 @@ const reducer = (state = initialState, action) => {
                         return result;
                     },{})
                  }
-             }
+             },
+             loading : false
+
          }
 
         break;
@@ -84,7 +107,8 @@ const reducer = (state = initialState, action) => {
              probleminfos : {
                  ...state.probleminfos,
                  [action.payload.problem.problemid]: action.payload.problem
-             }
+             },
+             loading : false
          }
          return newState;
         break; 

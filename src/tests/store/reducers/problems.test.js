@@ -54,6 +54,32 @@ describe('problems reducers', () => {
         expect(state.probleminfos).toEqual(stateAfter.probleminfos);
     })
 
+    it('should add tick correctly', () => {
+        const tickid = "630853";
+        const aTick = {"problemid":"47428","id":"630853","added":"2018-12-27 14:03:16","userid":"246","tstamp":"2019-01-23 00:02:15","grade_opinion":"11","tries":"2","rating":null,"a_like":"0","a_love":"0","a_dislike":"0","a_dirty":"0","a_dangerous":"0","ascent_type":"0","tries_bonus":"0","sport_points":null,"sport_timer_start":null,"sport_timer_stop":null,"sport_timer_secs":null,"qual_start_pos":null,"tick_type":"1","bonuses":"0","tickid":"530853","ascent_type_text":"Lead"};
+        const action = {
+            type : 'SAVE_TICK_PUT',
+            payload: {
+                error : false,
+                message : 'Tick saved',
+                tick : aTick,
+                source : { problemid : 47428 }
+            }
+        }
+
+        let stateAfter = JSON.parse(JSON.stringify(basicState));
+        const state = problemsReducer(basicState,action);
+        stateAfter.probleminfos['47428'].myticklist = {
+            ...stateAfter.probleminfos['47428'].myticklist ,
+            [tickid] : aTick
+        }
+        expect(state.probleminfos['47428'].myticklist).toEqual(stateAfter.probleminfos['47428'].myticklist);
+        expect(state.probleminfos['47428'].mytickcount).toEqual(3);
+        expect(state.probleminfos['47428'].mytickcount).toEqual(3);
+        expect(state.probleminfos['47428'].ascentcount).toEqual(13);
+
+    })
+
     it('should add betavideo correctly',() => {
         const video_url = 'video_test';
         const newVideo = { id: "43", "video_url": video_url, "added": "2017-04-15 11:45:43", "sender": { "id": "62003", "etunimi": "Matti", "added": null } };

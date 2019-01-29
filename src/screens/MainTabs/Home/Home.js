@@ -14,6 +14,7 @@ import { goToAuth } from '../../navigation'
 import { USER_KEY } from '../../../../config'
 import { selectGym } from '../../../store/actions/index';
 import ProblemList from '../../../components/ProblemList/ProblemList';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 
 export class Home extends React.Component {
@@ -40,6 +41,12 @@ export class Home extends React.Component {
   firstRoute = () => {
     return (
       <View style={[styles.scene, { backgroundColor: '#252623' }]} >
+      <Spinner
+        visible={this.props.loading}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+        overlayColor="rgba(0,0,0,0.7)"
+      />
         <ProblemList handleItemClicked={this.handleItemClicked} />
       </View>
     );
@@ -81,6 +88,14 @@ export class Home extends React.Component {
 
   render() {
     return (
+      <View style={{ flex : 1}}>
+      <Spinner
+        visible={this.props.loading}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+        overlayColor="rgba(0,0,0,0.7)"
+      />
+
         <TabView
         navigationState={this.state}
         renderScene={SceneMap({
@@ -90,27 +105,20 @@ export class Home extends React.Component {
         onIndexChange={index => this.setState({ index })}
         initialLayout={{ width: Dimensions.get('window').width, height : Dimensions.get('window').height }}
       />
+      </View>
     )
   }
 }
-/*
-        <Button onPress={() => {
-            Navigation.push(this.props.componentId, {
-              component: {
-                name: 'com.padadise.OtherScreen',
-              }
-            });
-          }}
-          title="View next screen"
-        />
-
-        */
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  spinnerTextStyle: {
+    color: '#FFF',
+
   },
   scene: {
     flex: 1,

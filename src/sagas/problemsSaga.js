@@ -13,6 +13,7 @@ export function* getProblemSaga(action) {
 }
 
 export function* deleteTickSaga(action) {
+  yield put({ type : 'UI_LOADING',  payload : { loading : true }});
   const token = yield(select(authToken));
   action.payload = {...action.payload, token : token};
   const response = yield call(ProblematorAPI.deleteTick, action.payload)
@@ -22,9 +23,11 @@ export function* deleteTickSaga(action) {
   payload.tickid = action.payload.tickid;
   payload.problemid = action.payload.problemid;
   yield put({ type: 'DELETE_TICK_PUT', payload });
+  yield put({ type : 'UI_LOADING',  payload : { loading : false }});
 }
 
 function* doSaga(action, apiCall, successReducer, failReducer)  {
+  yield put({ type : 'UI_LOADING',  payload : { loading : true }});
   if (failReducer == null) {
     failReducer = 'PROBLEMS_LOAD_ERROR';
   }
@@ -50,10 +53,15 @@ function* doSaga(action, apiCall, successReducer, failReducer)  {
   } else {
     yield put({ type: failReducer, payload });
   }
+  yield put({ type : 'UI_LOADING',  payload : { loading : false }});
 }
 
 export function* delBetaVideoSaga(action) {
   yield(doSaga(action, ProblematorAPI.delBetaVideo,'DEL_BETAVIDEO_PUT'));
+}
+
+export function* saveTickSaga(action) {
+  yield(doSaga(action, ProblematorAPI.saveTick,'SAVE_TICK_PUT'));
 }
 
 

@@ -1,4 +1,5 @@
 import  axios  from 'axios';
+import querystring from 'querystring'
 
 const root = "https://www.problemator.fi/t/problematorapi/v02";
 const getAPI = (url, payload) => {
@@ -13,8 +14,12 @@ import problems from '../tests/fixtures/problems';
 
 export default class ProblematorAPI {
   
+   static saveTick(payload) {
+     const postData = querystring.stringify(payload);
+     const url = getAPI(`/savetick/?`+postData,payload)
+    return axios.post(url);
+   }
    static delBetaVideo(payload) {
-     console.log("api call del");
     return axios.post(getAPI(`/delbetavideo/?vid=${payload.videoid}`,payload));
    }
    static addBetaVideo(payload) {

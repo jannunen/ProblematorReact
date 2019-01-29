@@ -19,6 +19,7 @@ import ProblematorButton from '../ProblematorButton/ProblematorButton';
 import ProblematorIconButton from '../ProblematorIconButton/ProblematorIconButton';
 import Spinner from '../RNSpinner/RNSpinner';
 import RNPickerSelect from 'react-native-picker-select';
+import ActivitySpinner from 'react-native-loading-spinner-overlay';
 import { GRADES } from '../../../config';
 import ActionSheet from 'react-native-actionsheet'
 import BarChart from '../BarChart/BarChart';
@@ -34,7 +35,8 @@ export class ProblemDetails extends React.Component {
             gradeOpinion  : null,
             tries : 0,
             showGlobalAscentListModal: false,
-            showAddBetaVideoDialog: false
+            showAddBetaVideoDialog: false,
+            ascentType : 0, // defaults to toprope. TODO: Add user configuration option
         }
       }
 
@@ -54,6 +56,16 @@ export class ProblemDetails extends React.Component {
         this.setShowAddBetaVideoDialog(false);
     }
 
+    handleSaveTick = () => { 
+        const payload = {
+            problemid : this.props.problem.problemid,
+            tickdate : this.state.date.format("YYYY-MM-DD HH:mm:ss"),
+            tries : this.state.tries,
+            grade_opinion : this.state.gradeOpinion,
+            ascent_type : this.state.ascentType,  
+        };
+        this.props.onSaveTick(payload);
+  }
 
     handleSelectBetavideo = (selectedIndex) => {
         if (selectedIndex == 0) {
@@ -149,6 +161,7 @@ export class ProblemDetails extends React.Component {
     gradeCell = (p) => {
         return (
             <View style={styles.childCell}>
+                <Text style={{ color : 'white'}}>{p.problemid}</Text>
                 <Text style={styles.bigGrade}> {p.gradename} </Text>
             </View>
         );
@@ -202,6 +215,7 @@ export class ProblemDetails extends React.Component {
                 manageTicks = null;
             }
         }
+
         return (
             <View style={styles.childCell}>
                 <DatePicker 
@@ -212,9 +226,9 @@ export class ProblemDetails extends React.Component {
                             format="YYYY-MM-DD"
                             confirmBtnText="OK"
                             cancelBtnText="Cancel"
-                            onDateChange={(date) => {this.setState({date: date})}}
+                            onDateChange={(date) => {this.setState({date: moment(date)})}}
                 />
-                <ProblematorButton title="Save tick" />
+                <ProblematorButton onPress={this.handleSaveTick} title="Save tick" />
                 {manageTicks}
                 <ActionSheet
                 ref={o => this.ActionSheet = o}
@@ -243,7 +257,6 @@ export class ProblemDetails extends React.Component {
                     onNumChange={(num)=>{this.setState({ tries : num})}}
                     value={this.state.tries}
                     />
-                    <ProblematorButton title="Add as todo" />
             </View> 
             );
     }
@@ -418,10 +431,17 @@ export class ProblemDetails extends React.Component {
         );
     }
 
-    render() {
+    render = () => {
         const p = this.props.problem;
         return (
             <View style={styles.parent}>
+      <ActivitySpinner
+        visible={this.props.loading}
+        textContent={'Loading...'}
+        textStyle={{ color : 'white'}}
+        overlayColor="rgba(0,0,0,0.7)"
+      />
+                {this.props.loading ? <Text style={{ color : 'red'}}>Jeejee </Text> : <Text style={{ color : 'red'}}>eiie </Text>}
                 <PublicAscentListModal onClose={() => { this.setModalVisible(false); }} visible={this.state.showGlobalAscentListModal} problemid={p.problemid} />
                 {this.gradeCell(p)}
                 {this.likeCell(p)}
@@ -502,6 +522,7 @@ const styles = StyleSheet.create({
     bigGrade : {
         fontSize : 80,
         fontWeight : 'bold',
+        marginTop : 0,
         color : 'white',
     },
     likesInfoContainer: {
@@ -558,7 +579,9 @@ const mapStateToProps = (state) => {
     return {
         probleminfos : state.problems.probleminfos,
         globalAscents : state.problems.globalAscents,
-        auth : state.auth
+        loading : state.problems.loading,
+        auth : state.auth,
+        ui : state.ui
        }
 }
 
@@ -568,6 +591,7 @@ const mapDispatchToProps = (dispatch) => {
         onTickDelete: (payload) => dispatch({ type : 'DELETE_TICK_SAGA', payload}),
         onAddBetaVideo: (payload) => dispatch({ type : 'ADD_BETAVIDEO_SAGA', payload}),
         onDeleteBetaVideo: (payload) => dispatch({ type : 'DEL_BETAVIDEO_SAGA', payload}),
+        onSaveTick: (payload) => dispatch({ type : 'SAVE_TICK_SAGA', payload}),
     }
 }
 

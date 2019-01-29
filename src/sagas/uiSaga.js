@@ -10,3 +10,4 @@ export function* showAlert (action) {
   const message = action.payload;
   yield call(Alert.alert, 'Problemator', message.message != null ? message.message : message)
 }
+
