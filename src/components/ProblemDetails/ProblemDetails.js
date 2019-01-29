@@ -36,6 +36,9 @@ export class ProblemDetails extends React.Component {
             tries : 0,
             showGlobalAscentListModal: false,
             showAddBetaVideoDialog: false,
+            showFeedbackDialog: false,
+            showDirtyDialog: false,
+            showDangerousDialog : false,
             ascentType : 0, // defaults to toprope. TODO: Add user configuration option
         }
       }
@@ -54,6 +57,10 @@ export class ProblemDetails extends React.Component {
     doAddbetaVideo = (url) => {
         this.props.onAddBetaVideo({problemid : this.props.problem.problemid, video_url : url});
         this.setShowAddBetaVideoDialog(false);
+    }
+    doAddFeedback = (feedback, type) => {
+        this.props.onAddFeedback({ problemid : this.props.problem.problemid, text : feedback, msgtype : type});
+        this.setShowFeedbackDialog(false,type);
     }
 
     handleSaveTick = () => { 
@@ -105,6 +112,21 @@ export class ProblemDetails extends React.Component {
             }
           });
 
+    }
+    setShowFeedbackDialog = (visible, type) => {
+        switch (type) {
+            case 'dirty':
+                this.setState({ showDirtyDialog: visible });
+            break;
+
+            case 'dangerous':
+                this.setState({ showDangerousDialog: visible });
+            break;
+
+            case 'message':
+                this.setState({ showFeedbackDialog: visible });
+            break;
+        }
     }
     setShowAddBetaVideoDialog = (visible) => {
         this.setState({showAddBetaVideoDialog: visible});
@@ -365,9 +387,9 @@ export class ProblemDetails extends React.Component {
         return (
             <View style={styles.childCell}>
                 <View style={{ flexDirection : 'row'}}>
-                    <ProblematorIconButton text="dirty" name="wrench" onPress={this.handleAction('dirty', p.problemid)} />
-                    <ProblematorIconButton text="dangerous" name="exclamation-triangle" onPress={this.handleAction('danger', p.problemid)} />
-                    <ProblematorIconButton text="feedback" name="comment-dots" onPress={this.handleAction('feedback', p.problemid)} />
+                    <ProblematorIconButton text="dirty" name="wrench" onPress={() => { this.setShowFeedbackDialog(true,'dirty') }} />
+                    <ProblematorIconButton text="dangerous" name="exclamation-triangle"  onPress={() => { this.setShowFeedbackDialog(true,'dangerous') }} />
+                    <ProblematorIconButton text="feedback" name="comment-dots"  onPress={() => { this.setShowFeedbackDialog(true,'message') }}/>
                 </View>
             </View>
         );
@@ -426,6 +448,27 @@ export class ProblemDetails extends React.Component {
                 submitInput={ (inputText) => {this.doAddbetaVideo(inputText)} }
                 closeDialog={ () => {this.setShowAddBetaVideoDialog(false)}}>
                 </DialogInput>
+
+                <DialogInput isDialogVisible={this.state.showFeedbackDialog}
+                title={"Send feedback"}
+                message={"You can enter your feedback about the problem, what problems you would like to have or something in general"}
+                submitInput={ (inputText) => {this.doAddFeedback(inputText,'message')} }
+                closeDialog={ () => {this.setShowFeedbackDialog(false,'message')}}>
+                </DialogInput>
+
+                <DialogInput isDialogVisible={this.state.showDirtyDialog}
+                title={"Send feedback"}
+                message={"Describe dirtyness, if you can. It makes our life easier."}
+                submitInput={ (inputText) => {this.doAddFeedback(inputText,'dirty')} }
+                closeDialog={ () => {this.setShowFeedbackDialog(false,'dirty')}}>
+                </DialogInput>
+
+                <DialogInput isDialogVisible={this.state.showDangerousDialog}
+                title={"Send feedback"}
+                message={"What makes the problem dangerous? Help us to fix the problem."}
+                submitInput={ (inputText) => {this.doAddFeedback(inputText,'dangerous')} }
+                closeDialog={ () => {this.setShowFeedbackDialog(false,'dangerous')}}>
+                </DialogInput>
                 <ProblematorButton title="Add video..." onPress={() => { this.setShowAddBetaVideoDialog(true) }} />
             </View>
         );
@@ -436,7 +479,7 @@ export class ProblemDetails extends React.Component {
         return (
             <View style={styles.parent}>
                 <ActivitySpinner
-                    visible={this.props.state == 'loading'}
+                    visible={this.props.uiState == 'loading'}
                     textContent={'Loading...'}
                     textStyle={{ color : 'white'}}
                     overlayColor="rgba(0,0,0,0.7)"
@@ -590,6 +633,8 @@ const mapDispatchToProps = (dispatch) => {
         onAddBetaVideo: (payload) => dispatch({ type : 'ADD_BETAVIDEO_SAGA', payload}),
         onDeleteBetaVideo: (payload) => dispatch({ type : 'DEL_BETAVIDEO_SAGA', payload}),
         onSaveTick: (payload) => dispatch({ type : 'SAVE_TICK_SAGA', payload}),
+        onAddFeedback: (payload) => dispatch({ type : 'SEND_FEEDBACK_SAGA', payload}),
+ 
     }
 }
 

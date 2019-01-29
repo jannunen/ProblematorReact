@@ -1,6 +1,6 @@
 import { takeLatest, fork, call, put, takeEvery, all } from 'redux-saga/effects';
 import { saveTickSaga, delBetaVideoSaga, addBetaVideo, getGlobalAscents , getProblemSaga, 
-  getProblemsSaga , deleteTickSaga} from './problemsSaga'
+  getProblemsSaga , deleteTickSaga, sendFeedbackSaga} from './problemsSaga'
 import { getAuthSaga } from './authSaga';
 import  * as uiSagas from './uiSaga'
 
@@ -14,7 +14,8 @@ export default function *rootSaga() {
     fork( takeLatest, 'ADD_BETAVIDEO_SAGA',addBetaVideo ),
     fork( takeLatest, 'DEL_BETAVIDEO_SAGA',delBetaVideoSaga ),
     fork( takeLatest, 'SAVE_TICK_SAGA', saveTickSaga ),
+    fork( takeLatest, 'SEND_FEEDBACK_SAGA', sendFeedbackSaga ),
     takeEvery('PROBLEMS_LOAD_ERROR', uiSagas.showErrorAlert),
-    takeEvery('ALERT_MESSAGE', uiSagas.showAlert)
+    takeEvery('ALERT_MESSAGE', uiSagas.showAlert),
   ]
 };

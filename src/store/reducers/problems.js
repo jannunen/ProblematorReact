@@ -13,10 +13,28 @@ const reducer = (state = initialState, action) => {
     console.log(action.type,"payload to reducer",payload);
     let newState = null;
     switch (action.type) {
+        case 'ALERT_MESSAGE':
+        return {
+            ...state
+            
+        }
+        break;
+        case 'SAVE_FEEDBACK_PUT':
+         return {
+             ...state,
+             uiState : 'ready'
+         }
+        break;
         case 'UI_LOADING':
          return  {
              ...state,
-             state : 'loading',
+             uiState : 'loading',
+         }
+        break;
+        case 'UI_STOP_LOADING':
+         return  {
+             ...state,
+             uiState : 'ready',
          }
         break;
         case 'SAVE_TICK_PUT':
@@ -34,7 +52,7 @@ const reducer = (state = initialState, action) => {
                     ascentcount : parseInt(state.probleminfos[payload.source.problemid].ascentcount)+1,
                 }
              },
-             state : 'ready'
+             uiState : 'ready'
          }
         break;
         case DEL_BETAVIDEO_PUT:
@@ -49,7 +67,7 @@ const reducer = (state = initialState, action) => {
                     
                 }
             },
-             state : 'ready'
+             uiState : 'ready'
         } 
         break;
         case ADD_BETAVIDEO_PUT:
@@ -65,7 +83,7 @@ const reducer = (state = initialState, action) => {
                     ]
                 }
             },
-             state : 'ready'
+             uiState : 'ready'
         } 
         break;
         case GLOBAL_ASCENTS_PUT :
@@ -76,7 +94,7 @@ const reducer = (state = initialState, action) => {
                     ...state.globalAscents,
                     [pid] : payload.ascents
                 },
-                state: 'ready'
+                uiState: 'ready'
             }
         break;
 
@@ -99,7 +117,7 @@ const reducer = (state = initialState, action) => {
                     },{})
                  }
              },
-             state : 'ready'
+             uiState : 'ready'
 
          }
 
@@ -113,14 +131,14 @@ const reducer = (state = initialState, action) => {
                  ...state.probleminfos,
                  [action.payload.problem.problemid]: action.payload.problem
              },
-             state : 'ready'
+             uiState : 'ready'
          }
         break; 
 
         case PROBLEMS_LOAD_ERROR:
             return {
                 ...state,
-                state: 'ready',
+                uiState: 'ready',
                 problems : [],
                 error : action.payload.message
             }
@@ -129,7 +147,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 problems: action.payload,
-                state: 'ready',
+                uiState: 'ready',
                 error : null
             }
             break;

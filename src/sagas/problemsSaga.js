@@ -23,10 +23,9 @@ export function* deleteTickSaga(action) {
   payload.tickid = action.payload.tickid;
   payload.problemid = action.payload.problemid;
   yield put({ type: 'DELETE_TICK_PUT', payload });
-  // yield put({ type : 'UI_LOADING',  payload : { loading : false }});
 }
 
-function* doSaga(action, apiCall, successReducer, failReducer)  {
+function* doSaga(action, apiCall, successReducer, failReducer, alertSuccess)  {
   yield put({ type : 'UI_LOADING',  payload : { loading : true }});
   if (failReducer == null) {
     failReducer = 'PROBLEMS_LOAD_ERROR';
@@ -44,16 +43,24 @@ function* doSaga(action, apiCall, successReducer, failReducer)  {
   if (payload.message && payload.message.match(/error/i)) {
     payload.error = true;
   }
+  let ret = true;
   if (payload && !payload.error) {
     payload.problemid = action.payload.problemid;
     // pass the original action payload to reducer.
     // The parameters might contain some handy data reducer can use
     payload.source = action.payload;
+    if (alertSuccess) {
+      yield put({ type : 'ALERT_MESSAGE', payload});
+    }
     yield put({ type: successReducer, payload });
   } else {
     yield put({ type: failReducer, payload });
+    ret = false;
   }
-  // yield put({ type : 'UI_LOADING',  payload : { loading : false }});
+  return ret;
+}
+export function* sendFeedbackSaga(action) {
+  yield (doSaga(action, ProblematorAPI.saveFeedback, 'SAVE_FEEDBACK_PUT',null, true ));
 }
 
 export function* delBetaVideoSaga(action) {
@@ -92,7 +99,6 @@ export function* getGlobalAscents(action) {
   const response = yield call(ProblematorAPI.getGlobalAscents, action.payload)
   let payload = response ? response.data : {}
   payload = fixJSONP(payload);
-  console.log("saga return");
   if (payload && !payload.error) {
     payload.problemid = action.payload.problemid;
     console.log("before reducer",payload);

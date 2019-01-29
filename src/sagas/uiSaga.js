@@ -1,4 +1,4 @@
-import { call } from 'redux-saga/effects'
+import { call ,put} from 'redux-saga/effects'
 import { Alert } from 'react-native'
 
 export function* showErrorAlert (action) {
@@ -7,7 +7,9 @@ export function* showErrorAlert (action) {
 }
 
 export function* showAlert (action) {
+  console.log(action)
   const message = action.payload;
+  console.log("want to show",message);
   yield call(Alert.alert, 'Problemator', message.message != null ? message.message : message)
 }
 

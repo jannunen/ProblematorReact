@@ -19,6 +19,14 @@ export default class ProblematorAPI {
      const url = getAPI(`/savetick/?`+postData,payload)
     return axios.post(url);
    }
+   static saveFeedback(payload) {
+     payload.pid = payload.problemid;
+     const postData = querystring.stringify(payload);
+     const url = getAPI(`/savefeedback/?`+postData,payload)
+     console.log(url);
+     return axios.post(url);
+   }
+
    static delBetaVideo(payload) {
     return axios.post(getAPI(`/delbetavideo/?vid=${payload.videoid}`,payload));
    }
