@@ -2,6 +2,7 @@ import { createStore , combineReducers, compose, applyMiddleware } from 'redux';
 
 import problemsReducer from './reducers/problems'
 import authReducer from './reducers/auth'
+import groupsReducer from './reducers/groups'
 import thunk from 'redux-thunk';
 
 import createSagaMiddleware from 'redux-saga'
@@ -9,7 +10,8 @@ import rootSaga from '../sagas/index';
 
 const rootReducer = combineReducers({
     problems : problemsReducer,
-    auth : authReducer
+    auth : authReducer,
+    groups : groupsReducer
 });
 
 let composeEnhancers = compose;
