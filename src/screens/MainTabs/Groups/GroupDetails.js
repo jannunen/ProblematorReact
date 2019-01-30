@@ -25,7 +25,7 @@ export class GroupDetails extends React.Component {
       }
 
     componentDidMount = () => {
-        let payload = {id : this.props.group.gid};
+        let payload = {groupid : this.props.group.gid};
         this.props.onGetGroup(payload);
     }
 
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 
     const mapDispatchToProps = (dispatch) => {
         return {
-            onGetGroup: (payload) => dispatch({ type : 'GET_GROUP_SAGA', payload}),
+            onGetGroup: (payload) => dispatch({ type : 'GROUP_SAGA', payload}),
     
         }
     }

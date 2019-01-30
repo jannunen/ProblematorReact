@@ -1,5 +1,6 @@
 export const initialState = {
     groups: [],
+    groupDetails : [],
     pending: [],
     popular: [],
     loading : false,
@@ -10,6 +11,16 @@ export default (state = initialState, action) => {
     console.log(action.type,"payload to GROUPS reducer",payload);
     let newState = null;
     switch (action.type) {
+        case 'GROUP_PUT':
+        newState = {
+            ...state,
+            groupDetails : {
+                ...state.groupDetails,
+                [payload.id] : payload
+            }
+        }
+        return newState;
+        break;
         case 'MY_GROUPS_PUT':
         return  {
                 ...state,

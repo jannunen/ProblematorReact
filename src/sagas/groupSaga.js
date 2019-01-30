@@ -7,5 +7,8 @@ export const authToken = (state) => state.auth.token;
 
 
 export function* myGroupsSaga(action) {
-  yield (doSaga(action, ProblematorAPI.myGroups, 'MY_GROUPS_PUT'));
+  yield (doSaga(action, ProblematorAPI.myGroups, 'MY_GROUPS_PUT'))
+}
+export function* groupSaga(action) {
+  yield (doSaga(action, ProblematorAPI.group, 'GROUP_PUT'))
 }

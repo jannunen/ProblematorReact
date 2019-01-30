@@ -17,6 +17,9 @@ import problems from '../tests/fixtures/problems';
 
 export default class ProblematorAPI {
   
+  static group(payload) {
+    return axios.get(getAPI("/group?id="+payload.groupid,payload))
+  }
   static myGroups(payload) {
     return axios.get(getAPI("/groups",payload))
   }
