@@ -3,17 +3,14 @@ import {
   View,
   Text,
   StyleSheet,
-  AsyncStorage,
   SafeAreaView,
   Dimensions,
 } from 'react-native'
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
 import IconBadge from 'react-native-icon-badge';
+import { Navigation } from 'react-native-navigation';
 
-import { goToAuth } from '../../navigation'
-import { USER_KEY } from '../../../../config'
 import globalStyles from '../../../styles/global'
 
 import ClimbingGroups from '../../../components/ClimbingGroups/ClimbingGroups'
@@ -29,15 +26,35 @@ export class Groups extends React.Component {
       { key: 'second', title: 'Invitations' },
       { key: 'third', title: 'Popular' },
     ],
-    invitationCount : 1,
   };
+
+  handleItemClicked = (group) => {
+    // Do something
+    console.log("Opening group",group);
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: 'com.problemator.GroupDetailsScreen',
+        passProps: {
+          group
+        }
+      },
+      options: {
+        topBar: {
+          title: {
+            text: 'Group' + " " + group.name
+          }
+        }
+      }
+    });
+
+  }
 
 
   firstRoute = () => {
     return (
       <View style={[styles.scene, { backgroundColor: '#252623' }]} >
          <Text style={globalStyles.h1Style} >My groups</Text>
-         <ClimbingGroups />
+         <ClimbingGroups handleItemClicked={this.handleItemClicked} />
          <SearchGroups />
          { this.props.searchGroupHits ? 
                 <View>
@@ -73,7 +90,7 @@ export class Groups extends React.Component {
           return (
               <IconBadge
                   BadgeElement={
-                      <Text style={{ color: '#FFFFFF' }}>{this.state.invitationCount}</Text>
+                      <Text style={{ color: '#FFFFFF' }}>{this.props.invitationCount}</Text>
                   }
                   IconBadgeStyle={
                       {
@@ -82,7 +99,7 @@ export class Groups extends React.Component {
                           backgroundColor: '#decc00'
                       }
                   }
-                  Hidden={this.state.invitationCount == 0}
+                  Hidden={this.props.invitationCount == 0}
               />)
       }
   }
@@ -141,6 +158,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
+    invitationCount : state.groups.invitationCount,
     loading : state.problems.loading,
     error : state.problems.error
   }

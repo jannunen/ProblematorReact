@@ -3,8 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Picker,
-  SectionList,
   TouchableOpacity
 } from 'react-native'
 

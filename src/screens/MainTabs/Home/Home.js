@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
   View,
   Text,
+  SafeAreaView,
   StyleSheet,
   AsyncStorage,
   Dimensions,
@@ -19,7 +20,7 @@ import ProblemList from '../../../components/ProblemList/ProblemList';
 export class Home extends React.Component {
   handleItemClicked = (problem) => {
     // Do something
-    console.log(problem);
+    console.log("Opening prob",problem);
     Navigation.push(this.props.componentId, {
       component: {
         name: 'com.problemator.ProblemDetailScreen',
@@ -81,15 +82,17 @@ export class Home extends React.Component {
 
   render() {
     return (
+      <SafeAreaView style={{flex : 1}}>
         <TabView
-        navigationState={this.state}
-        renderScene={SceneMap({
-          first: () => {return this.firstRoute(this.props)},
-          second: this.secondRoute,
-        })}
-        onIndexChange={index => this.setState({ index })}
-        initialLayout={{ width: Dimensions.get('window').width, height : Dimensions.get('window').height }}
-      />
+          navigationState={this.state}
+          renderScene={SceneMap({
+            first: () => { return this.firstRoute(this.props) },
+            second: this.secondRoute,
+          })}
+          onIndexChange={index => this.setState({ index })}
+          initialLayout={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+        />
+      </SafeAreaView>
     )
   }
 }

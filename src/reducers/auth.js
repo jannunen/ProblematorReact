@@ -5,6 +5,7 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
+  console.log("AUTH REDUCER");
   switch (action.type) {
     case AUTH_SET_TOKEN:
     console.log("setting atuh",action)

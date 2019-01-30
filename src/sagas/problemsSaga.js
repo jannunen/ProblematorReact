@@ -2,6 +2,7 @@ import { select, call, put  } from 'redux-saga/effects';
 import ProblematorAPI from "../apis/problematorapi";
 import fixJSONP from '../helpers/fixJSONP';
 export const authToken = (state) => state.auth.token;
+import doSaga from './doSaga'
 
 export function* getProblemSaga(action) {
   const token = yield(select(authToken));
@@ -25,6 +26,7 @@ export function* deleteTickSaga(action) {
   yield put({ type: 'DELETE_TICK_PUT', payload });
 }
 
+/*
 function* doSaga(action, apiCall, successReducer, failReducer, alertSuccess)  {
   yield put({ type : 'UI_LOADING',  payload : { loading : true }});
   if (failReducer == null) {
@@ -59,6 +61,7 @@ function* doSaga(action, apiCall, successReducer, failReducer, alertSuccess)  {
   }
   return ret;
 }
+*/
 
 export function* sendOpinionSaga(action) {
   yield (doSaga(action, ProblematorAPI.saveOpinion, 'SAVE_OPINION_PUT',null, true ));

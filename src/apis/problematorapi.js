@@ -3,6 +3,9 @@ import querystring from 'querystring'
 
 const root = "https://www.problemator.fi/t/problematorapi/v02";
 const getAPI = (url, payload) => {
+  if (payload == undefined) {
+    console.log("Payload is missing in getAPI()");
+  }
   if (!url.match(/\?/)) {
     return `${root}${url}?api-auth-token=${payload.token}&react=true`; 
   } else {
@@ -14,6 +17,9 @@ import problems from '../tests/fixtures/problems';
 
 export default class ProblematorAPI {
   
+  static myGroups(payload) {
+    return axios.get(getAPI("/groups",payload))
+  }
    static saveTick(payload) {
      const postData = querystring.stringify(payload);
      const url = getAPI(`/savetick/?`+postData,payload)

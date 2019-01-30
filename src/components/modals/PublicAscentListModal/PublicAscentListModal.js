@@ -4,12 +4,8 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
-  Linking,
   ScrollView,
-  TouchableOpacity,
   Modal,
-  Dimensions,
-  ART
 } from 'react-native'
 import { connect } from 'react-redux';
 import moment from 'moment';

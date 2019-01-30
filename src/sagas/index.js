@@ -1,4 +1,4 @@
-import { takeLatest, fork, call, put, takeEvery, all } from 'redux-saga/effects';
+import { takeLatest, put, fork, takeEvery } from 'redux-saga/effects';
 import { getAuthSaga } from './authSaga';
 import * as problemSagas from './problemsSaga';
 import  * as uiSagas from './uiSaga'

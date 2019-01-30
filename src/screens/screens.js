@@ -8,12 +8,14 @@ import SignUpScreen from './Auth/SignUp/SignUp';
 import HomeScreen from './MainTabs/Home/Home';
 import OtherScreen from './MainTabs/Other/Other';
 import GroupsScreen from './MainTabs/Groups/Groups';
+import GroupDetailsScreen from './MainTabs/Groups/GroupDetails';
 import ProblemDetailScreen from './MainTabs/Problems/ProblemDetailScreen/ProblemDetailScreen';
 
 import { createStore , combineReducers, compose, applyMiddleware } from 'redux';
 
 import problemsReducer from '../reducers/problems'
 import authReducer from '../reducers/auth'
+import groupsReducer from '../reducers/groups'
 
 import createSagaMiddleware from 'redux-saga'
 import  watcherSaga   from '../sagas/index';
@@ -21,7 +23,8 @@ import  watcherSaga   from '../sagas/index';
 
 const rootReducer = combineReducers({
     problems : problemsReducer,
-    auth : authReducer
+    auth : authReducer,
+    groups : groupsReducer,
 });
 
 let composeEnhancers = compose;
@@ -44,5 +47,6 @@ export default registerScreens = () => {
     Navigation.registerComponentWithRedux('com.problemator.SignUpScreen', () =>  SignUpScreen, Provider, store);
     Navigation.registerComponentWithRedux('com.problemator.OtherScreen', () => OtherScreen, Provider, store);
     Navigation.registerComponentWithRedux('com.problemator.GroupsScreen', () => GroupsScreen, Provider, store);
+    Navigation.registerComponentWithRedux('com.problemator.GroupDetailsScreen', () => GroupDetailsScreen, Provider, store);
     Navigation.registerComponentWithRedux('com.problemator.ProblemDetailScreen', () => ProblemDetailScreen, Provider, store);
 } 

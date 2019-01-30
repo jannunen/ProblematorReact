@@ -1,11 +1,22 @@
+import { select, call, put  } from 'redux-saga/effects';
+import ProblematorAPI from "../apis/problematorapi";
+import fixJSONP from '../helpers/fixJSONP';
+export const authToken = (state) => state.auth.token;
 
-function* doSaga(action, apiCall, successReducer, failReducer, alertSuccess)  {
+var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSuccess)  {
+  if (action.payload == null) {
+    action.payload = {};
+  }
   yield put({ type : 'UI_LOADING',  payload : { loading : true }});
   if (failReducer == null) {
     failReducer = 'PROBLEMS_LOAD_ERROR';
   }
+  if (alertSuccess == null) {
+    alertSuccess = false;
+  }
   const token = yield(select(authToken));
   action.payload = {...action.payload, token : token};
+  console.log("here",apiCall,action.payload)
   const response = yield call(apiCall, action.payload)
   let payload = response ? response.data : {}
   payload = fixJSONP(payload);
