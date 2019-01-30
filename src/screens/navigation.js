@@ -76,8 +76,15 @@ export const goHome = () => {
 
             },
             {
-              component: {
-                name: 'com.problemator.GroupsScreen',
+              stack: {
+                id: 'Groups',
+                children: [ 
+                  {
+                    component: {
+                      name: 'com.problemator.GroupsScreen',
+                    }
+                  }
+                ],
                 options: {
                   bottomTab: {
                     text: 'Groups',
