@@ -16,7 +16,13 @@ var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSucc
   }
   const token = yield(select(authToken));
   action.payload = {...action.payload, token : token};
-  console.log("here",apiCall,action.payload)
+  // If payload contains apiFunc, it usually means that
+  // we are running tests and should replace the api
+  // with the apiFunc as it is probably stubbed/mocked.
+  if (action.payload.apiFunc != null) {
+    apiCall = action.payload.apiFunc;
+    console.log("MOCKING API!");
+  }
   const response = yield call(apiCall, action.payload)
   let payload = response ? response.data : {}
   payload = fixJSONP(payload);
