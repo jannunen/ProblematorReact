@@ -1,15 +1,21 @@
 import { DEL_BETAVIDEO_PUT, ADD_BETAVIDEO_PUT, GLOBAL_ASCENTS_PUT, DELETE_TICK_PUT,  GET_PROBLEM_PUT, SET_PROBLEMS, PROBLEMS_LOAD_ERROR, PROBLEMS_START_LOADING, SELECT_GYM } from '../actions/actionTypes'
 
-import moment from 'moment';
 export const initialState = {
     problems: [],
     probleminfos: [],
     globalAscents : [],
     loading : false,
     error : null,
+    uiState : 'ready'
 }
 const reducer = (state = initialState, action) => {
     const payload = action.payload;
+    let source = null;
+    console.log(action);
+    if (payload != null && payload.source != null) {
+        source = payload.source;
+        delete action.payload.source;
+    }
     console.log(action.type,"payload to reducer",payload);
     let newState = null;
     switch (action.type) {
@@ -24,8 +30,8 @@ const reducer = (state = initialState, action) => {
              ...state,
              probleminfos : {
                  ...state.probleminfos,
-                 [payload.source.problemid] : {
-                     ...state.probleminfos[payload.source.problemid],
+                 [source.problemid] : {
+                     ...state.probleminfos[source.problemid],
                      c_like :  payload.opinions.likes,
                      c_love :   payload.opinions.loves,
                      c_dislike :  payload.opinions.dislikes,
@@ -58,14 +64,14 @@ const reducer = (state = initialState, action) => {
              ...state,
              probleminfos : {
                  ...state.probleminfos,
-                 [payload.source.problemid] : {
-                     ...state.probleminfos[payload.source.problemid],
+                 [source.problemid] : {
+                     ...state.probleminfos[source.problemid],
                     myticklist :  {
-                        ...state.probleminfos[payload.source.problemid].myticklist,
+                        ...state.probleminfos[source.problemid].myticklist,
                         [payload.tick.id] : payload.tick 
                     },
-                    mytickcount : parseInt(state.probleminfos[payload.source.problemid].mytickcount)+1,
-                    ascentcount : parseInt(state.probleminfos[payload.source.problemid].ascentcount)+1,
+                    mytickcount : parseInt(state.probleminfos[source.problemid].mytickcount)+1,
+                    ascentcount : parseInt(state.probleminfos[source.problemid].ascentcount)+1,
                 }
              },
              uiState : 'ready'
@@ -79,7 +85,7 @@ const reducer = (state = initialState, action) => {
                 [payload.problemid] : {
                     ...state.probleminfos[payload.problemid],
                     "betavideos" : 
-                        state.probleminfos[payload.problemid].betavideos.filter( item => payload.source.videoid !== item.id),
+                        state.probleminfos[payload.problemid].betavideos.filter( item => source.videoid !== item.id),
                     
                 }
             },
@@ -91,10 +97,10 @@ const reducer = (state = initialState, action) => {
             ...state,
             probleminfos : {
                 ...state.probleminfos,
-                [payload.problemid] : {
-                    ...state.probleminfos[payload.problemid],
+                [source.problemid] : {
+                    ...state.probleminfos[source.problemid],
                     "betavideos" : [
-                        ...state.probleminfos[payload.problemid].betavideos,
+                        ...state.probleminfos[source.problemid].betavideos,
                         action.payload.video
                     ]
                 }
@@ -141,6 +147,7 @@ const reducer = (state = initialState, action) => {
 
         case GET_PROBLEM_PUT:
         // Use 'hashtable' approach to make the searches faster for a certain problem
+        console.log("HERE!",action.payload);
          return  {
              ...state,
              probleminfos : {

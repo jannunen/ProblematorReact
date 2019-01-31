@@ -1,6 +1,6 @@
 import { select, call, put  } from 'redux-saga/effects';
 // import ProblematorAPI from "../apis/problematorapi";
-import fixJSONP from '../helpers/fixJSONP';
+//import fixJSONP from '../helpers/fixJSONP';
 export const authToken = (state) => state.auth.token;
 
 var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSuccess,customApi)  {
@@ -16,9 +16,12 @@ var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSucc
   }
   const response = yield call(apiCall, action.payload)
   let payload = response ? response.data : {}
-  payload = fixJSONP(payload);
+  //payload = JSON.parse(payload);
+  //payload = fixJSONP(payload);
+  //console.log("this is waht i got",payload);
   // If the return value is only a string, make it an object with
   // a message property.
+  console.log("outoa?");
   if ("string"===typeof(payload)) {
     payload = {message : payload};
   }
@@ -27,7 +30,6 @@ var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSucc
   }
   let ret = true;
   if (payload && !payload.error) {
-    payload.problemid = action.payload.problemid;
     // pass the original action payload to reducer.
     // The parameters might contain some handy data reducer can use
     payload.source = action.payload;

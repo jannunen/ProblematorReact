@@ -8,7 +8,6 @@ function* getAPI (url, payload)  {
     console.log("Payload is missing in getAPI()");
   }
   const token = yield(select(authToken));
-  console.log("using token",token);
   if (!url.match(/\?/)) {
     return `${root}${url}?api-auth-token=${token}&react=true`; 
   } else {
@@ -17,61 +16,61 @@ function* getAPI (url, payload)  {
 }
 export const authToken = (state) => state.auth.token;
 import problems from '../tests/fixtures/problems';
+  const config = {
+
+    responseType : 'json'
+  }
 
 export default class ProblematorAPI {
   
   static * group(payload) {
-    return yield axios.get(yield getAPI("/group/?id="+payload.groupid,payload))
+    return yield axios.get(yield getAPI("/group/?id="+payload.groupid,payload),config)
   }
   static * myGroups(payload) {
-    return yield axios.get(yield getAPI("/groups/",payload))
+    return yield axios.get(yield getAPI("/groups/",payload),config)
   }
    static * saveTick(payload) {
      const postData = querystring.stringify(payload);
      const url = yield getAPI(`/savetick/?`+postData,payload)
-    return axios.post(url);
+    return yield axios.post(url,config);
    }
-   static saveOpinion(payload) {
+   static * saveOpinion(payload) {
      payload.targetid = payload.problemid;
      const postData = querystring.stringify(payload);
-     const url = getAPI(`/saveopinion/?`+postData,payload)
-     return axios.post(url);
+     const url = yield getAPI(`/saveopinion/?`+postData,payload)
+     return yield axios.post(url,config);
    }
-   static saveFeedback(payload) {
+   static * saveFeedback(payload) {
      payload.pid = payload.problemid;
      const postData = querystring.stringify(payload);
-     const url = getAPI(`/savefeedback/?`+postData,payload)
-     return axios.post(url);
+     const url = yield getAPI(`/savefeedback/?`+postData,payload)
+     return yield axios.post(url,config);
    }
 
-   static delBetaVideo(payload) {
-    return axios.post(getAPI(`/delbetavideo/?vid=${payload.videoid}`,payload));
+   static * delBetaVideo(payload) {
+    return yield axios.post(yield getAPI(`/delbetavideo/?vid=${payload.videoid}`,payload),config);
    }
-   static addBetaVideo(payload) {
-     const url =getAPI(`/savebetavideo/?pid=${payload.problemid}&url=${payload.video_url}`,payload);
-    return axios.post(url);
+   static * addBetaVideo(payload) {
+     const url =yield getAPI(`/savebetavideo/?pid=${payload.problemid}&url=${payload.video_url}`,payload);
+    return yield axios.post(url,config);
    }
-   static getGlobalAscents(payload) {
-     const url = getAPI(`/global_ascents/?pid=${payload.problemid}`,payload);
-    return axios.get(url);
+   static * getGlobalAscents(payload) {
+     const url = yield getAPI(`/global_ascents/?pid=${payload.problemid}`,payload);
+    return yield axios.get(url,config);
    }
-  static getProblem(payload) {
-    return axios.get(getAPI(`/problem/${payload.id}`,payload));
+  static * getProblem(payload) {
+    return yield axios.get(yield getAPI("/problem/"+payload.id,payload),config);
   }
-  static deleteTick(payload) {
-    return axios.get(getAPI(`/untick/?tickid=${payload.tickid}&pid=${payload.problemid}`,payload));
+  static * deleteTick(payload) {
+    return yield axios.get(yield getAPI(`/untick/?tickid=${payload.tickid}&pid=${payload.problemid}`,payload),config);
   }
-  static getProblems(payload) {
-    //return axios.get(`${root}/problems/?api-auth-token=${payload.token}`); 
+  static * getProblems(payload) {
+       let ret = JSON.stringify(problems);
     // Mock the response...
-    return new Promise((resolve, reject) => {
-      let ret = JSON.stringify(problems);
-      console.log("Static response");
-      resolve({data : ret});
-    });
+    // return yield new Promise((resolve, reject) => {
+    //   console.log("Static response");
+    //   resolve({data : ret});
+    // });
+    return yield { data : problems};
   }
-//   static add(payload) {
-//     return axios.post(root, payload); }
-//   static getProblem(payload) {
-//     return axios.delete(`${root}/delete/${payload.id}`); 
 }

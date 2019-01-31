@@ -1,6 +1,6 @@
 import problemsReducer, {initialState } from '../../reducers/problems';
 import { problemsLoadBegin, problemsLoadFailure, setProblems } from '../../actions/problems';
-import problems from '../fixtures/problems';
+import probleminfos from '../fixtures/probleminfos';
 import basicState, { problemInfosAfterRemoveTick } from '../fixtures/probleminfos';
 import mockStore from 'redux-mock-store';
 
@@ -107,22 +107,27 @@ describe('problems reducers', () => {
             type : 'ADD_BETAVIDEO_PUT',
             payload: {
                 problemid : 47428,
-                video : newVideo
+                payload : { video : newVideo},
+                source : { problemid : 47428 }
             }
         }
 
-        let stateAfter = JSON.parse(JSON.stringify(basicState));
-        const state = problemsReducer(basicState,action);
+
+        initialState['probleminfos'] = probleminfos;
+        let stateAfter = JSON.parse(JSON.stringify(initialState));
+        console.log(initialState);
+        
+        const state = problemsReducer(initialState,action);
         // Add betavideo to state and expect them to match
-        stateAfter.probleminfos[action.payload.problemid]['betavideos'].push( newVideo )
-        expect(state).toEqual(stateAfter);
-    })
+        stateAfter.probleminfos[action.payload.source.problemid]['betavideos'].push( newVideo )
+        expect(state).toEqual(   stateAfter )
+    });
 
 
     it('should return error message',()=> {
         const action = {
            type : 'PROBLEMS_LOAD_ERROR' ,
-           error : 'test error'
+           payload : {message : 'test error'}
         }
         const state = problemsReducer(undefined, action);
         expect(state).toEqual({...initialState, error : 'test error'});
@@ -133,7 +138,7 @@ describe('problems reducers', () => {
         const arr = ['arr'];
         const action = {
             type : 'SET_PROBLEMS',
-            problems : arr
+            payload :   arr
         }
         const state = problemsReducer(undefined,action);
         expect(state).toEqual({...initialState, problems : arr});

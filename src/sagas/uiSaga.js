@@ -7,9 +7,10 @@ export function* showErrorAlert (action) {
 }
 
 export function* showAlert (action) {
-  console.log(action)
+  console.log("In Showalert",action)
   const message = action.payload;
-  console.log("want to show",message);
-  yield call(Alert.alert, 'Problemator', message.message != null ? message.message : message)
+  const msg = message.message != null ? message.message : message;
+  yield call(Alert.alert, 'Problemator', msg.toString());
+
 }
 
