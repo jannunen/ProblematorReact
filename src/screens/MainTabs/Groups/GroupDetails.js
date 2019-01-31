@@ -18,6 +18,7 @@ import Swiper from 'react-native-swiper';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import globalStyles from '../../../styles/global'
+import LeaderBoard from '../../../components/ClimbingGroups/LeaderBoard'
 
 export class GroupDetails extends React.Component {
 
@@ -91,10 +92,10 @@ export class GroupDetails extends React.Component {
                      prevButton={<Text style={styles.navButtonText}>‹</Text>} 
                     >
                     <View style={styles.slide1}>
-                    <Text style={styles.text}>Boulder </Text>
+                        <LeaderBoard data={gd.membersboulder} myRank={gd.me.rank} />
                     </View>
                     <View style={styles.slide2}>
-                    <Text style={styles.text}>Sport</Text>
+                        <LeaderBoard data={gd.memberssport} myRank={gd.me.ranksport} />
                     </View>
                     <View style={styles.slide3}>
                     <Text style={styles.text}>Latest</Text>
