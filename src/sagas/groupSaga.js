@@ -10,5 +10,6 @@ export function* myGroupsSaga(action) {
   yield (doSaga(action, ProblematorAPI.myGroups, 'MY_GROUPS_PUT'))
 }
 export function* groupSaga(action) {
+  console.log("groupsage");
   yield (doSaga(action, ProblematorAPI.group, 'GROUP_PUT'))
 }

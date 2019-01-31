@@ -7,7 +7,7 @@ var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSucc
   if (action.payload == null) {
     action.payload = {};
   }
-  yield put({ type : 'UI_LOADING',  payload : { loading : true }});
+  yield put({ type : 'UI_LOADING',  payload : { uiState : 'loading' }});
   if (failReducer == null) {
     failReducer = 'PROBLEMS_LOAD_ERROR';
   }
