@@ -37,6 +37,7 @@ var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSucc
     yield put({ type: failReducer, payload });
     ret = false;
   }
+  yield put({type : 'UI_STOP_LOADING'})
   return ret;
 }
 export default doSaga;
