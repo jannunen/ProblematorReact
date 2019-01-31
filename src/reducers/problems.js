@@ -1,4 +1,4 @@
-import { DEL_BETAVIDEO_PUT, ADD_BETAVIDEO_PUT, GLOBAL_ASCENTS_PUT, DELETE_TICK_PUT,  GET_PROBLEM_PUT, SET_PROBLEMS, PROBLEMS_LOAD_ERROR, PROBLEMS_START_LOADING, SELECT_GYM } from '../actions/actionTypes'
+import { DEL_BETAVIDEO_PUT, ADD_BETAVIDEO_PUT, GLOBAL_ASCENTS_PUT, DELETE_TICK_PUT,  GET_PROBLEM_PUT, SET_PROBLEMS, PROBLEMS_LOAD_ERROR } from '../actions/actionTypes'
 
 export const initialState = {
     problems: [],
@@ -10,13 +10,12 @@ export const initialState = {
 }
 const reducer = (state = initialState, action) => {
     const payload = action.payload;
+    console.log(action.type,"payload to reducer",payload);
     let source = null;
-    console.log(action);
-    if (payload != null && payload.source != null) {
-        source = payload.source;
+    if (payload && payload.source) {
+        source = {...payload.source};
         delete action.payload.source;
     }
-    console.log(action.type,"payload to reducer",payload);
     let newState = null;
     switch (action.type) {
         case 'ALERT_MESSAGE':
@@ -93,6 +92,7 @@ const reducer = (state = initialState, action) => {
         } 
         break;
         case ADD_BETAVIDEO_PUT:
+        console.log("source",source)
         return  { 
             ...state,
             probleminfos : {

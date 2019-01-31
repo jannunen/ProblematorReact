@@ -16,15 +16,11 @@ var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSucc
   }
   const response = yield call(apiCall, action.payload)
   let payload = response ? response.data : {}
-  //payload = JSON.parse(payload);
-  //payload = fixJSONP(payload);
-  //console.log("this is waht i got",payload);
-  // If the return value is only a string, make it an object with
-  // a message property.
-  console.log("outoa?");
+  /*
   if ("string"===typeof(payload)) {
     payload = {message : payload};
   }
+  */
   if (payload.message && payload.message.match(/error/i)) {
     payload.error = true;
   }

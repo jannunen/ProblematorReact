@@ -10,29 +10,21 @@ describe('problems reducers', () => {
         expect(state).toEqual(initialState);
     })
 
-    it('should start problem loading',() => {
-        const action = {
-           type : 'PROBLEMS_START_LOADING' ,
-           loading : true
-        }
-        const state = problemsReducer(undefined, action);
-        expect(state).toEqual({...initialState, loading : true});
-    })
-
-    it ('should fetch global ascent list successfully',() => {
-
-    });
     it('should remove tick successfully',() => {
         const action = {
             type : 'DELETE_TICK_PUT',
             payload: {
                 tickid : 530853,
                 problemid: 47428,
+                source : {problemid : 47428}
             }
         }
+        initialState['probleminfos'] = probleminfos;
+        let stateAfter = JSON.parse(JSON.stringify(initialState));
 
-        const state = problemsReducer(basicState,action);
-        expect(state).toEqual(problemInfosAfterRemoveTick);
+        const state = problemsReducer(initialState,action);
+        stateAfter.probleminfos = problemInfosAfterRemoveTick;
+        expect(state).toEqual(stateAfter);
     })
     it('should remove betavideo correctly',() => {
         const betaVideo = { id: "43", "video_url": 'foourl', "added": "2017-04-15 11:45:43", "sender": { "id": "62003", "etunimi": "Matti", "added": null } };
@@ -40,16 +32,18 @@ describe('problems reducers', () => {
             type : 'DEL_BETAVIDEO_PUT',
             payload: {
                 problemid : 47428,
-                source : { videoid : 43}
+                videoid : 43,
+                source : { problemid : 47428},
             }
         }
 
-        basicState.probleminfos[action.payload.problemid]['betavideos'] = [betaVideo];
-        let stateAfter = JSON.parse(JSON.stringify(basicState));
-        const state = problemsReducer(basicState,action);
-        // Add betavideo to state and expect them to match
+        initialState['probleminfos'] = probleminfos;
+        initialState.probleminfos[action.payload.problemid]['betavideos'] = [betaVideo];
+        let stateAfter = JSON.parse(JSON.stringify(initialState));
+
+        const state = problemsReducer(initialState,action);
         stateAfter.probleminfos[action.payload.problemid]['betavideos'].filter( (item, idx) => {
-            return item.id !== 43;
+            return item.id !== action.payload.videoid;
         });
         expect(state.probleminfos).toEqual(stateAfter.probleminfos);
     })
@@ -63,12 +57,13 @@ describe('problems reducers', () => {
                 loves : 3,
                 dislikes : 2,
                 },
-                source : { opinion : 2, problemid : 47428 }
+                source : { problemid : 47428 }
             }
         }
+        initialState['probleminfos'] = probleminfos;
+        let stateAfter = JSON.parse(JSON.stringify(initialState));
+        const state = problemsReducer(initialState,action);
 
-        let stateAfter = JSON.parse(JSON.stringify(basicState));
-        const state = problemsReducer(basicState,action);
         expect(state.probleminfos['47428'].c_love).toEqual(3);
         expect(state.probleminfos['47428'].c_like).toEqual(14);
         expect(state.probleminfos['47428'].c_dislike).toEqual(2);
@@ -83,12 +78,14 @@ describe('problems reducers', () => {
                 error : false,
                 message : 'Tick saved',
                 tick : aTick,
-                source : { problemid : 47428 }
+                source : { problemid : 47428}
             }
         }
 
-        let stateAfter = JSON.parse(JSON.stringify(basicState));
-        const state = problemsReducer(basicState,action);
+        initialState['probleminfos'] = probleminfos;
+        let stateAfter = JSON.parse(JSON.stringify(initialState));
+
+        const state = problemsReducer(initialState,action);
         stateAfter.probleminfos['47428'].myticklist = {
             ...stateAfter.probleminfos['47428'].myticklist ,
             [tickid] : aTick
@@ -103,23 +100,22 @@ describe('problems reducers', () => {
     it('should add betavideo correctly',() => {
         const video_url = 'video_test';
         const newVideo = { id: "43", "video_url": video_url, "added": "2017-04-15 11:45:43", "sender": { "id": "62003", "etunimi": "Matti", "added": null } };
+        var pid = '47428';
         const action = {
             type : 'ADD_BETAVIDEO_PUT',
             payload: {
-                problemid : 47428,
-                payload : { video : newVideo},
-                source : { problemid : 47428 }
-            }
+                video: newVideo,
+                source: { problemid: pid }
+            },
         }
 
 
         initialState['probleminfos'] = probleminfos;
         let stateAfter = JSON.parse(JSON.stringify(initialState));
-        console.log(initialState);
         
         const state = problemsReducer(initialState,action);
         // Add betavideo to state and expect them to match
-        stateAfter.probleminfos[action.payload.source.problemid]['betavideos'].push( newVideo )
+        stateAfter.probleminfos[pid]['betavideos'].push( newVideo )
         expect(state).toEqual(   stateAfter )
     });
 

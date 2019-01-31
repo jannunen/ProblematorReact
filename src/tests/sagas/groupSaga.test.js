@@ -16,15 +16,14 @@ it('Should execute group saga correctly', () => {
 
   const groupDetails2 = { 'id' : 654, 'nimi' : 'foppa'};
   let originalData = JSON.parse(JSON.stringify(groupDetails2));
-  sinon.stub(api, "group").returns({data : JSON.stringify(groupDetails2)});
+  sinon.stub(api, "group").returns({data : groupDetails2});
   const action = {
     type : 'GROUP_SAGA',
     payload : { groupid : 6},
   }
   const expected = {
     ...originalData,
-    problemid : undefined,
-    source :  action.payload 
+    source : action.payload
   }
 
   return expectSaga(groupSaga, action, api)
