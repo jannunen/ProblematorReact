@@ -84,7 +84,12 @@ export class GroupDetails extends React.Component {
                     <View><TouchableOpacity onPress={() => {this.changeSwiperSlideTo(2)}}><Text style={[styles.swiperHeader, (this.state.selectedSwiper == 2 ? styles.selectedSwiper : null)]}>Latest ticks</Text></TouchableOpacity></View>
                 </View>
                 <View style={styles.resultsContainer}>
-                    <Swiper ref={(ref) => {this.swiper = ref}} style={styles.wrapper} onIndexChanged={this.onSwiperIndexChanged} showsButtons={true}>
+                    <Swiper ref={(ref) => {this.swiper = ref}} style={styles.wrapper} onIndexChanged={this.onSwiperIndexChanged} showsButtons={true}
+                     dot={<View style={{backgroundColor:'rgba(0,0,0,.2)', width: 8, height: 8,borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} />}
+                     activeDot={<View style={{backgroundColor: '#fff', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}} />}
+                     nextButton={<Text style={styles.navButtonText}>›</Text>}
+                     prevButton={<Text style={styles.navButtonText}>‹</Text>} 
+                    >
                     <View style={styles.slide1}>
                     <Text style={styles.text}>Boulder </Text>
                     </View>
@@ -162,11 +167,12 @@ const styles = StyleSheet.create({
         selectedSwiper : {
             textDecorationLine : 'underline'
         },
+        navButtonText : {
+            color : '#decc00',
+            fontSize : 60,
+        }   ,
         slide1: {
             flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#9DD6EB',
           },
           slide2: {
             flex: 1,
