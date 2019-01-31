@@ -1,6 +1,8 @@
 import { select, call, put  } from 'redux-saga/effects';
 import  axios  from 'axios';
 import querystring from 'querystring'
+// Fixtures
+import groups, { groupDetails} from '../tests/fixtures/groups'
 
 const root = "https://www.problemator.fi/t/problematorapi/v02";
 function* getAPI (url, payload)  {
@@ -24,10 +26,12 @@ import problems from '../tests/fixtures/problems';
 export default class ProblematorAPI {
   
   static * group(payload) {
-    return yield axios.get(yield getAPI("/group/?id="+payload.groupid,payload),config)
+    //return yield axios.get(yield getAPI("/group/?id="+payload.groupid,payload),config)
+    return yield { data: groupDetails};
   }
   static * myGroups(payload) {
-    return yield axios.get(yield getAPI("/groups/",payload),config)
+    //return yield axios.get(yield getAPI("/groups/",payload),config)
+    return yield { data : groups};
   }
    static * saveTick(payload) {
      const postData = querystring.stringify(payload);

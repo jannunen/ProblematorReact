@@ -14,6 +14,7 @@ import {
 import  Icon  from 'react-native-vector-icons/Ionicons';
 import ActivitySpinner from 'react-native-loading-spinner-overlay';
 import  FontAwesome  from 'react-native-vector-icons/FontAwesome5';
+import Swiper from 'react-native-swiper';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import globalStyles from '../../../styles/global'
@@ -23,6 +24,7 @@ export class GroupDetails extends React.Component {
     constructor(props){
         super(props)
         this.state = {
+            selectedSwiper : 0,
         }
       }
 
@@ -31,6 +33,21 @@ export class GroupDetails extends React.Component {
         this.props.onGetGroup(payload);
     }
 
+    onSwiperIndexChanged = (index) => {
+        this.setState({
+            selectedSwiper : index
+        });
+    }
+    /*
+    * Handles the swiper slide changing to desired index
+    */
+    changeSwiperSlideTo = (index) => {
+        const newIndex =index-this.state.selectedSwiper;
+        this.swiper.scrollBy(newIndex);
+        this.setState({
+            selectedSwiper : index
+        })
+    }
     render = () => {
         // Before state has been mapped, give out loading indicator...
         if (this.props.groupDetails.length==0) {
@@ -57,12 +74,27 @@ export class GroupDetails extends React.Component {
                     <View><TouchableOpacity ><FontAwesome name="cog" color="#fff" size={20} /></TouchableOpacity></View>
                 </View>
                 <View style={styles.groupDescription}>
-                <Text>Group description:</Text>
-                <Text>{gd.groupdesc}</Text>
+                <Text style={styles.groupDesc}>Group description:</Text>
+                <Text style={styles.groupDescName}>{gd.groupdesc}</Text>
                   </View>
                 <View style={styles.actionButtons}></View>
+                <View style={styles.swiperHeaders}>
+                    <View><TouchableOpacity onPress={() => {this.changeSwiperSlideTo(0)}}><Text style={[styles.swiperHeader, (this.state.selectedSwiper == 0 ? styles.selectedSwiper : null)]}>Boulder</Text></TouchableOpacity></View>
+                    <View><TouchableOpacity onPress={() => {this.changeSwiperSlideTo(1)}}><Text style={[styles.swiperHeader, (this.state.selectedSwiper == 1 ? styles.selectedSwiper : null)]}>Sport</Text></TouchableOpacity></View>
+                    <View><TouchableOpacity onPress={() => {this.changeSwiperSlideTo(2)}}><Text style={[styles.swiperHeader, (this.state.selectedSwiper == 2 ? styles.selectedSwiper : null)]}>Latest ticks</Text></TouchableOpacity></View>
+                </View>
                 <View style={styles.resultsContainer}>
-                
+                    <Swiper ref={(ref) => {this.swiper = ref}} style={styles.wrapper} onIndexChanged={this.onSwiperIndexChanged} showsButtons={true}>
+                    <View style={styles.slide1}>
+                    <Text style={styles.text}>Boulder </Text>
+                    </View>
+                    <View style={styles.slide2}>
+                    <Text style={styles.text}>Sport</Text>
+                    </View>
+                    <View style={styles.slide3}>
+                    <Text style={styles.text}>Latest</Text>
+                    </View>
+                </Swiper>
                 </View>
 
 
@@ -85,6 +117,8 @@ const styles = StyleSheet.create({
             flexDirection : 'row',
             height : 40,
             justifyContent : 'space-between',
+            paddingLeft : 8,
+            paddingRight : 8,
         },
         groupDescription: {
             backgroundColor : '#454740',
@@ -92,6 +126,12 @@ const styles = StyleSheet.create({
             padding : 4,
             fontSize : 18,
             color : 'white',
+        },
+        groupDesc : {
+            color : 'white',
+        },
+        groupDescName: {
+            color : '#d0d0d0',
         },
         memberCount : {
             color : '#decc00',
@@ -102,7 +142,49 @@ const styles = StyleSheet.create({
             color : 'white',
             textTransform: 'uppercase',
             fontSize : 20,
-        }
+        },
+        resultsContainer: {
+            flex : 1,
+        },
+        swiperHeaders: {
+            flexDirection : 'row',
+            justifyContent : 'space-evenly',
+            paddingTop : 4,
+            paddingBottom : 4,
+            borderTopWidth : 1,
+            borderTopColor : 'white',
+        },
+        swiperHeader: {
+            textTransform : 'uppercase',
+            color : '#decc00',
+            fontSize : 20,
+        },
+        selectedSwiper : {
+            textDecorationLine : 'underline'
+        },
+        slide1: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#9DD6EB',
+          },
+          slide2: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#97CAE5',
+          },
+          slide3: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#92BBD9',
+          },
+          text: {
+            color: '#fff',
+            fontSize: 30,
+            fontWeight: 'bold',
+          }
     });
 
 
