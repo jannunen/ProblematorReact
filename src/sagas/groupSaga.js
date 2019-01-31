@@ -7,11 +7,9 @@ export const authToken = (state) => state.auth.token;
 
 
 export function* myGroupsSaga(action) {
+  console.log("in saga myGroups");
   yield (doSaga(action, ProblematorAPI.myGroups, 'MY_GROUPS_PUT'))
 }
 export function* groupSaga(action,api) {
-  if (api == null) {
-    api = ProblematorAPI;
-  } 
-  yield (doSaga(action, api.group, 'GROUP_PUT', null, null ))
+  yield (doSaga(action, ProblematorAPI.group, 'GROUP_PUT', null, null ))
 }

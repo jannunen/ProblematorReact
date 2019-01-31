@@ -6,7 +6,7 @@ import { groupSaga } from '../../sagas/groupSaga'
 import { groupDetails } from '../fixtures/groups'
 
 
-it('just works!', () => {
+it('Should execute group saga correctly', () => {
   const state = {
     auth : {
       token : 'foo',
@@ -14,21 +14,22 @@ it('just works!', () => {
   }
   // Make sure that the api returns what we want
 
-  let originalData = JSON.parse(JSON.stringify(groupDetails));
-  sinon.stub(api, "group").returns({data : JSON.stringify(groupDetails)});
+  const groupDetails2 = { 'id' : 654, 'nimi' : 'foppa'};
+  let originalData = JSON.parse(JSON.stringify(groupDetails2));
+  sinon.stub(api, "group").returns({data : JSON.stringify(groupDetails2)});
   const action = {
     type : 'GROUP_SAGA',
-    groupid : 6,
+    payload : { groupid : 6},
   }
   const expected = {
     ...originalData,
     problemid : undefined,
-    source : {...state}
+    source :  action.payload 
   }
 
   return expectSaga(groupSaga, action, api)
-    //.withState(state)
+    .withState(state)
     .put({type : 'UI_LOADING', payload : {uiState : 'loading'}})
-    .put({type : 'GROUP_PUT', expected})
+    .put({type : 'GROUP_PUT',  payload : expected })
     .run();
 });

@@ -3,14 +3,16 @@ import  axios  from 'axios';
 import querystring from 'querystring'
 
 const root = "https://www.problemator.fi/t/problematorapi/v02";
-const getAPI = (url, payload) => {
+function* getAPI (url, payload)  {
   if (payload == undefined) {
     console.log("Payload is missing in getAPI()");
   }
+  const token = yield(select(authToken));
+  console.log("using token",token);
   if (!url.match(/\?/)) {
-    return `${root}${url}?api-auth-token=${payload.token}&react=true`; 
+    return `${root}${url}?api-auth-token=${token}&react=true`; 
   } else {
-    return `${root}${url}&api-auth-token=${payload.token}&react=true`; 
+    return `${root}${url}&api-auth-token=${token}&react=true`; 
   }
 }
 export const authToken = (state) => state.auth.token;
@@ -18,17 +20,15 @@ import problems from '../tests/fixtures/problems';
 
 export default class ProblematorAPI {
   
-  static group(payload) {
-    const token = yield(select(authToken));
-    payload.token = token;
-    return axios.get(getAPI("/group?id="+payload.groupid,payload))
+  static * group(payload) {
+    return yield axios.get(yield getAPI("/group/?id="+payload.groupid,payload))
   }
-  static myGroups(payload) {
-    return axios.get(getAPI("/groups",payload))
+  static * myGroups(payload) {
+    return yield axios.get(yield getAPI("/groups/",payload))
   }
-   static saveTick(payload) {
+   static * saveTick(payload) {
      const postData = querystring.stringify(payload);
-     const url = getAPI(`/savetick/?`+postData,payload)
+     const url = yield getAPI(`/savetick/?`+postData,payload)
     return axios.post(url);
    }
    static saveOpinion(payload) {
