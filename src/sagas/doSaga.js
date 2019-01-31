@@ -1,9 +1,9 @@
 import { select, call, put  } from 'redux-saga/effects';
-import ProblematorAPI from "../apis/problematorapi";
+// import ProblematorAPI from "../apis/problematorapi";
 import fixJSONP from '../helpers/fixJSONP';
 export const authToken = (state) => state.auth.token;
 
-var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSuccess)  {
+var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSuccess,customApi)  {
   if (action.payload == null) {
     action.payload = {};
   }
@@ -16,13 +16,6 @@ var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSucc
   }
   const token = yield(select(authToken));
   action.payload = {...action.payload, token : token};
-  // If payload contains apiFunc, it usually means that
-  // we are running tests and should replace the api
-  // with the apiFunc as it is probably stubbed/mocked.
-  if (action.payload.apiFunc != null) {
-    apiCall = action.payload.apiFunc;
-    console.log("MOCKING API!");
-  }
   const response = yield call(apiCall, action.payload)
   let payload = response ? response.data : {}
   payload = fixJSONP(payload);
