@@ -14,8 +14,8 @@ var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSucc
   if (alertSuccess == null) {
     alertSuccess = false;
   }
-  const token = yield(select(authToken));
-  action.payload = {...action.payload, token : token};
+  //const token = yield(select(authToken));
+  //action.payload = {...action.payload, token : token};
   const response = yield call(apiCall, action.payload)
   let payload = response ? response.data : {}
   payload = fixJSONP(payload);

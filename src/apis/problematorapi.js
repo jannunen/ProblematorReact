@@ -1,3 +1,4 @@
+import { select, call, put  } from 'redux-saga/effects';
 import  axios  from 'axios';
 import querystring from 'querystring'
 
@@ -18,6 +19,8 @@ import problems from '../tests/fixtures/problems';
 export default class ProblematorAPI {
   
   static group(payload) {
+    const token = yield(select(authToken));
+    payload.token = token;
     return axios.get(getAPI("/group?id="+payload.groupid,payload))
   }
   static myGroups(payload) {
