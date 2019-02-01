@@ -3,10 +3,10 @@ import {
     View, 
     Text ,
     StyleSheet,
+    Alert,
     FlatList,
     TouchableOpacity
 } from 'react-native'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import  FontAwesome  from 'react-native-vector-icons/FontAwesome5';
 import  Icon  from 'react-native-vector-icons/Ionicons';
@@ -37,6 +37,9 @@ const DirectionArrow = (props) => {
 
 
 export class LeaderBoard extends Component {
+    handleItemClicked = (item) => {
+        Alert.alert("Climber profile viewing will be in future versions :)")
+    }
   listItem = (item, index ) => {
     return (
       <TouchableOpacity onPress={() => this.handleItemClicked(item)}>

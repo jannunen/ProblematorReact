@@ -15,8 +15,8 @@ import  Icon  from 'react-native-vector-icons/Ionicons';
 import ActivitySpinner from 'react-native-loading-spinner-overlay';
 import  FontAwesome  from 'react-native-vector-icons/FontAwesome5';
 import Swiper from 'react-native-swiper';
-import moment from 'moment';
 import { connect } from 'react-redux';
+import ActionSheet from 'react-native-actionsheet'
 import globalStyles from '../../../styles/global'
 import LeaderBoard from '../../../components/ClimbingGroups/LeaderBoard'
 import LatestTicks from '../../../components/ClimbingGroups/LatestTicks'
@@ -61,6 +61,28 @@ export class GroupDetails extends React.Component {
         */
         this.swiper.scrollBy(change);
     }
+    handleGroupAction = (idx) => {
+        if (idx == 0) {
+            return;
+        }
+        switch (idx) {
+            case 1:
+            // show members
+            break;
+            case 2:
+            // invite
+            break;
+            case 3:
+            // edit group
+            break;
+            case 4:
+            // leave group
+            break;
+            case 5:
+            // delete group
+            break;
+        }
+    }
     render = () => {
         // Before state has been mapped, give out loading indicator...
         if (this.props.groupDetails.length==0) {
@@ -75,16 +97,31 @@ export class GroupDetails extends React.Component {
         } 
         const g = this.props.group;
         const gd = this.props.groupDetails[g.gid];
-
+        let groupActionOptions = [ 
+            'Cancel',
+            'Show Members',
+            'Invite New Member',
+            'Edit Group',
+            'Leave group',
+        ];
+        if (gd.me.isadmin==1) {
+            groupActionOptions.push('Delete Group');
+        }
         return (
             <View style={[styles.parent, globalStyles.defaultContainer]}>
-                
+                <ActionSheet
+                ref={o => this.GroupActionSheet = o}
+                title="Choose an action"
+                options={groupActionOptions}
+                cancelButtonIndex={0}
+                onPress={(index) => {this.handleGroupAction(index) }}
+                />
                 <Text style={globalStyles.h1Style}>Group Details</Text>
                 <View style={styles.groupHeader}>
                     <View><Text style={styles.memberCount}>{gd.membercount} member(s)</Text></View>
                     <View>{(gd.public == 1) ? <Text style={styles.publicity}><FontAwesome size={20} name="eye" color="#fff" /> public</Text> : <Text style={styles.publicity}><FontAwesome size={20} name="eye-slash" color="#f00" /> private</Text>}</View>
                     <View>{(gd.me.isadmin == 1) ? <Text style={styles.publicity}><FontAwesome size={20} name="star" color="#decc00" /> admin</Text> : <Text style={styles.publicity}><FontAwesome size={20} name="user" color="#f00" /> member</Text>}</View>
-                    <View><TouchableOpacity ><FontAwesome name="cog" color="#fff" size={20} /></TouchableOpacity></View>
+                    <View><TouchableOpacity onPress={() => {this.GroupActionSheet.show()}}><FontAwesome name="cog" color="#fff" size={20} /></TouchableOpacity></View>
                 </View>
                 <View style={styles.groupDescription}>
                 <Text style={styles.groupDesc}>Group description:</Text>
