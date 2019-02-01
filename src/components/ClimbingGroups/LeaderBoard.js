@@ -9,13 +9,17 @@ import {
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import  FontAwesome  from 'react-native-vector-icons/FontAwesome5';
+import  Icon  from 'react-native-vector-icons/Ionicons';
 
 export class LeaderBoard extends Component {
-  static propTypes = {
-    prop: PropTypes
+  defineArrowDirection = (now, then) => {
+      if (now == null || then == null) {
+          return 'equal';
+      }
   }
-  directionArrow = () => {
-
+  directionArrow = (now, then) => {
+      now = now  || 0;
+console.log("now",now,then);
   }
 
   listItem = (item, index ) => {
@@ -25,15 +29,15 @@ export class LeaderBoard extends Component {
           <View style={styles.standingCol}>
             <Text style={styles.standingColText}>{item.rank.rank}</Text>
           </View>
-          <View style={styles.groupLeaderCell}>
-            <Text style={styles.groupLeader}>{item.etunimi} {item.sukunimi}</Text>
+          <View style={styles.groupLeaderCol}>
+            <Text style={styles.groupLeaderText}>{item.etunimi} {item.sukunimi}</Text>
           </View>
           <View style={styles.pointsCol}>
             <Text style={styles.pointsColText}>{item.rank.rankpoints}</Text>
           </View>
           <View style={styles.directionCol}>
             <Text style={styles.directionColText}>
-            {this.directionArrow} 
+            {this.directionArrow(item.rank.rankpoints, item.rank.lastrankpoints)} 
             </Text>
           </View>
           <View>
@@ -82,15 +86,15 @@ const styles = StyleSheet.create({
   },
   listItemContainer: {
     paddingTop : 4,
-    paddingLeft : 2,
-    paddingBottom : 4,
+    paddingLeft : 8,
+    paddingBottom : 8,
     flex : 1,
     flexDirection : 'row',
     width : "100%",
     borderColor : '#636169',
     borderBottomWidth : 1,
     justifyContent : 'space-between',
-    height : 47,
+    height : 36,
   },
   listItemRight: {
     alignSelf : 'flex-end',
@@ -102,12 +106,21 @@ const styles = StyleSheet.create({
       color : '#decc00',
       fontSize : 18,
   },
-  nameCol: {
-      color : 'white',
+  groupLeaderCol: {
       flexGrow : 1,
   },
+  groupLeaderText: {
+      color : 'white',
+      fontSize : 18,
+      paddingLeft : 10,
+  },
   pointsCol: {
+  },
+  pointsColText: {
       color : '#decc00',
+      fontSize : 20,
+      fontWeight : 'bold',
+      paddingRight : 10,
   },
   directionCol : {
   },

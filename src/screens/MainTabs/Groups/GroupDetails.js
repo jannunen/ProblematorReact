@@ -169,8 +169,8 @@ const styles = StyleSheet.create({
             textDecorationLine : 'underline'
         },
         navButtonText : {
-            color : '#decc00',
-            fontSize : 60,
+            color : 'rgba(255,255,255,0.5)',
+            fontSize : 80,
         }   ,
         slide1: {
             flex: 1,
