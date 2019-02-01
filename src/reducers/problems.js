@@ -147,7 +147,6 @@ const reducer = (state = initialState, action) => {
 
         case GET_PROBLEM_PUT:
         // Use 'hashtable' approach to make the searches faster for a certain problem
-        console.log("HERE!",action.payload);
          return  {
              ...state,
              probleminfos : {

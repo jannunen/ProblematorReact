@@ -25,6 +25,7 @@ import ActionSheet from 'react-native-actionsheet'
 import BarChart from '../BarChart/BarChart';
 import DialogInput from 'react-native-dialog-input';
 import PublicAscentListModal from '../modals/PublicAscentListModal/PublicAscentListModal';
+import globalStyles from '../../styles/global'
 
 export class ProblemDetails extends React.Component {
 
@@ -39,12 +40,25 @@ export class ProblemDetails extends React.Component {
             showFeedbackDialog: false,
             showDirtyDialog: false,
             showDangerousDialog : false,
+            problem : null,
             ascentType : 0, // defaults to toprope. TODO: Add user configuration option
         }
       }
 
     componentDidMount = () => {
-        let payload = {id : this.props.problem.problemid};
+        let pid = null;
+        try {
+            console.log("setting problem state in cdidmount")
+            pid = this.props.problem.problemid;
+            this.setState({ problem: this.props.problem })
+        } catch(e) {
+        }
+        if(this.props.problemid) {
+            console.log("pid as straight parameter");
+            pid=this.props.problemid;
+        }
+        let payload = {id : pid};
+        console.log("Starting to fetch probleminfo")
         this.props.onGetProblem(payload);
     }
     openManageTicksActionSheet = () => {
@@ -55,17 +69,17 @@ export class ProblemDetails extends React.Component {
         this.setState({showGlobalAscentListModal: visible});
     }
     doAddbetaVideo = (url) => {
-        this.props.onAddBetaVideo({problemid : this.props.problem.problemid, video_url : url});
+        this.props.onAddBetaVideo({problemid : this.state.problem.problemid, video_url : url});
         this.setShowAddBetaVideoDialog(false);
     }
     doAddFeedback = (feedback, type) => {
-        this.props.onAddFeedback({ problemid : this.props.problem.problemid, text : feedback, msgtype : type});
+        this.props.onAddFeedback({ problemid : this.state.problem.problemid, text : feedback, msgtype : type});
         this.setShowFeedbackDialog(false,type);
     }
 
     handleSaveTick = () => { 
         const payload = {
-            problemid : this.props.problem.problemid,
+            problemid : this.state.problem.problemid,
             tickdate : this.state.date.format("YYYY-MM-DD HH:mm:ss"),
             tries : this.state.tries,
             grade_opinion : this.state.gradeOpinion,
@@ -80,7 +94,7 @@ export class ProblemDetails extends React.Component {
           'love' : 2,
           'dislike' : 0
       }
-    this.props.onSendOpinion({ problemid : this.props.problem.problemid, opinion : likeTypes[likeType]});
+    this.props.onSendOpinion({ problemid : this.state.problem.problemid, opinion : likeTypes[likeType]});
   }
 
   handleLikeButtons = (likeType) => {
@@ -103,7 +117,7 @@ export class ProblemDetails extends React.Component {
         if (selectedIndex == 0) {
             return;
         }
-        const videos = this.props.probleminfos[this.props.problem.problemid].betavideos;
+        const videos = this.props.probleminfos[this.state.problem.problemid].betavideos;
         const video = videos[selectedIndex-1];
         const url = videos[selectedIndex-1].video_url;
         const { uid } = this.props.auth;
@@ -120,7 +134,7 @@ export class ProblemDetails extends React.Component {
                     onPress: () => console.log('Cancel Pressed'),
                     style: 'cancel',
                   },
-                  {text: 'Delete video', onPress: () => this.props.onDeleteBetaVideo({ problemid : this.props.problem.problemid, videoid : video.id}) },
+                  {text: 'Delete video', onPress: () => this.props.onDeleteBetaVideo({ problemid : this.state.problem.problemid, videoid : video.id}) },
                 ],
                 {cancelable: false},
               );
@@ -167,7 +181,7 @@ export class ProblemDetails extends React.Component {
         }
         selectedIndex--; // Because 0 is cancel.
         // Find tick to delete
-        const probInfo = this.props.probleminfos[this.props.problem.problemid];
+        const probInfo = this.props.probleminfos[this.state.problem.problemid];
         const ticks = probInfo.myticklist;
         // This is an object, so we have to loop.
         counter = 0;
@@ -182,7 +196,7 @@ export class ProblemDetails extends React.Component {
         }
         console.log("del",tickToDelete);
 
-        this.props.onTickDelete({tickid : tickToDelete, problemid :this.props.problem.problemid});
+        this.props.onTickDelete({tickid : tickToDelete, problemid :this.state.problem.problemid});
 
     }
 
@@ -193,11 +207,11 @@ export class ProblemDetails extends React.Component {
     /** Returns the picker grades. Note: Makes grades uppercase,
      * if the problem type is boulder
      */
-    getPickerGrades = () => {
+    getPickerGrades = (p) => {
         
         const pickerGrades =  Object.keys(GRADES).map((key, index) => {
             let g = GRADES[key].name;
-            if ("boulder" === this.props.problem.routetype) {
+            if ("boulder" === p.routetype) {
                 g = g.toUpperCase(); 
             }
             return {label : g, value: GRADES[key].id};
@@ -215,7 +229,7 @@ export class ProblemDetails extends React.Component {
     }
 
     likeCell =(p) => {
-        const probInfo = this.props.probleminfos[this.props.problem.problemid];
+        const probInfo = this.props.probleminfos[p.problemid];
         let likes = 0;
         let loves = 0;
         let dislikes = 0;
@@ -253,7 +267,7 @@ export class ProblemDetails extends React.Component {
       let options = [ 'Cancel'];
 
         let manageTicks = <Text style={styles.myTicks}>Loading ticks...</Text>
-        const probInfo = this.props.probleminfos[this.props.problem.problemid];
+        const probInfo = this.props.probleminfos[p.problemid];
         if (probInfo!=null) {
             const ticks = probInfo.myticklist;
             let amt = Object.keys(ticks).length;
@@ -365,14 +379,14 @@ export class ProblemDetails extends React.Component {
                         value: null,
                         color: '#decc00',
                     }}
-                    items={this.getPickerGrades()}
+                    items={this.getPickerGrades(p)}
                     onValueChange={(value) => {
                         this.setState({
                             gradeOpinion: value,
                         });
                     }}
                     style={{ ...pickerSelectStyles }}
-                    value={this.state.gradeOpinion == null ? this.props.problem.gradeid : this.state.gradeOpinion}
+                    value={this.state.gradeOpinion == null ? p.gradeid : this.state.gradeOpinion}
                 />
 
             </View>
@@ -381,7 +395,7 @@ export class ProblemDetails extends React.Component {
 
 
     gradeOpinionsCell = (p) => {
-        const probInfo = this.props.probleminfos[this.props.problem.problemid];
+        const probInfo = this.props.probleminfos[p.problemid];
         let barChart = null;
         if (probInfo != null) {
             // create data
@@ -431,7 +445,7 @@ export class ProblemDetails extends React.Component {
     }
     
     totalAscentsCell = (p) => {
-        const probInfo = this.props.probleminfos[this.props.problem.problemid];
+        const probInfo = this.props.probleminfos[p.problemid];
         let ascentcount = <ActivityIndicator size="small" color="#fff" />;
         if (probInfo != null) {
             ascentcount = <Text style={styles.ascentCount}>{probInfo.ascentcount}</Text>;
@@ -446,7 +460,7 @@ export class ProblemDetails extends React.Component {
     }
 
     betaVideosCellLeft = (p) => {
-        const probInfo = this.props.probleminfos[this.props.problem.problemid];
+        const probInfo = this.props.probleminfos[p.problemid];
         let betaVideoCount = 0;
         let betaVideosText = "0 betavideos";
         let optionsBetaVideos = ['Cancel'];
@@ -512,7 +526,28 @@ export class ProblemDetails extends React.Component {
     }
 
     render = () => {
-        const p = this.props.problem;
+        // If props problem is null. This happens when a problem is
+        // opened by a "new problems" or on group page's "latest ticks".
+        // because then we have problems which are not already loaded,
+        // because the problems can be on a) another gym b) already removed
+        // from the walls
+        if (this.state.problem == null && this.props.probleminfos[this.props.problemid] == null) {
+            return <View style={[ globalStyles.defaultContainer]}>
+                <ActivitySpinner
+                    visible={this.props.uiState == 'loading'}
+                    textContent={'Loading...'}
+                    textStyle={{ color : 'white'}}
+                    overlayColor="rgba(0,0,0,0.7)"
+                />
+                </View>
+        }
+        // And if we came via the 'other route', make sure that there is something
+        // in the  problem-variable. And why like this? Because when we come from
+        // the normal problem list, we can show some data of the problem while the
+        // additional data is being loaded. This makes the app work smoother and 
+        // faster.
+        const tp = this.props.probleminfos[this.props.problemid];
+        const p = this.state.problem || tp;
         return (
             <View style={styles.parent}>
                 <ActivitySpinner
