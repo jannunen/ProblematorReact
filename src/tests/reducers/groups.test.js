@@ -5,6 +5,53 @@ import mockStore from 'redux-mock-store';
 import groups , {groupDetails} from '../fixtures/groups'
 
 describe('groups reducers', () => {
+    it('should remove group member',() => {
+
+        const action = {
+            type : 'DELETE_GROUP_MEMBER_PUT',
+            payload : {
+                // No actual payload, just the source...
+                source : {
+                    gid: 6,
+                    uid: 246,
+                }
+            }
+        }
+        initialState.groupDetails = { [groupDetails.id] : groupDetails};
+        initialState.groups = groups;
+
+        let stateAfter = JSON.parse(JSON.stringify(initialState));
+        let trueInitialState = JSON.parse(JSON.stringify(initialState));
+        stateAfter.groupDetails = { [groupDetails.id] : groupDetails};
+        // Remove user from all the places
+        // First, members
+        stateAfter.groupDetails[action.payload.source.gid].members = 
+            stateAfter.groupDetails[action.payload.source.gid].members.filter((item, idx) => {
+                return item.uid !== action.payload.source.uid
+            })
+ ;
+        stateAfter.groupDetails[action.payload.source.gid].membercount--;
+        //stateAfter.groups[action.payload.gid].usercount--;
+
+        // Then from boulder ranking
+        stateAfter.groupDetails[action.payload.source.gid].membersboulder = 
+            stateAfter.groupDetails[action.payload.source.gid].membersboulder.filter((item, idx) => {
+                return item.uid !== action.payload.source.uid
+            })
+ ;
+        // Then from sport ranking
+        stateAfter.groupDetails[action.payload.source.gid].memberssport = 
+            stateAfter.groupDetails[action.payload.source.gid].memberssport.filter((item, idx) => {
+                return item.uid !== action.payload.source.uid
+            })
+ ;
+        // Then from last ascents ranking
+        // uid is missing from that array...
+        // leaderboulder is missing UID!
+
+        const state = groupsReducers(trueInitialState,action);
+        expect(state).toEqual(stateAfter);
+    })
     it('should add a group successfully', () => {
         const action = {
             type : 'GROUP_PUT',

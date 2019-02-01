@@ -1,5 +1,5 @@
 export const initialState = {
-    groups: [],
+   groups: [],
     groupDetails : [],
     pending: [],
     popular: [],
@@ -16,6 +16,32 @@ export default (state = initialState, action) => {
     console.log(action.type,"payload to GROUPS reducer",payload);
     let newState = null;
     switch (action.type) {
+        case 'DELETE_GROUP_MEMBER_PUT':
+        // TODO
+        // NEeds still further improvement. Should remove member ALSO from groups! 
+        // AND latestticks. But those are missing some UIDs
+        return  {
+            ...state,
+            groupDetails : {
+                ...state.groupDetails,
+                [source.gid] : {
+                    ...state.groupDetails[source.gid],
+                    membercount : state.groupDetails[source.gid].membercount-1,
+                    members : state.groupDetails[source.gid].members.filter((item, idx) => {
+                        return item.uid !== source.uid;
+                    }),
+                    membersboulder : state.groupDetails[source.gid].membersboulder.filter((item, idx) => {
+                        return item.uid !== source.uid;
+                    }),
+                    memberssport : state.groupDetails[source.gid].memberssport.filter((item, idx) => {
+                        return item.uid !== source.uid;
+                    }),
+                
+                }
+
+            }
+        }
+        break;
         case 'GROUP_PUT':
         return  {
             ...state,

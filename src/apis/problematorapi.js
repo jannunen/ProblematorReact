@@ -24,8 +24,11 @@ import problems from '../tests/fixtures/problems';
   }
 
 export default class ProblematorAPI {
-  
-  static * group(payload) {
+
+  static * removeUserFromGroup(payload) {
+    return yield axios.get(yield getAPI("/remove_user_from_group/?gid="+payload.gid+"&uid="+payload.uid,payload),config)
+  }
+    static * group(payload) {
     //return yield axios.get(yield getAPI("/group/?id="+payload.groupid,payload),config)
     return yield { data: groupDetails};
   }

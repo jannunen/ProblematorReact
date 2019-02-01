@@ -8,6 +8,7 @@ import SignUpScreen from './Auth/SignUp/SignUp';
 import HomeScreen from './MainTabs/Home/Home';
 import OtherScreen from './MainTabs/Other/Other';
 import GroupsScreen from './MainTabs/Groups/Groups';
+import GroupShowMembersScreen from './MainTabs/Groups/GroupShowMembers';
 import GroupDetailsScreen from './MainTabs/Groups/GroupDetails';
 import ProblemDetailScreen from './MainTabs/Problems/ProblemDetailScreen/ProblemDetailScreen';
 
@@ -48,5 +49,6 @@ export default registerScreens = () => {
     Navigation.registerComponentWithRedux('com.problemator.OtherScreen', () => OtherScreen, Provider, store);
     Navigation.registerComponentWithRedux('com.problemator.GroupsScreen', () => GroupsScreen, Provider, store);
     Navigation.registerComponentWithRedux('com.problemator.GroupDetailsScreen', () => GroupDetailsScreen, Provider, store);
+    Navigation.registerComponentWithRedux('com.problemator.GroupShowMembers', () => GroupShowMembersScreen, Provider, store);
     Navigation.registerComponentWithRedux('com.problemator.ProblemDetailScreen', () => ProblemDetailScreen, Provider, store);
 } 

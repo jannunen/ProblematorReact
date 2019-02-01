@@ -17,6 +17,7 @@ import  FontAwesome  from 'react-native-vector-icons/FontAwesome5';
 import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet'
+import { Navigation } from 'react-native-navigation';
 import globalStyles from '../../../styles/global'
 import LeaderBoard from '../../../components/ClimbingGroups/LeaderBoard'
 import LatestTicks from '../../../components/ClimbingGroups/LatestTicks'
@@ -61,6 +62,24 @@ export class GroupDetails extends React.Component {
         */
         this.swiper.scrollBy(change);
     }
+    navigateToShowMembers = () => {
+        Navigation.push(this.props.componentId, {
+        component: {
+            name: 'com.problemator.GroupShowMembers',
+            passProps: {
+              group :  this.props.groupDetails[this.props.group.gid]
+            }
+        },
+        options: {
+            topBar: {
+            title: {
+                text: 'Group' + " " + this.props.group.name
+            }
+            }
+        }
+        });
+
+    }
     handleGroupAction = (idx) => {
         if (idx == 0) {
             return;
@@ -68,6 +87,7 @@ export class GroupDetails extends React.Component {
         switch (idx) {
             case 1:
             // show members
+            this.navigateToShowMembers();
             break;
             case 2:
             // invite
