@@ -111,7 +111,7 @@ export class GroupDetails extends React.Component {
                         <LeaderBoard data={gd.memberssport} myRank={gd.me.ranksport} />
                     </View>
                     <View style={styles.slide3}>
-                        <LatestTicks ticks={gd.latestticks} />
+                        <LatestTicks handleProblemClicked={this.props.handleProblemClicked} ticks={gd.latestticks} />
                     </View>
                 </Swiper>
                 </View>

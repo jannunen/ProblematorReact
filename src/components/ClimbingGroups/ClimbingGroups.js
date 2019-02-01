@@ -8,7 +8,6 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
-import { bold, white } from 'ansi-colors';
 import  FontAwesome  from 'react-native-vector-icons/FontAwesome5';
 
 export class ClimbingGroups extends React.Component {
@@ -57,72 +56,72 @@ export class ClimbingGroups extends React.Component {
             const key = item['gid'] + "_" + index;
             return key;
           }}
-          data={this.transFormGroupsToFlatList()}
-        />
-      </View>
-    )
+            data={this.transFormGroupsToFlatList()}
+          />
+        </View>
+      )
+    }
+
   }
 
-}
-
-const mapStateToProps = (state) => {
-  return {
-    groups: state.groups.groups,
-    pending: state.groups.pending,
-    invitations: state.groups.invitations,
-    loading: state.problems.loading,
-    error: state.problems.error
+  const mapStateToProps = (state) => {
+    return {
+      groups: state.groups.groups,
+      pending: state.groups.pending,
+      invitations: state.groups.invitations,
+      loading: state.problems.loading,
+      error: state.problems.error
+    }
   }
-}
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loadMyGroups: () => dispatch({ type: 'MY_GROUPS_SAGA' })
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      loadMyGroups: () => dispatch({ type: 'MY_GROUPS_SAGA' })
+    }
   }
-}
-const styles = StyleSheet.create({
-  groupList: {
-    backgroundColor: "#30312e",
-  },
-  listItemContainer: {
-    paddingTop : 4,
-    paddingLeft : 2,
-    paddingBottom : 4,
-    flex : 1,
-    flexDirection : 'row',
-    width : "100%",
-    borderColor : '#636169',
-    borderBottomWidth : 1,
-    justifyContent : 'space-between',
-    height : 47,
-  },
-  listItemRight: {
-    alignSelf : 'flex-end',
-    paddingRight : 8
-  },
-  groupName: {
-    fontWeight : 'bold',
-    color : 'white',
-    fontSize : 20,
-  },
-  groupMembers: {
-    color : '#d0d0d0',
-    paddingBottom : 4,
-  },
-  groupInfoRow: {
-    width : "30%",
-  },
-  groupLeaderCell: {
-    flexGrow : 1,
+  const styles = StyleSheet.create({
+    groupList: {
+      backgroundColor: "#30312e",
+    },
+    listItemContainer: {
+      paddingTop : 4,
+      paddingLeft : 2,
+      paddingBottom : 4,
+      flex : 1,
+      flexDirection : 'row',
+      width : "100%",
+      borderColor : '#636169',
+      borderBottomWidth : 1,
+      justifyContent : 'space-between',
+      height : 47,
+    },
+    listItemRight: {
+      alignSelf : 'flex-end',
+      paddingRight : 8
+    },
+    groupName: {
+      fontWeight : 'bold',
+      color : 'white',
+      fontSize : 20,
+    },
+    groupMembers: {
+      color : '#d0d0d0',
+      paddingBottom : 4,
+    },
+    groupInfoRow: {
+      width : "30%",
+    },
+    groupLeaderCell: {
+      flexGrow : 1,
 
-  },
-  groupLeader : {
-    color : 'white',
-  }
-   
-});
+    },
+    groupLeader : {
+      color : 'white',
+    }
+    
+  });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ClimbingGroups);
+  export default connect(mapStateToProps, mapDispatchToProps)(ClimbingGroups);
 
 
 

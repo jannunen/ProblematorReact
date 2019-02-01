@@ -5,7 +5,9 @@ import  FontAwesome  from 'react-native-vector-icons/FontAwesome5';
 import  Icon  from 'react-native-vector-icons/Ionicons';
 
 class LatestTicks extends React.Component {
-
+handleItemClicked = (item) => {
+    this.props.handleProblemClicked(item.problemid);
+}
     renderItem = ({item}) => {
         return (
             <TouchableOpacity onPress={() => this.handleItemClicked(item)}>
@@ -42,7 +44,7 @@ class LatestTicks extends React.Component {
             <View>
                 <FlatList
                     renderItem={this.renderItem}
-                    data={this.props.ticks.map((item) => { return { ...item, key: item.etunimi + item.problemid }} )} 
+                    data={this.props.ticks.map((item,index) => { return { ...item, key: index+item.etunimi + item.problemid }} )} 
                     />
             </View>
         )
@@ -84,6 +86,7 @@ const styles = StyleSheet.create({
         color: 'white',
         textTransform : 'uppercase',
         paddingLeft : 4,
+        paddingTop : 2,
         fontSize : 20,
     },
     gymName: {

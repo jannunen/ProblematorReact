@@ -28,6 +28,27 @@ export class Groups extends React.Component {
     ],
   };
 
+  handleProblemClicked = (problemid) => {
+
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: 'com.problemator.ProblemDetailScreen',
+        passProps: {
+          problemid
+        }
+      },
+      options: {
+        topBar: {
+          title: {
+            text: 'Problem' + " " + problemid
+          }
+        }
+      }
+    });
+  }
+
+
+
   handleItemClicked = (group) => {
     // Do something
     console.log("Opening group",group);
@@ -35,7 +56,8 @@ export class Groups extends React.Component {
       component: {
         name: 'com.problemator.GroupDetailsScreen',
         passProps: {
-          group
+          group,
+          handleProblemClicked : this.handleProblemClicked
         }
       },
       options: {
@@ -53,27 +75,27 @@ export class Groups extends React.Component {
   firstRoute = () => {
     return (
       <View style={[styles.scene, { backgroundColor: '#252623' }]} >
-         <Text style={globalStyles.h1Style} >My groups</Text>
-         <ClimbingGroups handleItemClicked={this.handleItemClicked} />
-         <SearchGroups />
-         { this.props.searchGroupHits ? 
-                <View>
-                    <Text>Search hits:</Text>
-                    <SearchGroupHits />
-                </View>
-            : null
-         }
+        <Text style={globalStyles.h1Style} >My groups</Text>
+        <ClimbingGroups  handleItemClicked={this.handleItemClicked} />
+        <SearchGroups />
+        {this.props.searchGroupHits ?
+          <View>
+            <Text>Search hits:</Text>
+            <SearchGroupHits />
+          </View>
+          : null
+        }
       </View>
     );
   };
   secondRoute = () => (
     <View style={[styles.scene, { backgroundColor: '#252623' }]} >
-    <Text>T4est2</Text>
+      <Text>T4est2</Text>
     </View>
   );
   thirdRoute = () => (
     <View style={[styles.scene, { backgroundColor: '#252623' }]} >
-    <Text>Third</Text>
+      <Text>Third</Text>
     </View>
   );
   static get options() {
@@ -86,48 +108,48 @@ export class Groups extends React.Component {
     };
   }
   renderBadge = (tab) => {
-      if(tab.route.key == 'second') {
-          return (
-              <IconBadge
-                  BadgeElement={
-                      <Text style={{ color: '#FFFFFF' }}>{this.props.invitationCount}</Text>
-                  }
-                  IconBadgeStyle={
-                      {
-                          width: 22,
-                          height: 22,
-                          backgroundColor: '#decc00'
-                      }
-                  }
-                  Hidden={this.props.invitationCount == 0}
-              />)
-      }
+    if (tab.route.key == 'second') {
+      return (
+        <IconBadge
+          BadgeElement={
+            <Text style={{ color: '#FFFFFF' }}>{this.props.invitationCount}</Text>
+          }
+          IconBadgeStyle={
+            {
+              width: 22,
+              height: 22,
+              backgroundColor: '#decc00'
+            }
+          }
+          Hidden={this.props.invitationCount == 0}
+        />)
+    }
   }
   renderTabBar = (props) => {
     return (
-        <TabBar
-          {...props}
-          indicatorStyle={{ backgroundColor: '#decc00' }}
-          renderBadge={this.renderBadge}
-        />
+      <TabBar
+        {...props}
+        indicatorStyle={{ backgroundColor: '#decc00' }}
+        renderBadge={this.renderBadge}
+      />
     )
   }
 
 
   render() {
     return (
-      <SafeAreaView style={{flex : 1}}>
+      <SafeAreaView style={{ flex: 1 }}>
         <TabView
-        navigationState={this.state}
-        renderScene={SceneMap({
-          first: () => {return this.firstRoute(this.props)},
-          second: this.secondRoute,
-          third: this.thirdRoute,
-        })}
-        onIndexChange={index => this.setState({ index })}
-        renderTabBar={this.renderTabBar}
-        initialLayout={{ width: Dimensions.get('window').width, height : Dimensions.get('window').height }}
-      />
+          navigationState={this.state}
+          renderScene={SceneMap({
+            first: () => { return this.firstRoute(this.props) },
+            second: this.secondRoute,
+            third: this.thirdRoute,
+          })}
+          onIndexChange={index => this.setState({ index })}
+          renderTabBar={this.renderTabBar}
+          initialLayout={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+        />
       </SafeAreaView>
     )
   }
@@ -146,11 +168,11 @@ const styles = StyleSheet.create({
   scene: {
     flex: 1,
   },
-  badgeStyle : {
-      color : 'white',
-      backgroundColor : '#decc00',
-      width : 20,
-      height : 20,
+  badgeStyle: {
+    color: 'white',
+    backgroundColor: '#decc00',
+    width: 20,
+    height: 20,
 
   }
 
@@ -158,14 +180,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    invitationCount : state.groups.invitationCount,
-    loading : state.problems.loading,
-    error : state.problems.error
+    invitationCount: state.groups.invitationCount,
+    loading: state.problems.loading,
+    error: state.problems.error
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    findProblemGlobal : (payload) => dispatch({type : 'GET_PROBLEM_SAGA',  payload })
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Groups);
