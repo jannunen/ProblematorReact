@@ -19,6 +19,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import globalStyles from '../../../styles/global'
 import LeaderBoard from '../../../components/ClimbingGroups/LeaderBoard'
+import LatestTicks from '../../../components/ClimbingGroups/LatestTicks'
 
 export class GroupDetails extends React.Component {
 
@@ -35,6 +36,7 @@ export class GroupDetails extends React.Component {
     }
 
     onSwiperIndexChanged = (index) => {
+        console.log("changed",index);
         this.setState({
             selectedSwiper : index
         });
@@ -43,11 +45,21 @@ export class GroupDetails extends React.Component {
     * Handles the swiper slide changing to desired index
     */
     changeSwiperSlideTo = (index) => {
-        const newIndex =index-this.state.selectedSwiper;
-        this.swiper.scrollBy(newIndex);
-        this.setState({
-            selectedSwiper : index
-        })
+        console.log("setting",index);
+        const change = index - this.state.selectedSwiper;
+        /*
+        let change = 0; // no change
+        if (index < this.state.selectedSwiper) {
+            change = -1;
+        }
+        if (index > this.state.selectedSwiper) {
+            change = 1;
+        }
+        if (change ==0) {
+            return; // NO need to change
+        }
+        */
+        this.swiper.scrollBy(change);
     }
     render = () => {
         // Before state has been mapped, give out loading indicator...
@@ -90,6 +102,7 @@ export class GroupDetails extends React.Component {
                      activeDot={<View style={{backgroundColor: '#fff', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}} />}
                      nextButton={<Text style={styles.navButtonText}>›</Text>}
                      prevButton={<Text style={styles.navButtonText}>‹</Text>} 
+                     loop={false}
                     >
                     <View style={styles.slide1}>
                         <LeaderBoard data={gd.membersboulder} myRank={gd.me.rank} />
@@ -98,7 +111,7 @@ export class GroupDetails extends React.Component {
                         <LeaderBoard data={gd.memberssport} myRank={gd.me.ranksport} />
                     </View>
                     <View style={styles.slide3}>
-                    <Text style={styles.text}>Latest</Text>
+                        <LatestTicks ticks={gd.latestticks} />
                     </View>
                 </Swiper>
                 </View>
@@ -177,15 +190,9 @@ const styles = StyleSheet.create({
           },
           slide2: {
             flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#97CAE5',
           },
           slide3: {
             flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#92BBD9',
           },
           text: {
             color: '#fff',

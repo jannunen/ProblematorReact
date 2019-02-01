@@ -11,17 +11,32 @@ import { connect } from 'react-redux'
 import  FontAwesome  from 'react-native-vector-icons/FontAwesome5';
 import  Icon  from 'react-native-vector-icons/Ionicons';
 
-export class LeaderBoard extends Component {
-  defineArrowDirection = (now, then) => {
-      if (now == null || then == null) {
-          return 'equal';
-      }
-  }
-  directionArrow = (now, then) => {
-      now = now  || 0;
-console.log("now",now,then);
-  }
+const DirectionArrow = (props) => {
+    const defineArrowDirection = (now, then) => {
+        if (now == null || then == null) {
+            return 'equal';
+        }
+        if (now < then) {
+            return 'down';
+        }
+        if (now > then) {
+            return 'up';
+        }
+        return 'equal';
+    }
 
+    const { now, then } = props;
+    const arrowIcons = {
+        'up': { name: 'chevron-up', color: '#00ff11' },
+        'down': { name: 'chevron-down', color: '#ef3f0e' },
+        'equal': { name: 'equals', color: 'white' }
+    }
+    const icon = arrowIcons[defineArrowDirection(now, then)];
+    return (<FontAwesome style={styles.directionColText} name={icon.name} color={icon.color} size={16} ></FontAwesome>)
+}
+
+
+export class LeaderBoard extends Component {
   listItem = (item, index ) => {
     return (
       <TouchableOpacity onPress={() => this.handleItemClicked(item)}>
@@ -36,9 +51,7 @@ console.log("now",now,then);
             <Text style={styles.pointsColText}>{item.rank.rankpoints}</Text>
           </View>
           <View style={styles.directionCol}>
-            <Text style={styles.directionColText}>
-            {this.directionArrow(item.rank.rankpoints, item.rank.lastrankpoints)} 
-            </Text>
+                <DirectionArrow now={item.rank.rankpoints} then={item.rank.lastrankpoints}  />
           </View>
           <View>
             <Text key={"arrowright" + item.problemid} style={styles.listItemRight}>
@@ -72,13 +85,6 @@ console.log("now",now,then);
   }
 }
 
-const mapStateToProps = (state) => ({
-  
-})
-
-const mapDispatchToProps = {
-  
-}
 
 const styles = StyleSheet.create({
   groupList: {
@@ -125,10 +131,21 @@ const styles = StyleSheet.create({
   directionCol : {
   },
   directionColText : {
+      paddingTop : 5,
+      paddingRight : 8,
+      paddingLeft : 2,
   },
   arrowCol: {
   },
 });
 
+
+const mapStateToProps = (state) => ({
+  
+})
+
+const mapDispatchToProps = {
+  
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(LeaderBoard)
