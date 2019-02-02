@@ -13,8 +13,6 @@ import  FontAwesome  from 'react-native-vector-icons/FontAwesome5';
 export class ClimbingGroups extends React.Component {
 
   componentDidMount = () => {
-    this.props.loadMyGroups();
-
   }
   handleItemClicked = (item) => {
       this.props.handleItemClicked(item);
@@ -76,7 +74,6 @@ export class ClimbingGroups extends React.Component {
 
   const mapDispatchToProps = (dispatch) => {
     return {
-      loadMyGroups: () => dispatch({ type: 'MY_GROUPS_SAGA' })
     }
   }
   const styles = StyleSheet.create({

@@ -15,7 +15,34 @@ export default (state = initialState, action ) => {
     }
     let newState = null;
     switch (action.type) {
+
+        case 'ACCEPT_INVITATION_PUT':
+        console.log(payload.invid,"wtr")
+          newState= {
+              ...state,
+              uiState : 'ready',
+              pending : state.pending.filter(item => { 
+                  return item.invid !==source.invid
+                })
+          };
+          console.log("ns",newState);
+          return newState;
+          break;
+        case 'DECLINE_INVITATION_PUT':
+          return {
+              ...state,
+              uiState : 'ready',
+              pending : state.pending.filter(item => { 
+                  return item.invid !== source.invid
+                })
+          };
+          break;
         case 'SEND_GROUP_INVITATION_PUT':
+          return {
+              ...state,
+              uiState : 'ready'
+          };
+          break;
         case 'SAVE_GROUP_PUT':
           return {
               ...state,
@@ -71,5 +98,4 @@ export default (state = initialState, action ) => {
             break;
     }
 }
-export const invitationCount = (state) => state.groups.invitations.length;
 

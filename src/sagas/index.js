@@ -19,6 +19,8 @@ export default function *rootSaga() {
     fork( takeLatest, 'MY_GROUPS_SAGA', groupSagas.myGroupsSaga ),
     fork( takeLatest, 'DELETE_GROUP_MEMBER_SAGA', groupSagas.deleteGroupMemberSaga ),
     fork( takeLatest, 'SEND_INVITATIONS_SAGA', groupSagas.sendInvitationsSaga ),
+    fork( takeLatest, 'ACCEPT_GROUP_INVITATION_SAGA', groupSagas.acceptGroupInvitationSaga ),
+    fork( takeLatest, 'DECLINE_GROUP_INVITATION_SAGA', groupSagas.declineGroupInvitationSaga ),
     fork( takeLatest, 'SAVE_GROUP_SAGA', groupSagas.saveGroupSaga ),
     fork( takeLatest, 'GROUP_SAGA', groupSagas.groupSaga ),
     fork( takeLatest, 'GET_AUTH_SAGA',getAuthSaga ),

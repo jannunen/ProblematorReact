@@ -10,6 +10,67 @@ import { groupDetails } from '../fixtures/groups'
       token : 'foo',
     }
   }
+it('should execute invitation decline FAIL saga',() => {
+  const messageFromApi = {"error":true,"message":"Invitation decline failed."};
+  let originalData = JSON.parse(JSON.stringify(messageFromApi));
+  sinon.stub(api, "declineGroupInvitation").returns({data : messageFromApi});
+  const action = {
+    type : 'DECLINE_GROUP_INVITATION_SAGA',
+    payload : {
+     },
+  }
+  const expected = {
+    ...originalData,
+  }
+  return expectSaga(groupSagas.declineGroupInvitationSaga, action, api)
+    .withState(state)
+    .put({type : 'UI_LOADING', payload : {uiState : 'loading'}})
+     .put({type : 'PROBLEMS_LOAD_ERROR',  payload : expected })
+    .put({type : 'UI_LOADING', payload : {uiState : 'ready'}})
+    .run();
+})
+
+it('should execute access invitation decline saga',() => {
+  const messageFromApi = {"error":false,"message":"Invitation accepted"};
+  let originalData = JSON.parse(JSON.stringify(messageFromApi));
+  sinon.stub(api, "declineGroupInvitation").returns({data : messageFromApi});
+  const action = {
+    type : 'DECLINE_GROUP_INVITATION_SAGA',
+    payload : {
+     },
+  }
+  const expected = {
+    ...originalData,
+  }
+  return expectSaga(groupSagas.declineGroupInvitationSaga, action, api)
+    .withState(state)
+    .put({type : 'UI_LOADING', payload : {uiState : 'loading'}})
+     .put({type : 'DECLINE_INVITATION_PUT',  payload : expected })
+     .put({type : 'ALERT_MESSAGE',  payload : expected })
+    .run();
+})
+
+
+it('should execute access invitation success saga',() => {
+  const messageFromApi = {"error":false,"message":"Invitation accepted"};
+  let originalData = JSON.parse(JSON.stringify(messageFromApi));
+  sinon.stub(api, "acceptGroupInvitation").returns({data : messageFromApi});
+  const action = {
+    type : 'ACCEPT_GROUP_INVITATION_SAGA',
+    payload : {
+     },
+  }
+  const expected = {
+    ...originalData,
+  }
+  return expectSaga(groupSagas.acceptGroupInvitationSaga, action, api)
+    .withState(state)
+    .put({type : 'UI_LOADING', payload : {uiState : 'loading'}})
+     .put({type : 'ACCEPT_INVITATION_PUT',  payload : expected })
+     .put({type : 'ALERT_MESSAGE',  payload : expected })
+    .run();
+})
+
 
 it('should execute save group success saga',() => {
   const messageFromApi = {"error":false,"message":"Group saved."};

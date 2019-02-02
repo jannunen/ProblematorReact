@@ -24,6 +24,13 @@ import problems from '../tests/fixtures/problems';
 
 export default class ProblematorAPI {
 
+  static * declineGroupInvitation(payload) {
+    return yield axios.get(yield getAPI("/declineinvitation/?invid="+payload.invid,payload),config)
+  }
+  static * acceptGroupInvitation(payload) {
+    return yield axios.get(yield getAPI("/acceptinvitation/?invid="+payload.invid,payload),config)
+  }
+
   static * saveGroupSettings(payload) {
     const postData = {...payload, "public" : (payload.public ? 1 : 0), allowjoin : (payload.allowjoin ? 1 : 0)}  
     const postDataStr = querystring.stringify(postData);

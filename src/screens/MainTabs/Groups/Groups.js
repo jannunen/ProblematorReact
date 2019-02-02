@@ -29,6 +29,9 @@ export class Groups extends React.Component {
       { key: 'third', title: 'Popular' },
     ],
   };
+  componentDidMount = () => {
+    this.props.loadMyGroups();
+  }
 
   handleProblemClicked = (problemid) => {
 
@@ -111,10 +114,11 @@ export class Groups extends React.Component {
   }
   renderBadge = (tab) => {
     if (tab.route.key == 'second') {
+      
       return (
         <IconBadge
           BadgeElement={
-            <Text style={{ color: '#FFFFFF' }}>{10}</Text>
+            <Text style={{ color: '#FFFFFF' }}>{this.props.pending.length}</Text>
           }
           IconBadgeStyle={
             {
@@ -123,7 +127,7 @@ export class Groups extends React.Component {
               backgroundColor: '#decc00'
             }
           }
-          Hidden={this.props.pending == 0}
+          Hidden={this.props.pending.length == 0}
         />)
     }
   }
@@ -182,6 +186,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
+      groups: state.groups.groups,
+      pending: state.groups.pending,
+      invitations: state.groups.invitations,
     loading: state.problems.loading,
     error: state.problems.error
   }
@@ -189,7 +196,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    findProblemGlobal : (payload) => dispatch({type : 'GET_PROBLEM_SAGA',  payload })
+    findProblemGlobal : (payload) => dispatch({type : 'GET_PROBLEM_SAGA',  payload }),
+    loadMyGroups: () => dispatch({ type: 'MY_GROUPS_SAGA' })
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Groups);

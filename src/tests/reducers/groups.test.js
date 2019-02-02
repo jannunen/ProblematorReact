@@ -1,10 +1,45 @@
 import groupsReducers, {initialState } from '../../reducers/groups';
-import { problemsLoadBegin, problemsLoadFailure, setProblems } from '../../actions/problems';
-import basicState, { problemInfosAfterRemoveTick } from '../fixtures/probleminfos';
-import mockStore from 'redux-mock-store';
 import groups , {groupDetails} from '../fixtures/groups'
 
 describe('groups reducers', () => {
+
+    it('should execute accept invitation reducer',() => {
+        const action = {
+            type : 'ACCEPT_INVITATION_PUT',
+            payload : {
+                error : false,
+                message : 'Accepted',
+                source : {
+                    invid : '310'
+                }
+            }
+        }
+        // Make sure reducer REMOVES the invitation when it's accepted
+        const initialState = { pending : [...groups.pending]}
+        let stateAfter = { pending : []}
+        stateAfter.uiState = 'ready';
+        const state = groupsReducers(initialState,action);
+        expect(state).toEqual(stateAfter);
+    });
+
+    it('should execute decline invitation reducer',() => {
+        const action = {
+            type : 'DECLINE_INVITATION_PUT',
+            payload : {
+                error : false,
+                message : 'declined',
+                source : {
+                    invid : "310"
+                }
+            }
+        }
+        const initialState = { pending : [...groups.pending]}
+        let stateAfter = { pending : []}
+        stateAfter.uiState = 'ready';
+        const state = groupsReducers(initialState,action);
+        expect(state).toEqual(stateAfter);
+    });
+
     it('should execute save group reducer',() => {
         const action = {
             type : 'SAVE_GROUP_PUT',
