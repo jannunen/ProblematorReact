@@ -17,6 +17,7 @@ import ClimbingGroups from '../../../components/ClimbingGroups/ClimbingGroups'
 import PopularClimbingGroups from '../../../components/ClimbingGroups/PopularClimbingGroups'
 import SearchGroups from '../../../components/ClimbingGroups/SearchGroups'
 import SearchGroupHits from '../../../components/ClimbingGroups/SearchGroupHits'
+import PendingGroupInvitations from '../../../components/ClimbingGroups/PendingGroupInvitations'
 
 
 export class Groups extends React.Component {
@@ -91,7 +92,7 @@ export class Groups extends React.Component {
   };
   secondRoute = () => (
     <View style={[styles.scene, { backgroundColor: '#252623' }]} >
-      <Text>T4est2</Text>
+      <PendingGroupInvitations />
     </View>
   );
   thirdRoute = () => (
@@ -113,7 +114,7 @@ export class Groups extends React.Component {
       return (
         <IconBadge
           BadgeElement={
-            <Text style={{ color: '#FFFFFF' }}>{this.props.invitationCount}</Text>
+            <Text style={{ color: '#FFFFFF' }}>{10}</Text>
           }
           IconBadgeStyle={
             {
@@ -122,7 +123,7 @@ export class Groups extends React.Component {
               backgroundColor: '#decc00'
             }
           }
-          Hidden={this.props.invitationCount == 0}
+          Hidden={this.props.pending == 0}
         />)
     }
   }
@@ -181,7 +182,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    invitationCount: state.groups.invitationCount,
     loading: state.problems.loading,
     error: state.problems.error
   }
