@@ -3,15 +3,9 @@ import {
   View,
   Text,
   StyleSheet,
-  ActivityIndicator,
-  Linking,
-  Alert,
   TouchableOpacity,
-  Dimensions,
-  ART
 } from 'react-native'
 
-import  Icon  from 'react-native-vector-icons/Ionicons';
 import ActivitySpinner from 'react-native-loading-spinner-overlay';
 import  FontAwesome  from 'react-native-vector-icons/FontAwesome5';
 import Swiper from 'react-native-swiper';
@@ -21,6 +15,8 @@ import { Navigation } from 'react-native-navigation';
 import globalStyles from '../../../styles/global'
 import LeaderBoard from '../../../components/ClimbingGroups/LeaderBoard'
 import LatestTicks from '../../../components/ClimbingGroups/LatestTicks'
+import SendGroupInvitationModal from '../../../components/ClimbingGroups/SendGroupInvitationModal'
+
 
 export class GroupDetails extends React.Component {
 
@@ -28,6 +24,7 @@ export class GroupDetails extends React.Component {
         super(props)
         this.state = {
             selectedSwiper : 0,
+            showGroupInvitationModal: false,
         }
       }
 
@@ -81,6 +78,7 @@ export class GroupDetails extends React.Component {
 
     }
     handleGroupAction = (idx) => {
+        console.log("Handling group action: ",idx);
         if (idx == 0) {
             return;
         }
@@ -91,15 +89,20 @@ export class GroupDetails extends React.Component {
             break;
             case 2:
             // invite
+            this.setState({ showGroupInvitationModal : true});
+            console.log(this.state);
             break;
             case 3:
             // edit group
+            alert("tbd: edit group")
             break;
             case 4:
             // leave group
+            alert("tbd: leave group")
             break;
             case 5:
             // delete group
+            alert("tbd: delete")
             break;
         }
     }
@@ -134,14 +137,17 @@ export class GroupDetails extends React.Component {
                 title="Choose an action"
                 options={groupActionOptions}
                 cancelButtonIndex={0}
-                onPress={(index) => {this.handleGroupAction(index) }}
+                onPress={this.handleGroupAction}
                 />
-                <Text style={globalStyles.h1Style}>Group Details</Text>
+                <SendGroupInvitationModal onClose={() => { this.setState({showGroupInvitationModal : false})}} visible={this.state.showGroupInvitationModal} group={g} />
+                <View style={styles.groupHeader}>
+                    <Text style={[globalStyles.h1Style, { flexGrow : 1}]}>Group Details</Text>
+                    <View><TouchableOpacity onPress={() => { this.GroupActionSheet.show() }}><FontAwesome style={{ paddingTop : 5}} name="cog" color="#fff" size={25} /></TouchableOpacity></View>
+                </View>
                 <View style={styles.groupHeader}>
                     <View><Text style={styles.memberCount}>{gd.membercount} member(s)</Text></View>
                     <View>{(gd.public == 1) ? <Text style={styles.publicity}><FontAwesome size={20} name="eye" color="#fff" /> public</Text> : <Text style={styles.publicity}><FontAwesome size={20} name="eye-slash" color="#f00" /> private</Text>}</View>
                     <View>{(gd.me.isadmin == 1) ? <Text style={styles.publicity}><FontAwesome size={20} name="star" color="#decc00" /> admin</Text> : <Text style={styles.publicity}><FontAwesome size={20} name="user" color="#f00" /> member</Text>}</View>
-                    <View><TouchableOpacity onPress={() => {this.GroupActionSheet.show()}}><FontAwesome name="cog" color="#fff" size={20} /></TouchableOpacity></View>
                 </View>
                 <View style={styles.groupDescription}>
                 <Text style={styles.groupDesc}>Group description:</Text>

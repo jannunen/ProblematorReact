@@ -11,3 +11,6 @@ export function* groupSaga(action,api) {
 export function* deleteGroupMemberSaga(action,api) {
   yield (doSaga(action, ProblematorAPI.removeUserFromGroup, 'DELETE_GROUP_MEMBER_PUT',null))
 }
+export function* sendInvitationsSaga(action,api) {
+  yield (doSaga(action, ProblematorAPI.sendInvitations, 'SEND_INVITATIONS_PUT',null))
+}

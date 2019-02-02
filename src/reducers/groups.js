@@ -15,7 +15,12 @@ export default (state = initialState, action ) => {
     }
     let newState = null;
     switch (action.type) {
-
+        case 'SEND_GROUP_INVITATION_PUT':
+          return {
+              ...state,
+              uiState : 'ready'
+          };
+          break;
         case 'DELETE_GROUP_MEMBER_PUT':
         // TODO
         // NEeds still further improvement. Should remove member ALSO from groups! 

@@ -27,8 +27,14 @@ import problems from '../tests/fixtures/problems';
 
 export default class ProblematorAPI {
 
+  static * sendInvitations(payload) {
+    payload.msg = payload.invitationText;
+    payload.add_admin = payload.giveAdminRight;
+    return yield axios.get(yield getAPI("/send_invitations/?gid="+payload.gid+"&uid="+payload.uid,payload),config)
+  }
   static * removeUserFromGroup(payload) {
-    return yield axios.get(yield getAPI("/remove_user_from_group/?gid="+payload.gid+"&uid="+payload.uid,payload),config)
+     const postData = querystring.stringify(payload);
+    return yield axios.post(yield getAPI(`/remove_user_from_group/?`+postData,payload),config);
   }
     static * group(payload) {
     //return yield axios.get(yield getAPI("/group/?id="+payload.groupid,payload),config)

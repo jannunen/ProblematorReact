@@ -11,6 +11,26 @@ import { groupDetails } from '../fixtures/groups'
     }
   }
 
+it('should execute send invitations sage',() => {
+  const messageFromApi = {"error":false,"message":"Invitation(s) sent."};
+  let originalData = JSON.parse(JSON.stringify(messageFromApi));
+  sinon.stub(api, "sendInvitations").returns({data : messageFromApi});
+  const action = {
+    type : 'SEND_INVITATIONS_SAGA',
+    payload : { },
+  }
+  const expected = {
+    ...originalData,
+    //source : action.payload
+  }
+
+  return expectSaga(groupSagas.deleteGroupMemberSaga, action, api)
+    .withState(state)
+    .put({type : 'UI_LOADING', payload : {uiState : 'loading'}})
+    .put({type : 'DELETE_GROUP_MEMBER_PUT',  payload : expected })
+    .run();
+})
+
 it('should execute remove user from groups saga correctly',() => {
   const messageFromApi = {"error":false,"message":"User removed from the group"};
   let originalData = JSON.parse(JSON.stringify(messageFromApi));
@@ -29,7 +49,6 @@ it('should execute remove user from groups saga correctly',() => {
     .put({type : 'UI_LOADING', payload : {uiState : 'loading'}})
     .put({type : 'DELETE_GROUP_MEMBER_PUT',  payload : expected })
     .run();
-
 })
 
 it('Should execute group saga correctly', () => {

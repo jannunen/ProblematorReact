@@ -80,7 +80,7 @@ export class PublicAscentListModal extends React.Component {
                 style={{ flex: 1 }}
                 visible={this.props.visible}
                 onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
+                    this.setModalVisible(false);
                 }}>
                 <View style={styles.modalAscentsContainer}>
                     <View style={{ flex: 1, flexGrow: 1, marginTop: 40, marginRight: 0, padding: 16 }}>

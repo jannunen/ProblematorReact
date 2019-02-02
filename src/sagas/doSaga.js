@@ -20,6 +20,7 @@ var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSucc
     payload['error']= true;
   }
   const newPayload = JSON.parse(JSON.stringify(payload));
+  console.log("Payload after API call",newPayload);
   let ret = true;
   if (newPayload && !newPayload.error) {
     // pass the original action payload to reducer.

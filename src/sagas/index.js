@@ -18,6 +18,7 @@ export default function *rootSaga() {
     fork( takeLatest, 'SEND_OPINION_SAGA', problemSagas.sendOpinionSaga ),
     fork( takeLatest, 'MY_GROUPS_SAGA', groupSagas.myGroupsSaga ),
     fork( takeLatest, 'DELETE_GROUP_MEMBER_SAGA', groupSagas.deleteGroupMemberSaga ),
+    fork( takeLatest, 'SEND_INVITATIONS_SAGA', groupSagas.sendInvitationsSaga ),
     fork( takeLatest, 'GROUP_SAGA', groupSagas.groupSaga ),
     fork( takeLatest, 'GET_AUTH_SAGA',getAuthSaga ),
     takeEvery('PROBLEMS_LOAD_ERROR', uiSagas.showErrorAlert),

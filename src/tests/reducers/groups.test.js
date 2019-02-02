@@ -5,6 +5,25 @@ import mockStore from 'redux-mock-store';
 import groups , {groupDetails} from '../fixtures/groups'
 
 describe('groups reducers', () => {
+    it('should execute send invitations reducer',() => {
+        const action = {
+            type : 'SEND_GROUP_INVITATION_PUT',
+            payload : {
+                // No actual payload, just the source...
+                source : {
+                    emails : ['eka','toka'],
+                    invitationText : "Jotain",
+                }
+            }
+        }
+
+        let stateAfter = JSON.parse(JSON.stringify(initialState));
+        stateAfter.uiState = 'ready';
+        const state = groupsReducers(initialState,action);
+        expect(state).toEqual(stateAfter);
+
+    });
+
     it('should remove group member',() => {
 
         const action = {
