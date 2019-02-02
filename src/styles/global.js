@@ -70,7 +70,7 @@ export default  StyleSheet.create({
         color: '#decc00',
         marginBottom: 8,
         textTransform: 'uppercase',
-        fontSize: 20
+        fontSize: 25
     },
 });
 

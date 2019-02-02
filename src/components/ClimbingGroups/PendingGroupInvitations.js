@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import  FontAwesome  from 'react-native-vector-icons/FontAwesome5';
 import moment from 'moment';
 import ActionSheet from 'react-native-actionsheet';
-import globalStyles from '../../styles/global'
+import EmptyState from '../../components/EmptyState/EmptyState'
 
 export class PendingClimbingGroups extends React.Component {
 
@@ -102,6 +102,7 @@ export class PendingClimbingGroups extends React.Component {
                 />
 
         {this.props.error != null ? <Text style={styles.errorMessage}>Error: {this.props.error}</Text> : null}
+        {this.props.pending.length==0 && <EmptyState >No invitations</EmptyState>}
         {this.props.pending && 
         <FlatList
           style={styles.groupList}
@@ -115,7 +116,6 @@ export class PendingClimbingGroups extends React.Component {
             data={this.transFormGroupsToFlatList()}
           />
         }
-        {this.props.pending.length==0 && <Text style={globalStyles.basicText}>No invitations</Text>}
         </View>
       )
     }
