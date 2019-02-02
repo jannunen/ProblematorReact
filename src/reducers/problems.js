@@ -11,15 +11,15 @@ export const initialState = {
 const reducer = (state = initialState, action) => {
     const payload = action.payload;
     let source=null;
-    if (payload && payload.args) {
-        source = {...payload.args};
+    if (payload && payload.source) {
+        source = {...payload.source};
     }
     let newState = null;
+    console.log("Problems reducer ",action.payload)
     switch (action.type) {
         case 'ALERT_MESSAGE':
         return {
             ...state
-            
         }
         break;
         case 'SAVE_OPINION_PUT':
@@ -47,7 +47,7 @@ const reducer = (state = initialState, action) => {
         case 'UI_LOADING':
          return  {
              ...state,
-             uiState : 'loading',
+             uiState : payload.uiState,
          }
         break;
         case 'UI_STOP_LOADING':

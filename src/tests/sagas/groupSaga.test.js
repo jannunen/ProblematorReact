@@ -21,7 +21,7 @@ it('should execute remove user from groups saga correctly',() => {
   }
   const expected = {
     ...originalData,
-    source : action.payload
+    //source : action.payload
   }
 
   return expectSaga(groupSagas.deleteGroupMemberSaga, action, api)
@@ -44,12 +44,13 @@ it('Should execute group saga correctly', () => {
   }
   const expected = {
     ...originalData,
-    source : action.payload
+    //source : action.payload
   }
 
   return expectSaga(groupSagas.groupSaga, action, api)
     .withState(state)
     .put({type : 'UI_LOADING', payload : {uiState : 'loading'}})
     .put({type : 'GROUP_PUT',  payload : expected })
+    .put({type : 'UI_LOADING', payload : {uiState : 'ready'}})
     .run();
 });

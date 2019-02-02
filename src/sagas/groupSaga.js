@@ -9,5 +9,5 @@ export function* groupSaga(action,api) {
   yield (doSaga(action, ProblematorAPI.group, 'GROUP_PUT', null, null ))
 }
 export function* deleteGroupMemberSaga(action,api) {
-  yield (doSaga(action, ProblematorAPI.removeUserFromGroup, 'DELETE_GROUP_MEMBER_PUT'))
+  yield (doSaga(action, ProblematorAPI.removeUserFromGroup, 'DELETE_GROUP_MEMBER_PUT',null))
 }

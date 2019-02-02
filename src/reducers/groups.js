@@ -10,14 +10,13 @@ export default (state = initialState, action ) => {
     const payload = action.payload;
     let source = null;
     console.log(action.type,"payload to GROUPS reducer",action.payload);
-    if (payload && payload.args) {
-        source = {...payload.args};
+    if (payload && payload.source) {
+        source = payload.source;
     }
     let newState = null;
     switch (action.type) {
 
         case 'DELETE_GROUP_MEMBER_PUT':
-        console.log("we should have a source, why don't we?",source)
         // TODO
         // NEeds still further improvement. Should remove member ALSO from groups! 
         // AND latestticks. But those are missing some UIDs

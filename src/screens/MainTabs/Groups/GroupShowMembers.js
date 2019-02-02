@@ -62,6 +62,12 @@ export class GroupShowMembers extends React.Component {
         const g = this.props.groupDetails[this.props.group.id];
         return (
             <View style={[styles.parent, globalStyles.defaultContainer]}>
+                <ActivitySpinner
+                    visible={this.props.uiState == 'loading'}
+                    textContent={'Loading...'}
+                    textStyle={{ color: 'white' }}
+                    overlayColor="rgba(0,0,0,0.7)"
+                />
                 <Text style={globalStyles.h1Style}>GROUP MEMBERS</Text>
                 <Text style={globalStyles.h2Style}>{g.membercount} member(s)</Text>
                 <FlatList

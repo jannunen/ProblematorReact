@@ -3,27 +3,24 @@ import { select, call, put  } from 'redux-saga/effects';
 //import fixJSONP from '../helpers/fixJSONP';
 export const authToken = (state) => state.auth.token;
 
-var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSuccess,customApi)  {
+var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSuccess)  {
   if (action.payload == null) {
     action.payload = {};
   }
-  //yield put({ type : 'UI_LOADING',  payload : { uiState : 'loading' }});
+  yield put({ type : 'UI_LOADING',  payload : { uiState : 'loading' }});
   if (failReducer == null) {
     failReducer = 'PROBLEMS_LOAD_ERROR';
   }
-  // if (alertSuccess == null) {
-  //   alertSuccess = false;
-  // }
-  console.log("payload for the API call",action.payload);
+  if (alertSuccess == null) {
+    alertSuccess = false;
+  }
   const response = yield call(apiCall, action.payload)
   let payload =  response ? response.data : {}
   if (payload.message && payload.message.match(/error/i)) {
     payload['error']= true;
   }
   const newPayload = JSON.parse(JSON.stringify(payload));
-  console.log("paylaod after api",newPayload)
   let ret = true;
-  console.log("still here?",payload.originapayload);
   if (newPayload && !newPayload.error) {
     // pass the original action payload to reducer.
     // The parameters might contain some handy data reducer can use
@@ -38,7 +35,7 @@ var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSucc
     yield put({ type: failReducer,payload : newPayload });
     ret = false;
   }
-  yield put({type : 'UI_STOP_LOADING'})
+  yield put({ type : 'UI_LOADING',  payload : { uiState : 'ready' }});
   return ret;
 }
 export default doSaga;
