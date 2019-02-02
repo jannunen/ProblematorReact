@@ -17,6 +17,7 @@ import globalStyles from '../../../styles/global'
 import LeaderBoard from '../../../components/ClimbingGroups/LeaderBoard'
 import LatestTicks from '../../../components/ClimbingGroups/LatestTicks'
 import SendGroupInvitationModalContent from '../../../components/ClimbingGroups/SendGroupInvitationModal'
+import GroupEditModalContent from '../../../components/ClimbingGroups/GroupEditModal'
 
 
 export class GroupDetails extends React.Component {
@@ -26,6 +27,7 @@ export class GroupDetails extends React.Component {
         this.state = {
             selectedSwiper : 0,
             showGroupInvitationModal: false,
+            showGroupEditModal: false,
             test : false,
         }
       }
@@ -86,17 +88,14 @@ export class GroupDetails extends React.Component {
         }
         switch (idx) {
             case 1:
-            // show members
             this.navigateToShowMembers();
             break;
             case 2:
-            // invite
             this.setState({ test : true, showGroupInvitationModal : true});
-            console.log(this.state);
             break;
             case 3:
             // edit group
-            alert("tbd: edit group")
+            this.setState({ test : true, showGroupEditModal : true});
             break;
             case 4:
             // leave group
@@ -149,7 +148,17 @@ export class GroupDetails extends React.Component {
                 onRequestClose={() => {
                     this.setModalVisible(false);
                 }}>
-                <SendGroupInvitationModalContent onClose={() => { this.setState({showGroupInvitationModal : false})}} group={g} />
+                    <SendGroupInvitationModalContent onClose={() => { this.setState({ showGroupInvitationModal: false }) }} group={g} />
+                </Modal>
+                <Modal
+                animationType="slide"
+                transparent={false}
+                style={{ flex: 1 }}
+                visible={this.state.showGroupEditModal}
+                onRequestClose={() => {
+                    this.setState({ showGroupEditModal : false});
+                }}>
+                    <GroupEditModalContent onClose={() => { this.setState({ showGroupEditModal: false }) }} group={g} />
                 </Modal>
                 <View style={styles.groupHeader}>
                     <Text style={[globalStyles.h1Style, { flexGrow : 1}]}>Group Details</Text>

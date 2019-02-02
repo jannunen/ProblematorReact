@@ -24,6 +24,11 @@ import problems from '../tests/fixtures/problems';
 
 export default class ProblematorAPI {
 
+  static * saveGroupSettings(payload) {
+    const postData = {...payload, "public" : (payload.public ? 1 : 0), allowjoin : (payload.allowjoin ? 1 : 0)}  
+    const postDataStr = querystring.stringify(postData);
+    return yield axios.get(yield getAPI("/save_groupsettings/?"+postDataStr),config)
+  }
   static * sendInvitations(payload) {
     const postData = {
       emails : payload.emails.join(","),
@@ -31,15 +36,16 @@ export default class ProblematorAPI {
       add_admin : (payload.giveAdminRight ? 1 : 0),
       groupid : payload.groupid
     }
-     const postDataStr = querystring.stringify(postData);
-     console.log(postDataStr);
+    const postDataStr = querystring.stringify(postData);
     return yield axios.get(yield getAPI("/send_invitations/?"+postDataStr),config)
   }
   static * removeUserFromGroup(payload) {
-     const postData = querystring.stringify(payload);
+    const postData = querystring.stringify(payload);
     return yield axios.post(yield getAPI(`/remove_user_from_group/?`+postData,payload),config);
   }
-    static * group(payload) {
+
+  static * group(payload) {
+    // FAKE
     //return yield axios.get(yield getAPI("/group/?id="+payload.groupid,payload),config)
     return yield { data: groupDetails};
   }

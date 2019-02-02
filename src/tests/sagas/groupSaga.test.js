@@ -11,13 +11,34 @@ import { groupDetails } from '../fixtures/groups'
     }
   }
 
-it('should execute send invitations sage',() => {
+it('should execute save group success saga',() => {
+  const messageFromApi = {"error":false,"message":"Group saved."};
+  let originalData = JSON.parse(JSON.stringify(messageFromApi));
+  sinon.stub(api, "saveGroupSettings").returns({data : messageFromApi});
+  const action = {
+    type : 'SAVE_GROUP_SAGA',
+    payload : {
+     },
+  }
+  const expected = {
+    ...originalData,
+  }
+  return expectSaga(groupSagas.saveGroupSaga, action, api)
+    .withState(state)
+    .put({type : 'UI_LOADING', payload : {uiState : 'loading'}})
+    .put({type : 'SAVE_GROUP_PUT',  payload : expected })
+    .run();
+})
+
+it('should execute send invitations success saga',() => {
   const messageFromApi = {"error":false,"message":"Invitation(s) sent."};
   let originalData = JSON.parse(JSON.stringify(messageFromApi));
   sinon.stub(api, "sendInvitations").returns({data : messageFromApi});
   const action = {
     type : 'SEND_INVITATIONS_SAGA',
-    payload : { },
+    payload : { 
+      'emails' : ['eka','toka']
+    },
   }
   const expected = {
     ...originalData,

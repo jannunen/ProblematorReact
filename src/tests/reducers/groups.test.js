@@ -5,6 +5,23 @@ import mockStore from 'redux-mock-store';
 import groups , {groupDetails} from '../fixtures/groups'
 
 describe('groups reducers', () => {
+    it('should execute save group reducer',() => {
+        const action = {
+            type : 'SAVE_GROUP_PUT',
+            payload : {
+                // No actual payload, just the source...
+                source : {
+                    name : 'nimi',
+                    desc : 'joku'
+                }
+            }
+        }
+        let stateAfter = JSON.parse(JSON.stringify(initialState));
+        stateAfter.uiState = 'ready';
+        const state = groupsReducers(initialState,action);
+        expect(state).toEqual(stateAfter);
+    });
+
     it('should execute send invitations reducer',() => {
         const action = {
             type : 'SEND_GROUP_INVITATION_PUT',
@@ -16,12 +33,10 @@ describe('groups reducers', () => {
                 }
             }
         }
-
         let stateAfter = JSON.parse(JSON.stringify(initialState));
         stateAfter.uiState = 'ready';
         const state = groupsReducers(initialState,action);
         expect(state).toEqual(stateAfter);
-
     });
 
     it('should remove group member',() => {

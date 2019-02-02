@@ -16,6 +16,7 @@ export default (state = initialState, action ) => {
     let newState = null;
     switch (action.type) {
         case 'SEND_GROUP_INVITATION_PUT':
+        case 'SAVE_GROUP_PUT':
           return {
               ...state,
               uiState : 'ready'
