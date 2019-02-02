@@ -5,6 +5,7 @@ import  * as uiSagas from './uiSaga'
 import  * as groupSagas from './groupSaga'
 
 export default function *rootSaga() {
+
   yield [
     fork( takeLatest, 'GET_PROBLEM_SAGA',problemSagas.getProblemSaga ),
     fork( takeLatest, 'GET_PROBLEMS_SAGA',problemSagas.getProblemsSaga ),
@@ -16,8 +17,8 @@ export default function *rootSaga() {
     fork( takeLatest, 'SEND_FEEDBACK_SAGA', problemSagas.sendFeedbackSaga ),
     fork( takeLatest, 'SEND_OPINION_SAGA', problemSagas.sendOpinionSaga ),
     fork( takeLatest, 'MY_GROUPS_SAGA', groupSagas.myGroupsSaga ),
-    fork( takeLatest, 'GROUP_SAGA', groupSagas.groupSaga ),
     fork( takeLatest, 'DELETE_GROUP_MEMBER_SAGA', groupSagas.deleteGroupMemberSaga ),
+    fork( takeLatest, 'GROUP_SAGA', groupSagas.groupSaga ),
     fork( takeLatest, 'GET_AUTH_SAGA',getAuthSaga ),
     takeEvery('PROBLEMS_LOAD_ERROR', uiSagas.showErrorAlert),
     takeEvery('ALERT_MESSAGE', uiSagas.showAlert),

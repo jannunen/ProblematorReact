@@ -17,6 +17,7 @@ export default (state = initialState, action) => {
     let newState = null;
     switch (action.type) {
         case 'DELETE_GROUP_MEMBER_PUT':
+        console.log("here osimmoilleen");
         // TODO
         // NEeds still further improvement. Should remove member ALSO from groups! 
         // AND latestticks. But those are missing some UIDs

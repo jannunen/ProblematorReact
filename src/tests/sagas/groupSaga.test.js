@@ -2,16 +2,37 @@ import { call, put, take } from 'redux-saga/effects';
 import sinon from 'sinon';
 import api from '../../apis/problematorapi'
 import { expectSaga } from 'redux-saga-test-plan';
-import { groupSaga } from '../../sagas/groupSaga'
+import  * as groupSagas  from '../../sagas/groupSaga'
 import { groupDetails } from '../fixtures/groups'
 
-
-it('Should execute group saga correctly', () => {
   const state = {
     auth : {
       token : 'foo',
     }
   }
+
+it('should execute remove user from groups saga correctly',() => {
+  const messageFromApi = {"error":false,"message":"User removed from the group"};
+  let originalData = JSON.parse(JSON.stringify(messageFromApi));
+  sinon.stub(api, "removeUserFromGroup").returns({data : messageFromApi});
+  const action = {
+    type : 'DELETE_GROUP_MEMBER_SAGA',
+    payload : { uid: 3552,gid : 6},
+  }
+  const expected = {
+    ...originalData,
+    source : action.payload
+  }
+
+  return expectSaga(groupSagas.deleteGroupMemberSaga, action, api)
+    .withState(state)
+    .put({type : 'UI_LOADING', payload : {uiState : 'loading'}})
+    .put({type : 'DELETE_GROUP_MEMBER_PUT',  payload : expected })
+    .run();
+
+})
+
+it('Should execute group saga correctly', () => {
   // Make sure that the api returns what we want
 
   const groupDetails2 = { 'id' : 654, 'nimi' : 'foppa'};
@@ -26,7 +47,7 @@ it('Should execute group saga correctly', () => {
     source : action.payload
   }
 
-  return expectSaga(groupSaga, action, api)
+  return expectSaga(groupSagas.groupSaga, action, api)
     .withState(state)
     .put({type : 'UI_LOADING', payload : {uiState : 'loading'}})
     .put({type : 'GROUP_PUT',  payload : expected })
