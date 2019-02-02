@@ -7,13 +7,15 @@ export function* showErrorAlert (action) {
 }
 
 export function* showAlert (action) {
-  console.log("In Showalert",action)
-  /*
+  console.log("In Showalert",action.payload)
   const message = action.payload;
   const msg = message.message != null ? message.message : message;
-  console.log("Wanting to alert",msg.toString())
-  yield call(Alert.alert, 'Problemator', msg.toString());
-  */
+  if (typeof(msg)=="string") {
+    console.log("Wanting to alert",msg.toString())
+    Alert.alert( 'Problemator', msg.toString());
+  } else {
+    console.log("cannot show",msg);
+  }
 
 }
 
