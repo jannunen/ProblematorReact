@@ -14,6 +14,7 @@ import { Navigation } from 'react-native-navigation';
 import globalStyles from '../../../styles/global'
 
 import ClimbingGroups from '../../../components/ClimbingGroups/ClimbingGroups'
+import PopularClimbingGroups from '../../../components/ClimbingGroups/PopularClimbingGroups'
 import SearchGroups from '../../../components/ClimbingGroups/SearchGroups'
 import SearchGroupHits from '../../../components/ClimbingGroups/SearchGroupHits'
 
@@ -76,8 +77,8 @@ export class Groups extends React.Component {
     return (
       <View style={[styles.scene, { backgroundColor: '#252623' }]} >
         <Text style={globalStyles.h1Style} >My groups</Text>
-        <ClimbingGroups  handleItemClicked={this.handleItemClicked} />
         <SearchGroups />
+        <ClimbingGroups  handleItemClicked={this.handleItemClicked} />
         {this.props.searchGroupHits ?
           <View>
             <Text>Search hits:</Text>
@@ -95,7 +96,7 @@ export class Groups extends React.Component {
   );
   thirdRoute = () => (
     <View style={[styles.scene, { backgroundColor: '#252623' }]} >
-      <Text>Third</Text>
+      <PopularClimbingGroups />
     </View>
   );
   static get options() {
