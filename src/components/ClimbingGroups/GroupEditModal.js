@@ -22,7 +22,7 @@ export class GroupEditModalContent extends Component {
         this.state = {
             name : null,
             groupid : null,
-            desc : null,
+            groupdesc : null,
             public : false,
         }
     }
@@ -31,7 +31,7 @@ export class GroupEditModalContent extends Component {
         this.setState({
             name : this.props.group.name,
             groupid : this.props.group.id,
-            desc : this.props.group.groupdesc,
+            groupdesc : this.props.group.groupdesc,
             public : this.props.group.public == "1",
             allowjoin : this.props.group.allowjoin == "1",
         });
@@ -76,10 +76,10 @@ export class GroupEditModalContent extends Component {
                             <Text style={globalStyles.textInputTitle}>Group Description</Text>
                             <TextInput
                                 style={[globalStyles.textInput, styles.textInput]}
-                                onChangeText={(text) => this.setState({ desc: text })}
+                                onChangeText={(text) => this.setState({ groupdesc: text })}
                                 multiline={true}
                                 numberOfLines={3}
-                                value={this.state.desc}
+                                value={this.state.groupdesc}
                             />
                         </View> 
                         <View style={{ alignContent: 'center' }}>
