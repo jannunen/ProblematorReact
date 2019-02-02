@@ -5,10 +5,7 @@ import querystring from 'querystring'
 import groups, { groupDetails} from '../tests/fixtures/groups'
 
 const root = "https://beta.problemator.fi/t/problematorapi/v02";
-function* getAPI (url, payload)  {
-  if (payload == undefined) {
-    console.log("Payload is missing in getAPI()");
-  }
+function* getAPI (url )  {
   const token = yield(select(authToken));
   if (!url.match(/\?/)) {
     url = `${root}${url}?api-auth-token=${token}&react=true`
@@ -28,9 +25,15 @@ import problems from '../tests/fixtures/problems';
 export default class ProblematorAPI {
 
   static * sendInvitations(payload) {
-    payload.msg = payload.invitationText;
-    payload.add_admin = payload.giveAdminRight;
-    return yield axios.get(yield getAPI("/send_invitations/?gid="+payload.gid+"&uid="+payload.uid,payload),config)
+    const postData = {
+      emails : payload.emails.join(","),
+      msg : payload.invitationText,
+      add_admin : (payload.giveAdminRight ? 1 : 0),
+      groupid : payload.groupid
+    }
+     const postDataStr = querystring.stringify(postData);
+     console.log(postDataStr);
+    return yield axios.get(yield getAPI("/send_invitations/?"+postDataStr),config)
   }
   static * removeUserFromGroup(payload) {
      const postData = querystring.stringify(payload);

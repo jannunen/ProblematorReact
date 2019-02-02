@@ -24,7 +24,7 @@ import { GRADES } from '../../../config';
 import ActionSheet from 'react-native-actionsheet'
 import BarChart from '../BarChart/BarChart';
 import DialogInput from 'react-native-dialog-input';
-import PublicAscentListModal from '../modals/PublicAscentListModal/PublicAscentListModal';
+import PublicAscentListModalContent from '../modals/PublicAscentListModal/PublicAscentListModal';
 import globalStyles from '../../styles/global'
 
 export class ProblemDetails extends React.Component {
@@ -556,7 +556,16 @@ export class ProblemDetails extends React.Component {
                     textStyle={{ color : 'white'}}
                     overlayColor="rgba(0,0,0,0.7)"
                 />
-                <PublicAscentListModal onClose={() => { this.setModalVisible(false); }} visible={this.state.showGlobalAscentListModal} problemid={p.problemid} />
+            <Modal
+                animationType="slide"
+                transparent={false}
+                style={{ flex: 1 }}
+                visible={this.props.visible}
+                onRequestClose={() => {
+                    this.setModalVisible(false);
+                }}>
+                <PublicAscentListModalContent onClose={() => { this.setModalVisible(false); }} problemid={p.problemid} />
+                </Modal>
                 {this.gradeCell(p)}
                 {this.likeCell(p)}
                 {this.infoCell(p)}

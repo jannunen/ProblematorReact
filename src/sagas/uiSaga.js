@@ -3,7 +3,9 @@ import { Alert } from 'react-native'
 
 export function* showErrorAlert (action) {
   const error = action.payload;
-  yield call(Alert.alert, 'Error', error.message != null ? error.message : error)
+  let str = error.message != null ? error.message : error;
+  str = str.replace("<br />", "\n")
+  yield call(Alert.alert, 'Error', str)
 }
 
 export function* showAlert (action) {
@@ -11,8 +13,10 @@ export function* showAlert (action) {
   const message = action.payload;
   const msg = message.message != null ? message.message : message;
   if (typeof(msg)=="string") {
-    console.log("Wanting to alert",msg.toString())
-    Alert.alert( 'Problemator', msg.toString());
+    let str = msg.toString();
+    str = str.replace("<br />","\n")
+    console.log("Wanting to alert",str)
+    Alert.alert( 'Problemator', str);
   } else {
     console.log("cannot show",msg);
   }

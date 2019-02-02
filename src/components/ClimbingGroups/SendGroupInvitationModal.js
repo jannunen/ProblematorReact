@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 import ProblematorButton from '../ProblematorButton/ProblematorButton'
 import FontAwesome from 'react-native-vector-icons/FontAwesome5'
 
-export class SendGroupInvitationModal extends Component {
+export class SendGroupInvitationModalContent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -38,12 +38,11 @@ export class SendGroupInvitationModal extends Component {
         this.setState({ emails: this.state.emails.filter(item => item !== email) });
     }
     componentDidMount = () => {
+        console.log("group",this.props.group);
         this.setState({
-            modalVisible: this.props.visible,
             groupid: this.props.group.id,
             invitationText: "I would like you to join to our climbing group called " + this.props.group.name
         });
-        console.log('cdm', this.state)
     }
     sendInvitations = () => {
         if (this.state.emails.length == 0) {
@@ -55,9 +54,6 @@ export class SendGroupInvitationModal extends Component {
     }
 
     setModalVisible = (visible) => {
-        this.setState({
-            modalVisible: visible
-        });
         this.props.onClose();
     }
     addEmail = () => {
@@ -70,18 +66,16 @@ export class SendGroupInvitationModal extends Component {
 
     render() {
         return (
-            <Modal
-                animationType="slide"
-                transparent={false}
-                style={{ flex: 1 }}
-                visible={this.state.modalVisible}
-                onRequestClose={() => {
-                    this.setModalVisible(false);
-                }}>
-
                 <View style={[globalStyles.modalContainer, styles.modalContainer]}>
                     <View style={styles.formContainer}>
                         <Text style={globalStyles.h1Style}> Invite friends </Text>
+                        <CheckBox 
+                        isChecked={this.state.giveAdminRights}
+                        onClick={() => this.setState({ giveAdminRights : !this.state.giveAdminRights})}
+                        leftText={"Add admin rights"}
+                        leftTextStyle={styles.checkBoxText}
+                        checkBoxColor="#decc00"
+                        />
                         <Text style={globalStyles.textInputTitle}>Invitation text</Text>
                         <TextInput
                             style={[globalStyles.textInput, styles.textInput]}
@@ -101,35 +95,27 @@ export class SendGroupInvitationModal extends Component {
                             />
                             <TouchableOpacity onPress={this.addEmail}><FontAwesome style={styles.addEmail} name="plus-square" color="#decc00" size={30} /></TouchableOpacity>
                         </View>
-                        <Text style={globalStyles.textInputTitle}>Add admin rights for invitees</Text>
-                        <CheckBox 
-                        style={styles.checkBox}
-                        isChecked={this.state.giveAdminRights}
-                        onClick={() => this.setState({ giveAdminRights : !this.state.giveAdminRights})}
-                        leftText={"Add admin rights"}
-                        leftTextStyle={styles.checkBoxText}
-                        checkBoxColor="#decc00"
-                        />
                         
                         <ScrollView>
                             <FlatList data={this.state.emails} renderItem={this.renderItem} />
                         </ScrollView>
                         <View style={{ alignContent: 'center' }}>
-                            <ProblematorButton onPress={this.sendInvitations} title="Send invitation(s)"
+                            <ProblematorButton 
+                                showLoading={this.props.uiState==='loading'}
+                            onPress={this.sendInvitations} title="Send invitation(s)"
                                 containerStyle={{ width: "100%" }}
                             />
                             <ProblematorButton
                                 title="close"
                                 containerStyle={{ width: "100%" }}
                                 onPress={() => {
-                                    this.setModalVisible(!this.state.modalVisible);
+                                    this.setModalVisible(false);
                                 }}>
                             </ProblematorButton>
                         </View>
 
                     </View>
                 </View>
-            </Modal>
         )
     }
 }
@@ -155,6 +141,8 @@ const styles = StyleSheet.create({
     },
     checkBoxText: {
         color : 'white',
+        fontSize : 18,
+        paddingTop : 8,
     }
 })
 
@@ -171,4 +159,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendGroupInvitationModal);
+export default connect(mapStateToProps, mapDispatchToProps)(SendGroupInvitationModalContent);

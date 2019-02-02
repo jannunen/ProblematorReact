@@ -18,14 +18,10 @@ export class PublicAscentListModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalVisible : this.props.visible
         }
     }
 
     setModalVisible = (visible) => {
-        this.setState({
-            modalVisible : visible
-        });
         this.props.onClose();
     }
 
@@ -74,14 +70,6 @@ export class PublicAscentListModal extends React.Component {
         } 
 
         return ( 
-            <Modal
-                animationType="slide"
-                transparent={false}
-                style={{ flex: 1 }}
-                visible={this.props.visible}
-                onRequestClose={() => {
-                    this.setModalVisible(false);
-                }}>
                 <View style={styles.modalAscentsContainer}>
                     <View style={{ flex: 1, flexGrow: 1, marginTop: 40, marginRight: 0, padding: 16 }}>
                         <Text style={styles.modalTitle}>Public ascent list</Text>
@@ -100,7 +88,6 @@ export class PublicAscentListModal extends React.Component {
                         </ProblematorButton>
                     </View>
                 </View>
-            </Modal>
         );
     }
 }

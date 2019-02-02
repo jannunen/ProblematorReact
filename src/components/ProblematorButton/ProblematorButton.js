@@ -3,6 +3,7 @@ import {
     TouchableOpacity,
     Text,
     View,
+    ActivityIndicator,
     StyleSheet,
     Button
 } from 'react-native';
@@ -17,17 +18,24 @@ export class ProblematorButton extends React.Component  {
     }
 
     render() {
+        let text = (
+            <Text
+            style={[
+                styles.button,
+                { backgroundColor: this.props.color != null ? this.props.color : "#decc00" },
+                this.props.disabled ? styles.disabled : null
+            ]}
+            {...this.props}
+            >{this.props.title}
+            </Text>);
+
+        if (this.props.showLoading===true) {
+            text = <ActivityIndicator style={{ paddingTop : 6}} size="small" color="white" />
+        }
         return (
             <View style={[styles.buttonContainer,this.props.containerStyle]}>
-            <TouchableOpacity>
-                <Text
-                    style={[
-                        styles.button,
-                        { backgroundColor: this.props.color != null ? this.props.color : "#decc00" },
-                        this.props.disabled ? styles.disabled : null
-                    ]}
-                    {...this.props}
-                >{this.props.title}</Text>
+                <TouchableOpacity>
+                    {text}
                 </TouchableOpacity>
             </View>
         )

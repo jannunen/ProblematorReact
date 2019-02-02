@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Modal,
 } from 'react-native'
 
 import ActivitySpinner from 'react-native-loading-spinner-overlay';
@@ -15,7 +16,7 @@ import { Navigation } from 'react-native-navigation';
 import globalStyles from '../../../styles/global'
 import LeaderBoard from '../../../components/ClimbingGroups/LeaderBoard'
 import LatestTicks from '../../../components/ClimbingGroups/LatestTicks'
-import SendGroupInvitationModal from '../../../components/ClimbingGroups/SendGroupInvitationModal'
+import SendGroupInvitationModalContent from '../../../components/ClimbingGroups/SendGroupInvitationModal'
 
 
 export class GroupDetails extends React.Component {
@@ -25,6 +26,7 @@ export class GroupDetails extends React.Component {
         this.state = {
             selectedSwiper : 0,
             showGroupInvitationModal: false,
+            test : false,
         }
       }
 
@@ -89,7 +91,7 @@ export class GroupDetails extends React.Component {
             break;
             case 2:
             // invite
-            this.setState({ showGroupInvitationModal : true});
+            this.setState({ test : true, showGroupInvitationModal : true});
             console.log(this.state);
             break;
             case 3:
@@ -123,7 +125,7 @@ export class GroupDetails extends React.Component {
         let groupActionOptions = [ 
             'Cancel',
             'Show Members',
-            'Invite New Member',
+            'Invite New Member(s)',
             'Edit Group',
             'Leave group',
         ];
@@ -139,7 +141,16 @@ export class GroupDetails extends React.Component {
                 cancelButtonIndex={0}
                 onPress={this.handleGroupAction}
                 />
-                <SendGroupInvitationModal onClose={() => { this.setState({showGroupInvitationModal : false})}} visible={this.state.showGroupInvitationModal} group={g} />
+                <Modal
+                animationType="slide"
+                transparent={false}
+                style={{ flex: 1 }}
+                visible={this.state.showGroupInvitationModal}
+                onRequestClose={() => {
+                    this.setModalVisible(false);
+                }}>
+                <SendGroupInvitationModalContent onClose={() => { this.setState({showGroupInvitationModal : false})}} group={g} />
+                </Modal>
                 <View style={styles.groupHeader}>
                     <Text style={[globalStyles.h1Style, { flexGrow : 1}]}>Group Details</Text>
                     <View><TouchableOpacity onPress={() => { this.GroupActionSheet.show() }}><FontAwesome style={{ paddingTop : 5}} name="cog" color="#fff" size={25} /></TouchableOpacity></View>
