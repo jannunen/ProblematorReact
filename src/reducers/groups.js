@@ -6,18 +6,18 @@ export const initialState = {
     loading : false,
     error : null,
 }
-export default (state = initialState, action) => {
+export default (state = initialState, action ) => {
     const payload = action.payload;
     let source = null;
-    if (payload && payload.source) {
-        source = {...payload.source};
-        delete action.payload.source;
+    console.log(action.type,"payload to GROUPS reducer",action.payload);
+    if (payload && payload.args) {
+        source = {...payload.args};
     }
-    console.log(action.type,"payload to GROUPS reducer",payload);
     let newState = null;
     switch (action.type) {
+
         case 'DELETE_GROUP_MEMBER_PUT':
-        console.log("here osimmoilleen");
+        console.log("we should have a source, why don't we?",source)
         // TODO
         // NEeds still further improvement. Should remove member ALSO from groups! 
         // AND latestticks. But those are missing some UIDs
@@ -62,7 +62,6 @@ export default (state = initialState, action) => {
             break;
 
         default:
-            console.log("Did not catch the action type for "+action.type+"! ");
             return state;
             break;
     }

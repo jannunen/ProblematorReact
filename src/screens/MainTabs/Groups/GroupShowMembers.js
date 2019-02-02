@@ -29,11 +29,10 @@ export class GroupShowMembers extends React.Component {
       }
 
     componentDidMount = () => {
-        console.log("Got group",this.props.group);
+
     }
     onDeleteGroupMember = (gid,uid) => {
-        this.props.onDeleteGroupMember({gid, uid});
-
+        this.props.onDeleteGroupMember({gid: gid, uid: uid});
     }
 
     renderItem = ({item}) => {
@@ -57,7 +56,10 @@ export class GroupShowMembers extends React.Component {
     }
 
     render = () => {
-        const g = this.props.group;
+        if (this.props.groupDetails == null) {
+            return <ActivityIndicator>Loading....</ActivityIndicator>
+        }
+        const g = this.props.groupDetails[this.props.group.id];
         return (
             <View style={[styles.parent, globalStyles.defaultContainer]}>
                 <Text style={globalStyles.h1Style}>GROUP MEMBERS</Text>
@@ -93,6 +95,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
+        groupDetails : state.groups.groupDetails,
         uiState: state.problems.uiState,
         auth: state.auth
     }

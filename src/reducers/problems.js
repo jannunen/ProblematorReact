@@ -10,11 +10,9 @@ export const initialState = {
 }
 const reducer = (state = initialState, action) => {
     const payload = action.payload;
-    console.log(action.type,"payload to reducer",payload);
-    let source = null;
-    if (payload && payload.source) {
-        source = {...payload.source};
-        delete action.payload.source;
+    let source=null;
+    if (payload && payload.args) {
+        source = {...payload.args};
     }
     let newState = null;
     switch (action.type) {
@@ -92,7 +90,6 @@ const reducer = (state = initialState, action) => {
         } 
         break;
         case ADD_BETAVIDEO_PUT:
-        console.log("source",source)
         return  { 
             ...state,
             probleminfos : {
@@ -175,7 +172,6 @@ const reducer = (state = initialState, action) => {
             break;
 
         default:
-            console.log("Did not catch the action type!");
             return state;
             break;
     }

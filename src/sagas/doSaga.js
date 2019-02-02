@@ -7,34 +7,35 @@ var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSucc
   if (action.payload == null) {
     action.payload = {};
   }
-  yield put({ type : 'UI_LOADING',  payload : { uiState : 'loading' }});
+  //yield put({ type : 'UI_LOADING',  payload : { uiState : 'loading' }});
   if (failReducer == null) {
     failReducer = 'PROBLEMS_LOAD_ERROR';
   }
-  if (alertSuccess == null) {
-    alertSuccess = false;
-  }
+  // if (alertSuccess == null) {
+  //   alertSuccess = false;
+  // }
+  console.log("payload for the API call",action.payload);
   const response = yield call(apiCall, action.payload)
-  let payload = response ? response.data : {}
-  /*
-  if ("string"===typeof(payload)) {
-    payload = {message : payload};
-  }
-  */
+  let payload =  response ? response.data : {}
   if (payload.message && payload.message.match(/error/i)) {
-    payload.error = true;
+    payload['error']= true;
   }
+  const newPayload = JSON.parse(JSON.stringify(payload));
+  console.log("paylaod after api",newPayload)
   let ret = true;
-  if (payload && !payload.error) {
+  console.log("still here?",payload.originapayload);
+  if (newPayload && !newPayload.error) {
     // pass the original action payload to reducer.
     // The parameters might contain some handy data reducer can use
-    payload.source = action.payload;
+    /*
     if (alertSuccess) {
+      console.log("Trying to alert",payload);
       yield put({ type : 'ALERT_MESSAGE', payload});
     }
-    yield put({ type: successReducer, payload });
+    */
+    yield put({ type: successReducer, payload : newPayload });
   } else {
-    yield put({ type: failReducer, payload });
+    yield put({ type: failReducer,payload : newPayload });
     ret = false;
   }
   yield put({type : 'UI_STOP_LOADING'})
