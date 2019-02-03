@@ -43,7 +43,6 @@ export class PopularClimbingGroups extends React.Component {
     return this.props.popular.map(item => { return { ...item, key: item.gid } });
   }
   render() {
-      console.log("pop",this.props.popular)
     return (
       <View style={{ flex: 1 }}>
         {this.props.error != null ? <Text style={styles.errorMessage}>Error: {this.props.error}</Text> : null}

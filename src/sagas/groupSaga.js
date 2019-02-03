@@ -1,3 +1,4 @@
+import { select, call, put  } from 'redux-saga/effects';
 import ProblematorAPI from "../apis/problematorapi";
 import doSaga from './doSaga'
 
@@ -21,4 +22,7 @@ export function* acceptGroupInvitationSaga(action) {
 }
 export function* declineGroupInvitationSaga(action) {
   yield (doSaga(action, ProblematorAPI.declineGroupInvitation, 'DECLINE_INVITATION_PUT',null,true))
+}
+export function* setGroupToFind(action) {
+  yield put({ type : 'GROUP_TO_FIND', payload : action.payload})
 }

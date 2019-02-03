@@ -53,8 +53,11 @@ export default class ProblematorAPI {
 
   static * group(payload) {
     // FAKE
-    //return yield axios.get(yield getAPI("/group/?id="+payload.groupid,payload),config)
-    return yield { data: groupDetails};
+    if (payload.groupid == 6) {
+      return yield { data: groupDetails };
+    } else {
+      return yield axios.get(yield getAPI("/group/?id=" + payload.groupid, payload), config)
+    }
   }
   static * myGroups(payload) {
     //return yield axios.get(yield getAPI("/groups/",payload),config)

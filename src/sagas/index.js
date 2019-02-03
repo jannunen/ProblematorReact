@@ -22,6 +22,7 @@ export default function *rootSaga() {
     fork( takeLatest, 'ACCEPT_GROUP_INVITATION_SAGA', groupSagas.acceptGroupInvitationSaga ),
     fork( takeLatest, 'DECLINE_GROUP_INVITATION_SAGA', groupSagas.declineGroupInvitationSaga ),
     fork( takeLatest, 'SAVE_GROUP_SAGA', groupSagas.saveGroupSaga ),
+    fork( takeEvery, 'SET_GROUP_TO_FIND_SAGA', groupSagas.setGroupToFind ),
     fork( takeLatest, 'GROUP_SAGA', groupSagas.groupSaga ),
     fork( takeLatest, 'GET_AUTH_SAGA',getAuthSaga ),
     takeEvery('PROBLEMS_LOAD_ERROR', uiSagas.showErrorAlert),

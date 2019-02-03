@@ -20,14 +20,12 @@ var  doSaga = function *(action, apiCall, successReducer, failReducer, alertSucc
     payload['error']= true;
   }
   const newPayload = JSON.parse(JSON.stringify(payload));
-  console.log("Payload after API call",newPayload);
   let ret = true;
   if (newPayload && !newPayload.error) {
     // pass the original action payload to reducer.
     // The parameters might contain some handy data reducer can use
     yield put({ type: successReducer, payload : newPayload });
     if (alertSuccess) {
-      console.log("Trying to alert",payload);
       yield put({ type : 'ALERT_MESSAGE', payload});
     }
   } else {

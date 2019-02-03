@@ -4,28 +4,37 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  Modal,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
-import  FontAwesome  from 'react-native-vector-icons/FontAwesome5';
 import moment from 'moment';
 import ActionSheet from 'react-native-actionsheet';
+import { Navigation } from 'react-native-navigation';
 import EmptyState from '../../components/EmptyState/EmptyState'
+import { findGroup } from '../../selectors/groupSelectors';
+import GroupPreview from './GroupPreview';
 
 export class PendingClimbingGroups extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-          selectedInvitation: null
+          selectedInvitation: null,
+          selectedInvitationGroup: null,
+          showGroupPreviewModal : false
         }
     }
   componentDidMount = () => {
   }
   handleItemClicked = (item) => {
+    // Dispatch groupToFind so we can use selector later
+    this.props.onSetGroupToFind(item.gid);
+    this.setState({ selectedInvitationGroup : item.gid});
     this.setState({ selectedInvitation : item});
     this.InvitationActionSheet.show();
+    
 
   }
     handleInvitationAction = (idx) => {
@@ -33,7 +42,6 @@ export class PendingClimbingGroups extends React.Component {
             return;
         }
         const invitation = this.state.selectedInvitation;
-        console.log("inv",invitation)
         switch (idx) {
           case 1:
           this.props.onAcceptInvitation({invid : invitation.invid });
@@ -42,14 +50,45 @@ export class PendingClimbingGroups extends React.Component {
           this.props.onDeclineInvitation({invid : invitation.invid });
           break;
           case 3:
-          //this.openGroupDetails(invitation.gid)
+          this.openGroupDetails()
           break;
         }
+
+    }
+    openGroupDetails = (group) => {
+      this.setState({ showGroupPreviewModal : true})
+      /*
+      Navigation.push(this.props.componentId, {
+        component: {
+          name: 'com.problemator.GroupPreviewScreen',
+          passProps: {
+            group,
+          }
+        },
+        options: {
+          topBar: {
+            title: {
+              text: 'Group Preview'
+            }
+          }
+        }
+      });
+      */
 
     }
   listItem = (item, index ) => {
     return (
       <TouchableOpacity onPress={() => this.handleItemClicked(item)}>
+        <Modal
+        animationType="slide"
+        transparent={false}
+        style={{ flex: 1 }}
+        visible={this.state.showGroupPreviewModal}
+        onRequestClose={() => {
+            this.setState({ showGroupPreviewModal : false});
+        }}>
+            <GroupPreview onClose={() => { this.setState({ showGroupPreviewModal: false }) }} group={this.state.selectedInvitationGroup} />
+        </Modal>
         <View key={"lic" + item.gid} style={styles.listItemContainer}>
           <View style={{ flex : 1, flexDirection: 'row' }}>
 
@@ -125,8 +164,11 @@ export class PendingClimbingGroups extends React.Component {
   const mapStateToProps = (state) => {
     return {
         pending: state.groups.pending,
+        groups: state.groups.groups,
         uiState: state.problems.uiState,
-        error: state.problems.error
+        error: state.problems.error,
+        findGroup : findGroup(state),
+        groupToFind : state.groups.groupToFind
     }
   }
 
@@ -134,6 +176,7 @@ export class PendingClimbingGroups extends React.Component {
     return {
       onAcceptInvitation: (payload) => dispatch({ type: 'ACCEPT_GROUP_INVITATION_SAGA', payload }),
       onDeclineInvitation: (payload) => dispatch({ type: 'DECLINE_GROUP_INVITATION_SAGA', payload }),
+      onSetGroupToFind: (payload) => dispatch({ type: 'SET_GROUP_TO_FIND_SAGA', payload }),
     }
   }
   const styles = StyleSheet.create({

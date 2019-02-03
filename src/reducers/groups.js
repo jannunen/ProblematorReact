@@ -5,6 +5,7 @@ export const initialState = {
     popular: [],
     loading : false,
     error : null,
+    groupToFind : null,
 }
 export default (state = initialState, action ) => {
     const payload = action.payload;
@@ -75,13 +76,20 @@ export default (state = initialState, action ) => {
             }
         }
         break;
+        case 'GROUP_TO_FIND':
+        return  {
+            ...state,
+            groupToFind :  payload
+ ,
+        }
+        break;
         case 'GROUP_PUT':
         return  {
             ...state,
             groupDetails : {
                 ...state.groupDetails,
                 [payload.id] : payload
-            }
+            },
         }
         break;
         case 'MY_GROUPS_PUT':

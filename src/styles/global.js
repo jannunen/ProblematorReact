@@ -57,8 +57,13 @@ export default  StyleSheet.create({
         marginTop: 22
     },
     textInputTitle: {
+        color : '#d3d3d3',
+        fontSize : 17,
+        paddingTop : 4,
+    },
+    pStyle : {
         color : 'white',
-        fontSize : 18,
+        fontSize : 22,
         paddingTop : 4,
     },
     modalTitle: {
