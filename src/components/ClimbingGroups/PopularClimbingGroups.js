@@ -10,8 +10,15 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import  FontAwesome  from 'react-native-vector-icons/FontAwesome5';
 import moment from 'moment';
+import SearchGroups from './SearchGroups'
 
 export class PopularClimbingGroups extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      groupFilter : '',
+    }
+  }
 
   componentDidMount = () => {
   }
@@ -40,12 +47,22 @@ export class PopularClimbingGroups extends React.Component {
     );
   }
   transFormGroupsToFlatList = () => {
-    return this.props.popular.map(item => { return { ...item, key: item.gid } });
+    const term = this.state.groupFilter;
+    const g = this.props.popular.map(item => { return { ...item, key: item.gid } });
+    if (this.state.groupFilter != null && "" != this.state.groupFilter) {
+      return g.filter(item => item.name.toLowerCase().indexOf(term) != -1);
+    }
+    return g;
+    //return this.props.popular.map(item => { return { ...item, key: item.gid } });
+  }
+  searchFilterMyGroups = (text) => {
+    this.setState({groupFilter : text.toLowerCase()}) 
   }
   render() {
     return (
       <View style={{ flex: 1 }}>
         {this.props.error != null ? <Text style={styles.errorMessage}>Error: {this.props.error}</Text> : null}
+        <SearchGroups searchFilter={this.searchFilterMyGroups} />
         <FlatList
           style={styles.groupList}
           renderItem={({ item, index, }) =>

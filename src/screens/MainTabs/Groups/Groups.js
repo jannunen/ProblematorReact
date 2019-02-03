@@ -76,13 +76,11 @@ export class Groups extends React.Component {
 
   }
 
-
   firstRoute = () => {
     return (
       <View style={[styles.scene, { backgroundColor: '#252623' }]} >
         <Text style={globalStyles.h1Style} >My groups</Text>
-        <SearchGroups />
-        <ClimbingGroups  handleItemClicked={this.handleItemClicked} />
+        <ClimbingGroups  filter={this.state.myGroupFilter} handleItemClicked={this.handleItemClicked} />
         {this.props.searchGroupHits ?
           <View>
             <Text>Search hits:</Text>
