@@ -1,6 +1,7 @@
 export const initialState = {
    groups: [],
     groupDetails : [],
+    groupSearchResults : [],
     pending: [],
     popular: [],
     loading : false,
@@ -16,18 +17,27 @@ export default (state = initialState, action ) => {
     }
     let newState = null;
     switch (action.type) {
+        case 'SEARCH_GROUPS_PUT':
+        // Deletes 'source' property from the payload object. If the API was
+        // rewritten, the search results would be in their own property and
+        // this would not be needed...
+          newState =  {
+              ...state,
+              groupSearchResults : Object.values(Object.keys(payload).reduce((acc, cur) => cur === 'source' ? acc : {...acc, [cur]: payload[cur]}, {})),
+              uiState : 'ready'
+          };
+          console.log("nws",newState)
+          return newState
+        break;
 
         case 'ACCEPT_INVITATION_PUT':
-        console.log(payload.invid,"wtr")
-          newState= {
+          return {
               ...state,
               uiState : 'ready',
               pending : state.pending.filter(item => { 
                   return item.invid !==source.invid
                 })
           };
-          console.log("ns",newState);
-          return newState;
           break;
         case 'DECLINE_INVITATION_PUT':
           return {

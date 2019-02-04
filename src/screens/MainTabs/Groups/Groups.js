@@ -14,9 +14,8 @@ import { Navigation } from 'react-native-navigation';
 import globalStyles from '../../../styles/global'
 
 import ClimbingGroups from '../../../components/ClimbingGroups/ClimbingGroups'
+import AllClimbingGroups from '../../../components/ClimbingGroups/AllClimbingGroups'
 import PopularClimbingGroups from '../../../components/ClimbingGroups/PopularClimbingGroups'
-import SearchGroups from '../../../components/ClimbingGroups/SearchGroups'
-import SearchGroupHits from '../../../components/ClimbingGroups/SearchGroupHits'
 import PendingGroupInvitations from '../../../components/ClimbingGroups/PendingGroupInvitations'
 
 
@@ -24,7 +23,7 @@ export class Groups extends React.Component {
   state = {
     index: 0,
     routes: [
-      { key: 'first', title: 'My Groups' },
+      { key: 'first', title: 'Groups' },
       { key: 'second', title: 'Invitations' },
       { key: 'third', title: 'Popular' },
     ],
@@ -80,14 +79,10 @@ export class Groups extends React.Component {
     return (
       <View style={[styles.scene, { backgroundColor: '#252623' }]} >
         <Text style={globalStyles.h1Style} >My groups</Text>
-        <ClimbingGroups  filter={this.state.myGroupFilter} handleItemClicked={this.handleItemClicked} />
-        {this.props.searchGroupHits ?
-          <View>
-            <Text>Search hits:</Text>
-            <SearchGroupHits />
-          </View>
-          : null
-        }
+        <ClimbingGroups  handleItemClicked={this.handleItemClicked} />
+
+        <Text style={globalStyles.h1Style} >All groups</Text>
+        <AllClimbingGroups  handleItemClicked={this.handleItemClicked} />
       </View>
     );
   };

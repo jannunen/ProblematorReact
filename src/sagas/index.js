@@ -25,6 +25,7 @@ export default function *rootSaga() {
     fork( takeEvery, 'SET_GROUP_TO_FIND_SAGA', groupSagas.setGroupToFind ),
     fork( takeLatest, 'GROUP_SAGA', groupSagas.groupSaga ),
     fork( takeLatest, 'GET_AUTH_SAGA',getAuthSaga ),
+    fork( takeLatest, 'SEARCH_GROUPS_SAGA',groupSagas.searchGroupsSaga ),
     takeEvery('PROBLEMS_LOAD_ERROR', uiSagas.showErrorAlert),
     takeEvery('ALERT_MESSAGE', uiSagas.showAlert),
   ]

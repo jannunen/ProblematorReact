@@ -27,7 +27,7 @@ export class SearchGroups extends React.Component {
     render = () => {
         return (
           <View>
-            <Text style={globalStyles.textInputTitle}>Filter groups</Text>
+            <Text style={globalStyles.textInputTitle}>{ this.props.title ? this.props.title : "Filter groups"}</Text>
             <View style={{ flexDirection: 'row' }}>
               <View style={{ flex: 1, marginRight : 10 }}>
                 <TextInput
@@ -40,7 +40,7 @@ export class SearchGroups extends React.Component {
               </View>
               <View style={{ paddingTop : 4, paddingRight : 4}}>
                 <TouchableOpacity onPress={() => this.searchFilter("")}>
-                  <FontAwesome name="times" color="#decc00" size={30} />
+                  <FontAwesome name={this.props.icon ? this.props.icon : "times"} color="#decc00" size={30} />
                 </TouchableOpacity>
               </View>
             </View>

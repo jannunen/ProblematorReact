@@ -24,6 +24,9 @@ import problems from '../tests/fixtures/problems';
 
 export default class ProblematorAPI {
 
+  static * searchGroups(payload) {
+    return yield axios.get(yield getAPI("/search_groups/?text="+payload.term,payload),config)
+  }
   static * declineGroupInvitation(payload) {
     return yield axios.get(yield getAPI("/declineinvitation/?invid="+payload.invid,payload),config)
   }

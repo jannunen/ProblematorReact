@@ -2,6 +2,26 @@ import groupsReducers, {initialState } from '../../reducers/groups';
 import groups , {groupDetails} from '../fixtures/groups'
 
 describe('groups reducers', () => {
+    it('should execute group search reducer',() => {
+        const results = {"0":{"id":"20","name":"Crack climber banana","usercount":"1"},"1":{"id":"24","name":"Climb back up","usercount":"2"},"2":{"id":"25","name":"Climbing","usercount":"1"},"3":{"id":"44","name":"DICE Climbing","usercount":"2"},"4":{"id":"58","name":"Climbing Buddies","usercount":"1"},"5":{"id":"67","name":"Tiny Climbers","usercount":"3"},"6":{"id":"83","name":"Climb stronger","usercount":"1"},"7":{"id":"127","name":"Climbingineurope","usercount":"1"},"8":{"id":"149","name":"Cityclimbers","usercount":"3"},"9":{"id":"154","name":"Mosa Climbers ry","usercount":"13"},"10":{"id":"180","name":"Fika-climbers 2.0","usercount":"1"},"11":{"id":"223","name":"Seychelles rockclimber","usercount":"1"},"12":{"id":"241","name":"Climb Shinrikyo","usercount":"2"},"13":{"id":"258","name":"Husby Climbers","usercount":"5"},"14":{"id":"274","name":"iClimb or iceCream","usercount":"4"},"15":{"id":"278","name":"PenguinsCanClimb","usercount":"2"},"16":{"id":"294","name":"Partners in Climb","usercount":"1"},"17":{"id":"304","name":"Norwegian Climbing Federation","usercount":"1"},"18":{"id":"333","name":"Climbing bunch","usercount":"4"},"19":{"id":"352","name":"LazyHazyClimbers","usercount":"3"}};
+        const action = {
+            type : 'SEARCH_GROUPS_PUT',
+            payload : {
+                ...results,
+                source : {
+                    term : 'test',
+                }
+            }
+        }
+        let stateAfter = { 
+            ...initialState, 
+            groupSearchResults : Object.values(results),
+            uiState : 'ready',
+        }
+        const state = groupsReducers(initialState,action);
+        expect(state).toEqual(stateAfter);
+    });
+
 
     it('should execute accept invitation reducer',() => {
         const action = {

@@ -3,13 +3,33 @@ import sinon from 'sinon';
 import api from '../../apis/problematorapi'
 import { expectSaga } from 'redux-saga-test-plan';
 import  * as groupSagas  from '../../sagas/groupSaga'
-import { groupDetails } from '../fixtures/groups'
+import groups, { groupDetails } from '../fixtures/groups'
 
   const state = {
     auth : {
       token : 'foo',
     }
   }
+it('should execute group search saga',() => {
+  const messageFromApi = groups.groups;
+  let originalData = JSON.parse(JSON.stringify(messageFromApi));
+  sinon.stub(api, "searchGroups").returns({data : messageFromApi});
+  const action = {
+    type : 'SEARCH_GROUPS_SAGA',
+    payload : {
+      term : 'test'
+     },
+  }
+  const expected = JSON.parse(JSON.stringify(groups.groups));
+  return expectSaga(groupSagas.searchGroupsSaga, action, api)
+    .withState(state)
+    .put({type : 'UI_LOADING', payload : {uiState : 'loading'}})
+     .put({type : 'SEARCH_GROUPS_PUT',  payload : expected })
+     .put({type : 'UI_LOADING', payload : {uiState : 'ready'}})
+    .run();
+})
+
+
 it('should execute invitation decline FAIL saga',() => {
   const messageFromApi = {"error":true,"message":"Invitation decline failed."};
   let originalData = JSON.parse(JSON.stringify(messageFromApi));

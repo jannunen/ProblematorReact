@@ -26,3 +26,6 @@ export function* declineGroupInvitationSaga(action) {
 export function* setGroupToFind(action) {
   yield put({ type : 'GROUP_TO_FIND', payload : action.payload})
 }
+export function* searchGroupsSaga(action) {
+  yield (doSaga(action, ProblematorAPI.searchGroups, 'SEARCH_GROUPS_PUT',null,true))
+}

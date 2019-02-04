@@ -18,7 +18,7 @@ export function* showAlert (action) {
     console.log("Wanting to alert",str)
     Alert.alert( 'Problemator', str);
   } else {
-    console.log("cannot show",msg);
+    console.log("cannot show alert of content",msg);
   }
 
 }
