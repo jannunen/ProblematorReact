@@ -5,6 +5,7 @@ import {
   StyleSheet,
   SafeAreaView,
   Dimensions,
+  Modal,
 } from 'react-native'
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { connect } from 'react-redux';
@@ -17,6 +18,7 @@ import ClimbingGroups from '../../../components/ClimbingGroups/ClimbingGroups'
 import AllClimbingGroups from '../../../components/ClimbingGroups/AllClimbingGroups'
 import PopularClimbingGroups from '../../../components/ClimbingGroups/PopularClimbingGroups'
 import PendingGroupInvitations from '../../../components/ClimbingGroups/PendingGroupInvitations'
+import GroupPreview from '../../../components/ClimbingGroups/GroupPreview';
 
 
 export class Groups extends React.Component {
@@ -27,6 +29,7 @@ export class Groups extends React.Component {
       { key: 'second', title: 'Invitations' },
       { key: 'third', title: 'Popular' },
     ],
+    showGroupPreviewModal: false
   };
   componentDidMount = () => {
     this.props.loadMyGroups();
@@ -52,6 +55,9 @@ export class Groups extends React.Component {
   }
 
 
+  handleGroupSearchResultClicked = (group) => { 
+    this.setState({ previewGroup : group.id, showGroupPreviewModal: true })
+  }
 
   handleItemClicked = (group) => {
     // Do something
@@ -78,11 +84,24 @@ export class Groups extends React.Component {
   firstRoute = () => {
     return (
       <View style={[styles.scene, { backgroundColor: '#252623' }]} >
-        <Text style={globalStyles.h1Style} >My groups</Text>
-        <ClimbingGroups  handleItemClicked={this.handleItemClicked} />
-
-        <Text style={globalStyles.h1Style} >All groups</Text>
-        <AllClimbingGroups  handleItemClicked={this.handleItemClicked} />
+        <Modal
+        animationType="slide"
+        transparent={false}
+        style={{ flex: 1 }}
+        visible={this.state.showGroupPreviewModal}
+        onRequestClose={() => {
+            this.setState({ showGroupPreviewModal : false});
+        }}>
+            <GroupPreview onClose={() => { this.setState({ showGroupPreviewModal: false }) }} group={this.state.previewGroup} joinable={true} />
+        </Modal>
+        <View style={{ flex: 2 }}>
+          <Text style={globalStyles.h1Style} >My groups</Text>
+          <ClimbingGroups handleItemClicked={this.handleItemClicked} />
+        </View>
+        <View style={{ flex: 3 }}>
+          <Text style={globalStyles.h1Style} >All groups</Text>
+          <AllClimbingGroups  handleItemClicked={this.handleGroupSearchResultClicked} />
+        </View>
       </View>
     );
   };

@@ -27,5 +27,8 @@ export function* setGroupToFind(action) {
   yield put({ type : 'GROUP_TO_FIND', payload : action.payload})
 }
 export function* searchGroupsSaga(action) {
-  yield (doSaga(action, ProblematorAPI.searchGroups, 'SEARCH_GROUPS_PUT',null,true))
+  yield (doSaga(action, ProblematorAPI.searchGroups, 'SEARCH_GROUPS_PUT'))
+}
+export function* joinGroupSaga(action) {
+  yield (doSaga(action, ProblematorAPI.joinGroup, 'JOIN_GROUP_PUT',null,true))
 }

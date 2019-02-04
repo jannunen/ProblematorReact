@@ -48,9 +48,7 @@ export class ClimbingGroups extends React.Component {
     );
   }
   transFormGroupsToFlatList = () => {
-    console.log("search term",this.state.groupFilter);
     const term = this.state.groupFilter;
-
     const g = this.props.groups.map(item => { return { ...item, key: item.gid } });
     if (this.state.groupFilter != null && "" != this.state.groupFilter) {
       return g.filter(item => item.name.toLowerCase().indexOf(term) != -1);

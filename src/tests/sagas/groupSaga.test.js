@@ -10,6 +10,27 @@ import groups, { groupDetails } from '../fixtures/groups'
       token : 'foo',
     }
   }
+it('should execute join group saga',() => {
+  const messageFromApi = {"error":false,"message":"Group joined"};
+  let originalData = JSON.parse(JSON.stringify(messageFromApi));
+  sinon.stub(api, "joinGroup").returns({data : messageFromApi});
+  const action = {
+    type : 'JOIN_GROUP_SAGA',
+    payload : {
+      groupid : 6,
+     },
+  }
+  const expected = {...messageFromApi};
+  return expectSaga(groupSagas.joinGroupSaga, action, api)
+    .withState(state)
+    .put({type : 'UI_LOADING', payload : {uiState : 'loading'}})
+     .put({type : 'ALERT_MESSAGE', payload : messageFromApi})
+     .put({type : 'JOIN_GROUP_PUT',  payload : expected })
+     .put({type : 'UI_LOADING', payload : {uiState : 'ready'}})
+    .run();
+})
+
+
 it('should execute group search saga',() => {
   const messageFromApi = groups.groups;
   let originalData = JSON.parse(JSON.stringify(messageFromApi));

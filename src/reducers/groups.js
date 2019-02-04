@@ -17,6 +17,12 @@ export default (state = initialState, action ) => {
     }
     let newState = null;
     switch (action.type) {
+        case 'JOIN_GROUP_PUT':
+          return {
+              ...state,
+              uiState : 'ready'
+          };
+        break;
         case 'SEARCH_GROUPS_PUT':
         // Deletes 'source' property from the payload object. If the API was
         // rewritten, the search results would be in their own property and

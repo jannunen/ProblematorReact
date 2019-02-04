@@ -23,7 +23,11 @@ export class GroupEditModalContent extends Component {
     setModalVisible = (visible) => {
         this.props.onClose();
     }
+    joinButtonClicked = () => {
+        this.props.onClose();
+        this.props.onJoinGroup({ groupid : this.props.group});
 
+    }
     render() {
         if (this.props.groupDetails[this.props.group] == null) {
             return (
@@ -56,6 +60,15 @@ export class GroupEditModalContent extends Component {
                     <Text style={[globalStyles.pStyle]}>{group.membercount}</Text>
 
                 </View>
+                {this.props.joinable &&
+                    <ProblematorButton
+                        title="join group"
+                        containerStyle={{ width: "100%" }}
+                        onPress={() => {
+                            this.joinButtonClicked();
+                        }}>
+                    </ProblematorButton>
+                }
                     <ProblematorButton
                         title="close"
                         containerStyle={{ width: "100%" }}
@@ -88,6 +101,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onGetGroup: (payload) => dispatch({ type: 'GROUP_SAGA', payload }),
+        onJoinGroup: (payload) => dispatch({ type: 'JOIN_GROUP_SAGA', payload }),
     }
 }
 
