@@ -18,6 +18,9 @@ export default (state = initialState, action ) => {
     let newState = null;
     switch (action.type) {
         case 'JOIN_GROUP_PUT':
+              // TODO: This needs actually to add the new group to be added to groups
+              // so it shows in mygroups. And then API should be changed so that
+              // the join message returns the details of the joined group.
           return {
               ...state,
               uiState : 'ready'
@@ -67,9 +70,7 @@ export default (state = initialState, action ) => {
           };
           break;
         case 'DELETE_GROUP_MEMBER_PUT':
-        // TODO
-        // NEeds still further improvement. Should remove member ALSO from groups! 
-        // AND latestticks. But those are missing some UIDs
+        // TODO  Needs still further improvement. Should remove member ALSO from groups!  AND latestticks. But those are missing some UIDs
         return  {
             ...state,
             groupDetails : {
