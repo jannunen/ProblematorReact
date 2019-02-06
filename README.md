@@ -11,10 +11,17 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+You need to have React Native prequisites installed as follows:
+https://facebook.github.io/react-native/docs/getting-started
+
+Follow the "Building Projects with Native Code" instructions.
+
+
+You need to have Yarn installed and make sure you have all the
+packages described in package.json by running Yarn.
 
 ```
-Give examples
+yarn
 ```
 
 ### Installing

@@ -23,6 +23,10 @@ export default (state = initialState, action ) => {
               // the join message returns the details of the joined group.
           return {
               ...state,
+              groups : [
+                  ...state.groups,
+                  payload.group,
+              ],
               uiState : 'ready'
           };
         break;

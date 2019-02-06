@@ -57,14 +57,7 @@ export class AllClimbingGroups extends React.Component {
   render() {
       let searchResultList = null;
       console.log("search results",this.props.groupSearchResults)
-      if (this.state.groupFilter == null) {
-          searchResultList = <Text style={styles.noResultsYet}>Start writing a group name and the search will be executed.</Text>
-      } else if (this.props.uiState == 'loading') {
-          searchResultList = <LoadingState>Searching...</LoadingState>
-
-      } else if (this.props.groupSearchResults.length == 0 && this.state.groupFilter != null) {
-          searchResultList = <Text style={styles.noResultsYet}>Search resulted 0 hits.</Text>
-      } else {
+      if (this.props.groupSearchResults.length > 0) {
           searchResultList = (
             <FlatList
             style={styles.groupList}
@@ -78,12 +71,17 @@ export class AllClimbingGroups extends React.Component {
                 data={this.transFormGroupsToFlatList()}
             />
           );
-        }
+      } else {
+          searchResultList = <Text style={styles.noResultsYet}>Start writing a group name and the search will be executed.</Text>
+      }
     return (
       <View style={{ flex: 1 }}>
         {this.props.error != null ? <Text style={styles.errorMessage}>Error: {this.props.error}</Text> : null}
         <SearchGroups title="Write a group name and click search, min. 3 chars" searchFilter={this.searchFilterMyGroups} />
         {searchResultList}
+        {this.props.uiState == 'loading' && 
+          <Text style={styles.noResultsYet}>Please wait, loading...</Text>
+        }
         </View>
       )
     }

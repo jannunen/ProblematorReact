@@ -18,10 +18,14 @@ export class GroupEditModalContent extends Component {
     }
     componentDidMount = () => {
         let payload = {groupid : this.props.group};
-        this.props.onGetGroup(payload);
+        if (this.props.groupDetails[this.props.group]==null) {
+            this.props.onGetGroup(payload);
+        }
     }
     setModalVisible = (visible) => {
-        this.props.onClose();
+        if (!visible) {
+            this.props.onClose();
+        }
     }
     joinButtonClicked = () => {
         this.props.onClose();

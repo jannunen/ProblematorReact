@@ -11,6 +11,7 @@ import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { connect } from 'react-redux';
 import IconBadge from 'react-native-icon-badge';
 import { Navigation } from 'react-native-navigation';
+import ActivitySpinner from 'react-native-loading-spinner-overlay';
 
 import globalStyles from '../../../styles/global'
 
@@ -100,7 +101,7 @@ export class Groups extends React.Component {
         </View>
         <View style={{ flex: 3 }}>
           <Text style={globalStyles.h1Style} >All groups</Text>
-          <AllClimbingGroups  handleItemClicked={this.handleGroupSearchResultClicked} />
+          <AllClimbingGroups  handleItemClicked={(group) => { this.handleGroupSearchResultClicked(group) }} />
         </View>
       </View>
     );
@@ -201,7 +202,7 @@ const mapStateToProps = (state) => {
       groups: state.groups.groups,
       pending: state.groups.pending,
       invitations: state.groups.invitations,
-    loading: state.problems.loading,
+    uiState: state.problems.uiState,
     error: state.problems.error
   }
 }

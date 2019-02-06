@@ -66,7 +66,7 @@ export default class ProblematorAPI {
     }
   }
   static * myGroups(payload) {
-    //return yield axios.get(yield getAPI("/groups/",payload),config)
+    // return yield axios.get(yield getAPI("/groups/",payload),config)
     return yield { data : groups};
   }
    static * saveTick(payload) {
