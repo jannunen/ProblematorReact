@@ -1,6 +1,7 @@
 export const initialState = {
     myComps: [],
     pastComps: [],
+    comps: [], // Holds the loaded comps
     upcomingComps: [],
     compSearchResults: [],
  }

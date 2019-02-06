@@ -12,6 +12,7 @@ import GroupShowMembersScreen from './MainTabs/Groups/GroupShowMembers';
 import GroupDetailsScreen from './MainTabs/Groups/GroupDetails';
 import ProblemDetailScreen from './MainTabs/Problems/ProblemDetailScreen/ProblemDetailScreen';
 import CompetitionScreen from './MainTabs/Competition/CompetitionScreen/CompetitionScreen';
+import  PointEntryScreen from './MainTabs/Competition/PointEntryScreen/PointEntryScreen';
 
 import { createStore , combineReducers, compose, applyMiddleware } from 'redux';
 
@@ -55,4 +56,5 @@ export default registerScreens = () => {
     Navigation.registerComponentWithRedux('com.problemator.GroupShowMembers', () => GroupShowMembersScreen, Provider, store);
     Navigation.registerComponentWithRedux('com.problemator.ProblemDetailScreen', () => ProblemDetailScreen, Provider, store);
     Navigation.registerComponentWithRedux('com.problemator.CompetitionScreen', () => CompetitionScreen, Provider, store);
+    Navigation.registerComponentWithRedux('com.problemator.PointEntryScreen', () => PointEntryScreen, Provider, store);
 } 

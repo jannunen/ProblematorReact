@@ -21,7 +21,7 @@ import ActivitySpinner from 'react-native-loading-spinner-overlay';
 import globalStyles from '../../../../styles/global'
 import MyCompetitions from '../../../../components/Competitions/MyCompetitions'
 
-export default class CompetitionScreen extends Component {
+export class CompetitionScreen extends Component {
 
     constructor(props) {
         super(props);
@@ -37,10 +37,28 @@ export default class CompetitionScreen extends Component {
 
   componentDidMount = () => {
   }
+  handleMyCompClicked = (comp) => {
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'com.problemator.PointEntryScreen',
+                passProps: {
+                    comp,
+                }
+            },
+            options: {
+                topBar: {
+                    title: {
+                        text: 'Competition Point Entry'
+                    }
+                }
+            }
+        });
+
+  }
   firstRoute = () => {
     return (
       <View style={[globalStyles.scene ]} >
-        <MyCompetitions />
+        <MyCompetitions handleItemClicked={this.handleMyCompClicked} />
       </View>
     );
   };
@@ -76,3 +94,17 @@ export default class CompetitionScreen extends Component {
 
 const styles = StyleSheet.create({
 })
+
+const mapStateToProps = (state) => {
+  return {
+    uiState: state.problems.uiState,
+    error: state.problems.error
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CompetitionScreen);
