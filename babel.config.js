@@ -2,7 +2,7 @@ module.exports = function (api) {
   var env = api.cache(() => process.env.NODE_ENV);
 
   return {
-    presets: ['module:metro-react-native-babel-preset'],
+    presets: ['module:metro-react-native-babel-preset', "module:react-native-dotenv"],
     env: {
       test: {
         presets: [
