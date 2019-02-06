@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Linking,
   Alert,
+  Modal,
   TouchableOpacity,
   Dimensions,
   ART

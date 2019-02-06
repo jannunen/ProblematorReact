@@ -1,5 +1,9 @@
 import { StyleSheet } from 'react-native'
 export default  StyleSheet.create({
+    scene: {
+        flex: 1,
+        backgroundColor: '#252623'
+    },
     modalContainer: {
         backgroundColor: "#30312e",
         flex : 1,
@@ -77,5 +81,8 @@ export default  StyleSheet.create({
         textTransform: 'uppercase',
         fontSize: 25
     },
+    flexVertical : {
+        flexDirection : 'column',
+    }
 });
 

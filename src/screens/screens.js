@@ -11,12 +11,14 @@ import GroupsScreen from './MainTabs/Groups/Groups';
 import GroupShowMembersScreen from './MainTabs/Groups/GroupShowMembers';
 import GroupDetailsScreen from './MainTabs/Groups/GroupDetails';
 import ProblemDetailScreen from './MainTabs/Problems/ProblemDetailScreen/ProblemDetailScreen';
+import CompetitionScreen from './MainTabs/Competition/CompetitionScreen/CompetitionScreen';
 
 import { createStore , combineReducers, compose, applyMiddleware } from 'redux';
 
 import problemsReducer from '../reducers/problems'
 import authReducer from '../reducers/auth'
 import groupsReducer from '../reducers/groups'
+import compReducer from '../reducers/comps'
 
 import createSagaMiddleware from 'redux-saga'
 import  watcherSaga   from '../sagas/index';
@@ -26,6 +28,7 @@ const rootReducer = combineReducers({
     problems : problemsReducer,
     auth : authReducer,
     groups : groupsReducer,
+    comps : compReducer,
 });
 
 let composeEnhancers = compose;
@@ -51,4 +54,5 @@ export default registerScreens = () => {
     Navigation.registerComponentWithRedux('com.problemator.GroupDetailsScreen', () => GroupDetailsScreen, Provider, store);
     Navigation.registerComponentWithRedux('com.problemator.GroupShowMembers', () => GroupShowMembersScreen, Provider, store);
     Navigation.registerComponentWithRedux('com.problemator.ProblemDetailScreen', () => ProblemDetailScreen, Provider, store);
+    Navigation.registerComponentWithRedux('com.problemator.CompetitionScreen', () => CompetitionScreen, Provider, store);
 } 

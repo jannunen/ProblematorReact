@@ -3,6 +3,7 @@ import { getAuthSaga } from './authSaga';
 import * as problemSagas from './problemsSaga';
 import  * as uiSagas from './uiSaga'
 import  * as groupSagas from './groupSaga'
+import  * as compSagas from './compSaga'
 
 export default function *rootSaga() {
 
@@ -27,6 +28,7 @@ export default function *rootSaga() {
     fork( takeLatest, 'GET_AUTH_SAGA',getAuthSaga ),
     fork( takeLatest, 'SEARCH_GROUPS_SAGA',groupSagas.searchGroupsSaga ),
     fork( takeLatest, 'JOIN_GROUP_SAGA',groupSagas.joinGroupSaga ),
+    fork( takeLatest, 'MY_COMPS_SAGA',compSagas.myCompsSaga ),
     takeEvery('PROBLEMS_LOAD_ERROR', uiSagas.showErrorAlert),
     takeEvery('ALERT_MESSAGE', uiSagas.showAlert),
   ]

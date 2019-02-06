@@ -26,7 +26,7 @@ export class ClimbingGroups extends React.Component {
   handleItemClicked = (item) => {
       this.props.handleItemClicked(item);
   }
-  renderItem = (item, index ) => {
+  listItem = (item, index ) => {
     return (
       <TouchableOpacity onPress={() => this.handleItemClicked(item)}>
         <View key={"lic" + item.gid} style={styles.listItemContainer}>
@@ -66,7 +66,7 @@ export class ClimbingGroups extends React.Component {
         <FlatList
           style={styles.groupList}
           renderItem={({ item, index, }) =>
-            this.renderItem(item, index )
+            this.listItem(item, index )
           }
           keyExtractor={(item, index) => {
             const key = item['gid'] + "_" + index;

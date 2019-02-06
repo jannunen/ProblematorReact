@@ -47,6 +47,7 @@ export const goHome = () => {
   Promise.all([
     FontAwesome.getImageSource("list-alt", 30),
     FontAwesome.getImageSource("users", 30),
+    FontAwesome.getImageSource("trophy", 30),
   ]).then(sources => {
 
     Navigation.setRoot({
@@ -74,6 +75,25 @@ export const goHome = () => {
 
               }
 
+            },
+            {
+              stack: {
+                id: 'Competitions',
+                children: [ 
+                  {
+                    component: {
+                      name: 'com.problemator.CompetitionScreen',
+                    }
+                  }
+                ],
+                options: {
+                  bottomTab: {
+                    text: 'Competitions',
+                    selectedIconColor : 'white',
+                    icon: sources[2],
+                  }
+                }
+              }
             },
             {
               stack: {
